@@ -10,7 +10,7 @@ import { SlpAmountCard } from './SlpAmountCard';
 
 export const SummaryCards = (): JSX.Element => {
   const scholars = useRecoilValue(scholarsMap);
-  const addresses = scholars.map(scholar => scholar.address);
+  const addresses = scholars.filter(scholar => !scholar.inactive).map(scholar => scholar.address);
 
   const { results, isLoading } = useBatchScholar({ addresses });
   const resultsWithSuccess = results.filter(result => result.isSuccess);
