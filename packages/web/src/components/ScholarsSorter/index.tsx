@@ -1,0 +1,1 @@
+export { ScholarsSorter } from './ScholarsSorter';

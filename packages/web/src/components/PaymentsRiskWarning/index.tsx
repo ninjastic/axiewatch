@@ -1,0 +1,1 @@
+export { PaymentsRiskWarning } from './PaymentsRiskWarning';

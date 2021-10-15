@@ -1,0 +1,1 @@
+export { ScholarCard } from './ScholarCard';

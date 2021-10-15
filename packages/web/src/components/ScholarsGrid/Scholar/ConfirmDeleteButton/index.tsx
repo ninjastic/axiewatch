@@ -1,0 +1,1 @@
+export { ConfirmDeleteButton } from './ConfirmDeleteButton';

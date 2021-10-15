@@ -1,0 +1,1 @@
+export { ScholarAxies } from './ScholarAxies';

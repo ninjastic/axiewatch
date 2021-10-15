@@ -1,0 +1,1 @@
+export { ScholarClaimCard } from './ScholarClaimCard';

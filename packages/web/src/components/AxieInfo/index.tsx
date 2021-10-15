@@ -1,0 +1,1 @@
+export { AxieInfo } from './AxieInfo';

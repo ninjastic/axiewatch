@@ -1,0 +1,12 @@
+node_modules/
+dist/
+build/
+supabase/
+.next/
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.env
+

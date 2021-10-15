@@ -1,0 +1,40 @@
+import { Box, Button, Stack, HStack, Text, Tooltip } from '@chakra-ui/react';
+import { AiOutlineBarChart } from 'react-icons/ai';
+import { BiInfoCircle } from 'react-icons/bi';
+
+import { useCreateModal } from '../../../../services/hooks/useCreateModal';
+import { SlpTrackingChart } from '../SlpTrackingChart';
+
+interface SlpTrackingButtonProps {
+  address: string;
+}
+
+export const SlpTrackingButton = ({ address }: SlpTrackingButtonProps): JSX.Element => {
+  const slpTrackingModal = useCreateModal({
+    id: 'slpTrackingModal',
+    title: () => (
+      <HStack>
+        <Text fontWeight="bold">SLP Tracking</Text>
+        <Tooltip label="The SLP tracking feature is in BETA. There are no guarantees that the data will be 100% correct at this early stage. Please report any inconsistence or bug.">
+          <Box>
+            <BiInfoCircle />
+          </Box>
+        </Tooltip>
+      </HStack>
+    ),
+    content: () => (
+      <Box minH="280px">
+        <Stack py={4}>
+          <SlpTrackingChart address={address} />
+        </Stack>
+      </Box>
+    ),
+    size: '2xl',
+  });
+
+  return (
+    <Button leftIcon={<AiOutlineBarChart />} onClick={slpTrackingModal.onOpen}>
+      SLP Tracking
+    </Button>
+  );
+};

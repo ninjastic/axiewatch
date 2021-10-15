@@ -1,0 +1,1 @@
+export { ScholarAddress } from './ScholarAddress';

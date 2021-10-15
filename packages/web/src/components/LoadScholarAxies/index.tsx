@@ -1,0 +1,1 @@
+export { LoadScholarAxies } from './LoadScholarAxies';

@@ -1,0 +1,15 @@
+{
+  "name": "axiewatch",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@axiewatch/eslint-config": "*",
+    "typescript": "^4.4.3"
+  }
+}
