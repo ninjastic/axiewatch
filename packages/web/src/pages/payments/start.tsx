@@ -76,7 +76,8 @@ const StartPaymentsPage = (): JSX.Element => {
   const getScholars = useRecoilCallback(
     ({ snapshot }) =>
       () =>
-        snapshot.getLoadable(allScholarsSelector).getValue()
+        snapshot.getLoadable(allScholarsSelector).getValue(),
+    [allScholarsSelector]
   );
 
   useEffect(() => {
