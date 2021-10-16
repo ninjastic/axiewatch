@@ -88,7 +88,7 @@ export const NotablePerformersTable = (): JSX.Element => {
             Notable Performers
           </Text>
 
-          <Tooltip label="The top and bottom performers based on the their SLP per day average. Disconsiders the scholars that claimed less than 1 full day ago.">
+          <Tooltip label="The top and bottom performers based on their SLP per day average. Disconsiders the scholars that claimed less than 1 full day ago.">
             <Box>
               <AiOutlineInfoCircle />
             </Box>
