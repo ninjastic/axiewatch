@@ -1,4 +1,4 @@
-import { Flex, SkeletonCircle, Text, Divider, Stack, HStack, useTheme, useColorModeValue } from '@chakra-ui/react';
+import { Flex, SkeletonCircle, Text, Divider, Stack, useTheme, useColorModeValue } from '@chakra-ui/react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
 import { useRecoilValue } from 'recoil';
 
@@ -41,7 +41,7 @@ const CustomTooltip = ({ active, payload, label }: any): JSX.Element => {
   );
 };
 
-export const SlpPredictionChart = (): JSX.Element => {
+export const EarningsProjectionChart = (): JSX.Element => {
   const scholars = useRecoilValue(scholarsMap);
   const addresses = scholars.map(scholar => scholar.address);
   const { colors } = useTheme();
@@ -76,14 +76,14 @@ export const SlpPredictionChart = (): JSX.Element => {
 
   if (isLoading) {
     return (
-      <Flex align="center" justify="center" h="150px">
+      <Flex align="center" justify="center" h="290px">
         <SkeletonCircle alignSelf="center" />
       </Flex>
     );
   }
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
+    <ResponsiveContainer width="100%" height={290}>
       <AreaChart
         data={dates}
         margin={{

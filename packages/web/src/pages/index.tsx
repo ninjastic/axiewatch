@@ -1,4 +1,5 @@
-import { Box, Flex, Grid, GridItem, Text, HStack, Stack } from '@chakra-ui/react';
+import { Box, Flex, Grid, GridItem, Text, HStack, Stack, Tooltip } from '@chakra-ui/react';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 import dynamic from 'next/dynamic';
 
 import { SignInButton } from '../components/SignInButton';
@@ -7,7 +8,7 @@ import { DailySlpChart } from '../components/DailySlpChart';
 import { Card } from '../components/Card';
 import { PreferencesButton } from '@src/components/Header/PreferencesButton';
 import { NotablePerformersTable } from '@src/components/NotablePerformersTable';
-import { SlpPredictionChart } from '@src/components/SlpPredictionChart';
+import { EarningsProjectionChart } from '@src/components/EarningsProjectionChart';
 
 function DashboardPage() {
   return (
@@ -30,12 +31,20 @@ function DashboardPage() {
 
         <GridItem colSpan={1}>
           <Stack>
-            <Text fontWeight="bold" fontSize="lg">
-              Earnings Projection
-            </Text>
+            <HStack>
+              <Text fontWeight="bold" fontSize="lg">
+                Earnings Projection
+              </Text>
+
+              <Tooltip label="How much should be your total accumulated value assuming your scholars daily average is constant and you make no claims.">
+                <Box>
+                  <AiOutlineInfoCircle />
+                </Box>
+              </Tooltip>
+            </HStack>
 
             <Card p={5}>
-              <SlpPredictionChart />
+              <EarningsProjectionChart />
             </Card>
           </Stack>
         </GridItem>

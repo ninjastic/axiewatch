@@ -18,7 +18,9 @@ import {
   Button,
   MenuList,
   MenuItem,
+  Tooltip,
 } from '@chakra-ui/react';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 
@@ -26,6 +28,7 @@ import { scholarsMap } from '@src/recoil/scholars';
 import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
 import { Card } from '@components/Card';
 import { parseScholarData } from '@src/services/utils/parseScholarData';
+import dayjs from '@src/services/dayjs';
 
 interface NumberMenuProps {
   number: number;
@@ -59,6 +62,10 @@ export const NotablePerformersTable = (): JSX.Element => {
     .filter(result => {
       const state = scholars.find(scholar => scholar.address === result.data.scholar.client_id);
       return !state.inactive;
+    })
+    .filter(result => {
+      const data = parseScholarData({ data: result.data });
+      return data.lastClaim !== 0 && dayjs.unix(data.lastClaim).isBefore(dayjs.utc().subtract(1, 'day').endOf('day'));
     });
 
   const sorted = resultsWithSuccess.sort((a, b) => {
@@ -76,9 +83,17 @@ export const NotablePerformersTable = (): JSX.Element => {
   return (
     <Stack>
       <Flex justify="space-between">
-        <Text fontWeight="bold" fontSize="lg">
-          Notable Performers
-        </Text>
+        <HStack>
+          <Text fontWeight="bold" fontSize="lg">
+            Notable Performers
+          </Text>
+
+          <Tooltip label="The top and bottom performers based on the their SLP per day average. Disconsiders the scholars that claimed less than 1 full day ago.">
+            <Box>
+              <AiOutlineInfoCircle />
+            </Box>
+          </Tooltip>
+        </HStack>
 
         <NumberMenu number={scholarsNumber} setNumber={setScholarsNumber} />
       </Flex>
@@ -98,7 +113,7 @@ export const NotablePerformersTable = (): JSX.Element => {
 
             {!isLoading && !sorted.length && (
               <Flex align="center" justify="center" mt={5}>
-                <Text variant="faded">No scholars...</Text>
+                <Text variant="faded">No data...</Text>
               </Flex>
             )}
 
@@ -109,7 +124,6 @@ export const NotablePerformersTable = (): JSX.Element => {
                     <Tr>
                       <Td>Name</Td>
                       <Td>Yesterday</Td>
-                      <Td>Today</Td>
                       <Td>per Day</Td>
                       <Td>SLP</Td>
                     </Tr>
@@ -125,10 +139,9 @@ export const NotablePerformersTable = (): JSX.Element => {
                         <Tr key={address}>
                           <Td>{state.name}</Td>
                           <Td>{data.yesterdaySlp ?? '-'}</Td>
-                          <Td>{data.todaySlp ?? '-'}</Td>
                           <Td>{data.slpDay}</Td>
                           <Td>
-                            <HStack>
+                            <HStack spacing={1}>
                               <Image src="/images/axies/slp.png" height="16px" alt="slp" />
                               <Text>{data.slp}</Text>
                             </HStack>
@@ -157,7 +170,7 @@ export const NotablePerformersTable = (): JSX.Element => {
 
             {!isLoading && !sorted.length && (
               <Flex align="center" justify="center" mt={5}>
-                <Text variant="faded">No scholars...</Text>
+                <Text variant="faded">No data...</Text>
               </Flex>
             )}
 
@@ -168,7 +181,6 @@ export const NotablePerformersTable = (): JSX.Element => {
                     <Tr fontWeight="bold">
                       <Td>Name</Td>
                       <Td>Yesterday</Td>
-                      <Td>Today</Td>
                       <Td>per Day</Td>
                       <Td>SLP</Td>
                     </Tr>
@@ -184,10 +196,9 @@ export const NotablePerformersTable = (): JSX.Element => {
                         <Tr key={address}>
                           <Td>{state.name}</Td>
                           <Td>{data.yesterdaySlp ?? '-'}</Td>
-                          <Td>{data.todaySlp ?? '-'}</Td>
                           <Td>{data.slpDay}</Td>
                           <Td>
-                            <HStack>
+                            <HStack spacing={1}>
                               <Image src="/images/axies/slp.png" height="16px" alt="slp" />
                               <Text>{data.slp}</Text>
                             </HStack>
