@@ -23,6 +23,7 @@ import { RiSwordLine } from 'react-icons/ri';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Form, Formik } from 'formik';
+import { NextSeo } from 'next-seo';
 import dynamic from 'next/dynamic';
 
 import { serverApi } from '../../services/api';
@@ -154,87 +155,91 @@ export const DashboardSlug = (): JSX.Element => {
   }
 
   return (
-    <Box align="center" py={5} px={3}>
-      <Image src={data.dashboard?.logo || '/images/logo2.png'} maxH="100px" />
+    <>
+      <NextSeo title="Leaderboard" />
 
-      <Box mt={5}>
-        <Text fontWeight="bold" fontSize="lg" my={8}>
-          Leaderboard
-        </Text>
+      <Box align="center" py={5} px={3}>
+        <Image src={data.dashboard?.logo || '/images/logo2.png'} maxH="125px" alt="logo" />
 
-        <Box maxW="1450px" margin="auto">
-          <Card p={5} overflowX="auto">
-            <Table variant="unstyled">
-              <Thead>
-                <Tr>
-                  <Th>#</Th>
-                  <Th>Name</Th>
-                  <Th>Elo</Th>
-                  <Th>Rank</Th>
-                  <Th>SLP</Th>
-                </Tr>
-              </Thead>
-
-              <Tbody>
-                {sortedScholars.map((scholar, index) => {
-                  if (scholar.pvpErrored) {
-                    results[index].refetch();
-                  }
-
-                  return (
-                    <Tr key={scholar.address}>
-                      <Td fontWeight={getIndexWeight(index)}>{index + 1}</Td>
-
-                      <Td>
-                        <SkeletonText isLoaded={scholar.loaded} noOfLines={1} w="200px">
-                          <Text whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden" maxW="200px">
-                            {getNamePrefix(index)}
-                            {scholar.name}
-                          </Text>
-                        </SkeletonText>
-                      </Td>
-
-                      <Td>
-                        <SkeletonText isLoaded={scholar.loaded} noOfLines={1} width="100px">
-                          <HStack>
-                            <RiSwordLine />
-                            <Text>{scholar.pvpElo}</Text>
-                          </HStack>
-                        </SkeletonText>
-                      </Td>
-
-                      <Td>
-                        <SkeletonText isLoaded={scholar.loaded} noOfLines={1} width="100px">
-                          <HStack>
-                            <AiOutlineTrophy />
-                            <Text whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
-                              {scholar.pvpRank}
-                            </Text>
-                          </HStack>
-                        </SkeletonText>
-                      </Td>
-
-                      <Td>
-                        <SkeletonText isLoaded={scholar.loaded} noOfLines={1} width="100px">
-                          <HStack>
-                            <Image src="/images/axies/slp.png" height="16px" alt="slp" />
-                            <Text>{scholar.slp}</Text>
-                          </HStack>
-                        </SkeletonText>
-                      </Td>
-                    </Tr>
-                  );
-                })}
-              </Tbody>
-            </Table>
-          </Card>
-
-          <Text textAlign="right" fontSize="sm" color="gray.400" mt={2}>
-            Data is cached for 15 minutes.
+        <Box mt={5}>
+          <Text fontWeight="bold" fontSize="lg" my={8}>
+            Leaderboard
           </Text>
+
+          <Box maxW="1450px" margin="auto">
+            <Card p={5} overflowX="auto">
+              <Table variant="unstyled">
+                <Thead>
+                  <Tr>
+                    <Th>#</Th>
+                    <Th>Name</Th>
+                    <Th>Elo</Th>
+                    <Th>Rank</Th>
+                    <Th>SLP</Th>
+                  </Tr>
+                </Thead>
+
+                <Tbody>
+                  {sortedScholars.map((scholar, index) => {
+                    if (scholar.pvpErrored) {
+                      results[index].refetch();
+                    }
+
+                    return (
+                      <Tr key={scholar.address}>
+                        <Td fontWeight={getIndexWeight(index)}>{index + 1}</Td>
+
+                        <Td>
+                          <SkeletonText isLoaded={scholar.loaded} noOfLines={1} w="200px">
+                            <Text whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden" maxW="200px">
+                              {getNamePrefix(index)}
+                              {scholar.name}
+                            </Text>
+                          </SkeletonText>
+                        </Td>
+
+                        <Td>
+                          <SkeletonText isLoaded={scholar.loaded} noOfLines={1} width="100px">
+                            <HStack>
+                              <RiSwordLine />
+                              <Text>{scholar.pvpElo}</Text>
+                            </HStack>
+                          </SkeletonText>
+                        </Td>
+
+                        <Td>
+                          <SkeletonText isLoaded={scholar.loaded} noOfLines={1} width="100px">
+                            <HStack>
+                              <AiOutlineTrophy />
+                              <Text whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
+                                {scholar.pvpRank}
+                              </Text>
+                            </HStack>
+                          </SkeletonText>
+                        </Td>
+
+                        <Td>
+                          <SkeletonText isLoaded={scholar.loaded} noOfLines={1} width="100px">
+                            <HStack>
+                              <Image src="/images/axies/slp.png" height="16px" alt="slp" />
+                              <Text>{scholar.slp}</Text>
+                            </HStack>
+                          </SkeletonText>
+                        </Td>
+                      </Tr>
+                    );
+                  })}
+                </Tbody>
+              </Table>
+            </Card>
+
+            <Text textAlign="right" fontSize="sm" color="gray.400" mt={2}>
+              Data is cached for 15 minutes.
+            </Text>
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 
