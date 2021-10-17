@@ -24,11 +24,11 @@ import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 
+import dayjs from '../../services/dayjs';
 import { scholarsMap } from '@src/recoil/scholars';
 import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
 import { Card } from '@components/Card';
 import { parseScholarData } from '@src/services/utils/parseScholarData';
-import dayjs from '@src/services/dayjs';
 
 interface NumberMenuProps {
   number: number;
@@ -65,7 +65,7 @@ export const NotablePerformersTable = (): JSX.Element => {
     })
     .filter(result => {
       const data = parseScholarData({ data: result.data });
-      return data.lastClaim !== 0 && dayjs.unix(data.lastClaim).isBefore(dayjs.utc().subtract(1, 'day').endOf('day'));
+      return data.lastClaim !== 0 && dayjs.utc().isAfter(dayjs.unix(data.lastClaim).add(1, 'day'));
     });
 
   const sorted = resultsWithSuccess.sort((a, b) => {
