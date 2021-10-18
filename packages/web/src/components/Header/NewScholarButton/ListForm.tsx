@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { scholarsMap, ScholarMap } from '../../../recoil/scholars';
 import { preferencesAtom } from '../../../recoil/preferences';
 import { modalSelector } from '../../../recoil/modal';
+import { checkValidAddress } from '@src/services/utils/checkValidAddress';
 
 interface HandleSaveData {
   addresses: string;
@@ -27,6 +28,8 @@ export const ListForm = (): JSX.Element => {
       return text && text?.replaceAll('"', '').trim();
     }
 
+    let error = '';
+
     lines
       .map(line => line.trim())
       .filter(line => !!line)
@@ -41,10 +44,14 @@ export const ListForm = (): JSX.Element => {
         const paymentAddress = cleanString(rawPaymentAddress)?.replace('ronin:', '0x');
 
         const scholarAlreadyExists = scholars.find(scholar => scholar.address.toLowerCase() === address.toLowerCase());
-
         const duplicatedNewScholar = newList.find(n => n.address.toLowerCase() === address);
 
         if (scholarAlreadyExists || duplicatedNewScholar) {
+          return;
+        }
+
+        if (!checkValidAddress(address)) {
+          error = `Line ${index} error: Address is invalid`;
           return;
         }
 
@@ -62,6 +69,14 @@ export const ListForm = (): JSX.Element => {
 
         newList.push(toAdd);
       });
+
+    if (error) {
+      toast(error, {
+        type: 'error',
+      });
+
+      return;
+    }
 
     if (!newList.length) {
       toast('Missing scholars data', {
