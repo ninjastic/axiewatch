@@ -1,5 +1,6 @@
 import { Text, GridItem, SkeletonText, Tooltip } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
+import { useMemo } from 'react';
 
 import dayjs from '../../../../../services/dayjs';
 import { scholarSelector } from '../../../../../recoil/scholars';
@@ -12,9 +13,8 @@ interface ScholarFieldLastClaimProps {
 export const ScholarFieldLastClaim = ({ address, isLoading }: ScholarFieldLastClaimProps): JSX.Element => {
   const { lastClaim } = useRecoilValue(scholarSelector(address));
 
-  const lastClaimText = lastClaim === 0 ? 'never' : dayjs.unix(lastClaim).fromNow();
-
-  const formatted = dayjs.unix(lastClaim).format('DD MMM YYYY, HH:mm:ss');
+  const lastClaimText = useMemo(() => (lastClaim === 0 ? 'never' : dayjs.unix(lastClaim).fromNow()), [lastClaim]);
+  const formatted = useMemo(() => dayjs.unix(lastClaim).format('DD MMM YYYY, HH:mm:ss'), [lastClaim]);
 
   return (
     <GridItem colSpan={4}>

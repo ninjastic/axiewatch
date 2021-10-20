@@ -15,7 +15,6 @@ import {
   Flex,
   chakra,
   Wrap,
-  useMediaQuery,
 } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 import dynamic from 'next/dynamic';
@@ -40,13 +39,11 @@ interface ScholarDates {
 
 export const Calendar = (): JSX.Element => {
   const scholars = useRecoilValue(allScholarsSelector).filter(scholar => !scholar.errored);
+  const addresses = scholars.map(scholar => scholar.address);
 
-  const { isLoading } = useBatchScholar({
-    addresses: scholars.map(scholar => scholar.address),
-  });
+  const { isLoading } = useBatchScholar({ addresses });
 
   const price = usePrice();
-  const [isWideVersion] = useMediaQuery('(min-width: 750px)');
 
   const dates = scholars
     .filter(scholar => scholar.loaded && scholar.lastClaim !== 0 && !scholar.inactive)
@@ -146,7 +143,7 @@ export const Calendar = (): JSX.Element => {
               return (
                 <AccordionItem pb={3} mb={2} w="100%" key={date.month}>
                   <AccordionButton w="100%">
-                    <Stack spacing={isWideVersion ? 8 : 3} direction={isWideVersion ? 'row' : 'column'}>
+                    <Stack spacing={{ base: 3, lg: 8 }} direction={{ base: 'column', lg: 'row' }}>
                       <Text fontSize={48}>{monthString}</Text>
 
                       <HStack spacing={5}>

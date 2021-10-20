@@ -1,15 +1,8 @@
 html,
-body,
-#__next {
+body {
   height: 100%;
   padding: 0;
   margin: 0;
-  overflow: hidden;
-}
-
-#__next {
-  overflow: -moz-scrollbars-vertical;
-  overflow-y: scroll;
 }
 
 @keyframes fade-in {

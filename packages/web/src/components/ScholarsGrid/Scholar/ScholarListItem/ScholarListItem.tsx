@@ -1,7 +1,7 @@
 import { SimpleGrid, Icon, GridItem } from '@chakra-ui/react';
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
 import { useRecoilValue } from 'recoil';
-import { useState, Fragment } from 'react';
+import { useState, Fragment, useMemo } from 'react';
 
 import { scholarFieldsAtom, scholarSelector, ScholarFields } from '../../../../recoil/scholars';
 import { Card } from '../../../Card';
@@ -36,70 +36,78 @@ export const ScholarListItem = ({ address, isLoading, isError, refetch }: ItemPa
   const scholar = useRecoilValue(scholarSelector(address));
   const scholarFields = useRecoilValue(scholarFieldsAtom);
 
-  const fields = {
-    name: {
-      element: <ScholarFieldName address={address} />,
-      size: 5,
-    },
-    slp: {
-      element: <ScholarFieldSlp address={address} isLoading={isLoading} />,
-      size: 4,
-    },
-    scholarShare: {
-      element: <ScholarFieldScholarShare address={address} isLoading={isLoading} />,
-      size: 4,
-    },
-    managerShare: {
-      element: <ScholarFieldManagerShare address={address} isLoading={isLoading} />,
-      size: 4,
-    },
-    investorShare: {
-      element: <ScholarFieldInvestorShare address={address} isLoading={isLoading} />,
-      size: 4,
-    },
-    arenaElo: {
-      element: <ScholarFieldArenaElo address={address} isLoading={isLoading} refetch={refetch} />,
-      size: 3,
-    },
-    todaySlp: {
-      element: <ScholarFieldTodaySlp address={address} isLoading={isLoading} />,
-      size: 3,
-    },
-    yesterdaySlp: {
-      element: <ScholarFieldYesterdaySlp address={address} isLoading={isLoading} />,
-      size: 4,
-    },
-    slpDay: {
-      element: <ScholarFieldSlpDay address={address} isLoading={isLoading} />,
-      size: 4,
-    },
-    adventureSlp: {
-      element: <ScholarFieldAdventureSlp address={address} isLoading={isLoading} />,
-      size: 4,
-    },
-    lastClaim: {
-      element: <ScholarFieldLastClaim address={address} isLoading={isLoading} />,
-      size: 4,
-    },
-    nextClaim: {
-      element: <ScholarFieldNextClaim address={address} isLoading={isLoading} />,
-      size: 4,
-    },
-  } as {
-    [key in ScholarFields]: {
-      element: JSX.Element;
-      size: number;
-    };
-  };
+  const fields = useMemo(
+    () =>
+      ({
+        name: {
+          element: <ScholarFieldName address={address} />,
+          size: 5,
+        },
+        slp: {
+          element: <ScholarFieldSlp address={address} isLoading={isLoading} />,
+          size: 4,
+        },
+        scholarShare: {
+          element: <ScholarFieldScholarShare address={address} isLoading={isLoading} />,
+          size: 4,
+        },
+        managerShare: {
+          element: <ScholarFieldManagerShare address={address} isLoading={isLoading} />,
+          size: 4,
+        },
+        investorShare: {
+          element: <ScholarFieldInvestorShare address={address} isLoading={isLoading} />,
+          size: 4,
+        },
+        arenaElo: {
+          element: <ScholarFieldArenaElo address={address} isLoading={isLoading} refetch={refetch} />,
+          size: 3,
+        },
+        todaySlp: {
+          element: <ScholarFieldTodaySlp address={address} isLoading={isLoading} />,
+          size: 3,
+        },
+        yesterdaySlp: {
+          element: <ScholarFieldYesterdaySlp address={address} isLoading={isLoading} />,
+          size: 4,
+        },
+        slpDay: {
+          element: <ScholarFieldSlpDay address={address} isLoading={isLoading} />,
+          size: 4,
+        },
+        adventureSlp: {
+          element: <ScholarFieldAdventureSlp address={address} isLoading={isLoading} />,
+          size: 4,
+        },
+        lastClaim: {
+          element: <ScholarFieldLastClaim address={address} isLoading={isLoading} />,
+          size: 4,
+        },
+        nextClaim: {
+          element: <ScholarFieldNextClaim address={address} isLoading={isLoading} />,
+          size: 4,
+        },
+      } as {
+        [key in ScholarFields]: {
+          element: JSX.Element;
+          size: number;
+        };
+      }),
+    [address, isLoading, refetch]
+  );
+
+  const columns = useMemo(
+    () =>
+      scholarFields.reduce((prev, field) => {
+        if (!fields[field]) return prev;
+        return prev + fields[field].size;
+      }, 0),
+    [fields, scholarFields]
+  );
 
   if (isError) {
     return <ErroredItem address={address} refetch={refetch} />;
   }
-
-  const columns = scholarFields.reduce((prev, field) => {
-    if (!fields[field]) return prev;
-    return prev + fields[field].size;
-  }, 0);
 
   return (
     <Card w="100%" minH="90px" opacity={scholar.inactive ? 0.4 : 1}>

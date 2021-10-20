@@ -133,7 +133,7 @@ export const EditScholarModal = ({ name, address }: EditScholarModalParams): JSX
                 Inactive
               </Checkbox>
 
-              <Tooltip label="Moved to the end of the list, hidden on the calendar page and from the shared dashboard.">
+              <Tooltip label="Moved to the end of the list, hidden on the calendar page and from the dashboard data.">
                 <Box>
                   <AiOutlineInfoCircle />
                 </Box>

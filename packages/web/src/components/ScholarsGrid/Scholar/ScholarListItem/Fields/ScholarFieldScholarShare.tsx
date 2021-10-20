@@ -1,5 +1,6 @@
 import { Text, GridItem, SkeletonText, HStack } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
+import { useMemo } from 'react';
 
 import { formatter } from '../../../../../services/formatter';
 import { priceAtom } from '../../../../../recoil/price';
@@ -16,9 +17,17 @@ export const ScholarFieldScholarShare = ({ address, isLoading }: ScholarFieldSch
   const preferences = useRecoilValue(preferencesAtom);
   const price = useRecoilValue(priceAtom);
 
-  const slp = preferences.includeRoninBalance ? scholar.slp + scholar.roninSlp : scholar.slp;
-  const slpValue = Math.floor((slp * scholar.shares.scholar) / 100);
-  const fiatValue = formatter((slp * price.values.slp * scholar.shares.scholar) / 100, price.locale);
+  const slp = useMemo(
+    () => (preferences.includeRoninBalance ? scholar.slp + scholar.roninSlp : scholar.slp),
+    [preferences.includeRoninBalance, scholar.roninSlp, scholar.slp]
+  );
+
+  const slpValue = useMemo(() => Math.floor((slp * scholar.shares.scholar) / 100), [scholar.shares.scholar, slp]);
+
+  const fiatValue = useMemo(
+    () => formatter((slp * price.values.slp * scholar.shares.scholar) / 100, price.locale),
+    [price.locale, price.values.slp, scholar.shares.scholar, slp]
+  );
 
   return (
     <GridItem colSpan={4}>

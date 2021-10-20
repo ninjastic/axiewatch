@@ -9,7 +9,7 @@ export const LoadingScreenStyles = {
     h: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'absolute',
+    position: 'fixed',
     zIndex: 9999,
   }),
 };

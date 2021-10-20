@@ -1,4 +1,5 @@
 import { Menu, MenuButton, MenuList, MenuItem, Button } from '@chakra-ui/react';
+import { useMemo } from 'react';
 import { FiChevronDown } from 'react-icons/fi';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
@@ -9,7 +10,10 @@ export const ScholarsSorter = (): JSX.Element => {
   const [sort, setSort] = useRecoilState(scholarSort);
   const fields = useRecoilValue(scholarFieldsAtom);
 
-  const isLoaded = scholars.filter(scholar => scholar.loaded || scholar.errored).length === scholars.length;
+  const isLoaded = useMemo(
+    () => scholars.filter(scholar => scholar.loaded || scholar.errored).length === scholars.length,
+    [scholars]
+  );
 
   return (
     <Menu isLazy>

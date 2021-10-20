@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
+import axios from 'axios';
 
-import { api } from '../api';
 import { priceAtom, Price } from '../../recoil/price';
 import { preferencesAtom } from '../../recoil/preferences';
 
@@ -21,7 +21,7 @@ export const usePrice = (): Price => {
   const { data } = useQuery(
     'price',
     async () => {
-      const response = await api.get<PriceResponse>('https://api.coingecko.com/api/v3/simple/price', {
+      const response = await axios.get<PriceResponse>('https://api.coingecko.com/api/v3/simple/price', {
         params: {
           ids: 'smooth-love-potion,axie-infinity,ethereum',
           vs_currencies: 'usd,brl,eth,php,thb,aud,cad,idr,chf,gbp,mxn,eur,inr,ars,vnd,uah,rub,aed,myr,sgd,jpy',

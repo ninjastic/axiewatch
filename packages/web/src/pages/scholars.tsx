@@ -34,7 +34,7 @@ function SyncButton() {
   );
 }
 
-export function ScholarsPage() {
+export const ScholarsPage = (): JSX.Element => {
   return (
     <Box maxW="1450px" margin="auto">
       <Flex direction="column" justify="space-between" px={3} py={6}>
@@ -52,6 +52,6 @@ export function ScholarsPage() {
       </Flex>
     </Box>
   );
-}
+};
 
 export default dynamic(() => Promise.resolve(ScholarsPage), { ssr: false });

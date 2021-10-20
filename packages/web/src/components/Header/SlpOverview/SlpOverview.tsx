@@ -1,14 +1,4 @@
-import {
-  Stat,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
-  Stack,
-  HStack,
-  Image,
-  Tooltip,
-  useMediaQuery,
-} from '@chakra-ui/react';
+import { Stat, StatLabel, StatNumber, StatHelpText, Stack, HStack, Image, Tooltip } from '@chakra-ui/react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
 
@@ -29,8 +19,6 @@ export const SlpOverview = (): JSX.Element => {
     investor: 0,
   });
 
-  const [isWideVersion] = useMediaQuery('(min-width: 750px)');
-
   const getValue = useRecoilCallback(
     ({ snapshot }) =>
       () =>
@@ -42,11 +30,11 @@ export const SlpOverview = (): JSX.Element => {
     setValues(getValue());
   }, 500);
 
-  useEffect(() => () => clearInterval(timeout), []);
+  useEffect(() => () => clearInterval(timeout), [timeout]);
 
   return (
-    <Stack direction={isWideVersion ? 'row' : 'column'} spacing={5}>
-      <HStack spacing={isWideVersion ? 5 : 10}>
+    <Stack direction={{ sm: 'column', lg: 'row' }} spacing={5}>
+      <HStack spacing={{ sm: 10, lg: 5 }}>
         <Stat w="120px">
           <StatLabel>Total SLP</StatLabel>
 
@@ -78,7 +66,7 @@ export const SlpOverview = (): JSX.Element => {
         </Stat>
       </HStack>
 
-      <HStack spacing={isWideVersion ? 5 : 10}>
+      <HStack spacing={{ sm: 10, lg: 5 }}>
         <Stat w="120px">
           <StatLabel>Manager</StatLabel>
 

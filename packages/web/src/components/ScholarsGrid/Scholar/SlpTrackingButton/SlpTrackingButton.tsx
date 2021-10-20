@@ -1,4 +1,4 @@
-import { Box, Button, Stack, HStack, Text, Tooltip } from '@chakra-ui/react';
+import { Box, Button, Stack, HStack, Text, Tooltip, IconButton } from '@chakra-ui/react';
 import { AiOutlineBarChart } from 'react-icons/ai';
 import { BiInfoCircle } from 'react-icons/bi';
 
@@ -7,9 +7,10 @@ import { SlpTrackingChart } from '../SlpTrackingChart';
 
 interface SlpTrackingButtonProps {
   address: string;
+  onlyIcon?: boolean;
 }
 
-export const SlpTrackingButton = ({ address }: SlpTrackingButtonProps): JSX.Element => {
+export const SlpTrackingButton = ({ address, onlyIcon = false }: SlpTrackingButtonProps): JSX.Element => {
   const slpTrackingModal = useCreateModal({
     id: 'slpTrackingModal',
     title: () => (
@@ -29,10 +30,17 @@ export const SlpTrackingButton = ({ address }: SlpTrackingButtonProps): JSX.Elem
         </Stack>
       </Box>
     ),
-    size: '2xl',
+    size: '3xl',
   });
 
-  return (
+  return onlyIcon ? (
+    <IconButton
+      size="sm"
+      aria-label="Slp Tracking History"
+      icon={<AiOutlineBarChart />}
+      onClick={slpTrackingModal.onOpen}
+    />
+  ) : (
     <Button leftIcon={<AiOutlineBarChart />} onClick={slpTrackingModal.onOpen}>
       SLP Tracking
     </Button>

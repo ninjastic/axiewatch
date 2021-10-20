@@ -1,6 +1,6 @@
 import { Text, GridItem, SkeletonText, SimpleGrid, Tooltip } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { formatter } from '../../../../../services/formatter';
 import { scholarSelector } from '../../../../../recoil/scholars';
@@ -40,7 +40,10 @@ export const ScholarFieldSlpDay = ({ address, isLoading }: ScholarFieldSlpDayPro
   const scholar = useRecoilValue(scholarSelector(address));
   const price = useRecoilValue(priceAtom);
 
-  const slpDayText = formatter(scholar.slpDay * price.values.slp, price.locale);
+  const slpDayText = useMemo(
+    () => formatter(scholar.slpDay * price.values.slp, price.locale),
+    [price.locale, price.values.slp, scholar.slpDay]
+  );
 
   const getSlpDayColor = useCallback(() => {
     if (scholar.slpDay >= 120) return 'green.200';
@@ -52,7 +55,7 @@ export const ScholarFieldSlpDay = ({ address, isLoading }: ScholarFieldSlpDayPro
   return (
     <GridItem colSpan={4}>
       <SkeletonText isLoaded={!isLoading} noOfLines={2}>
-        <Tooltip label={<TooltipScholarSLP address={scholar.address} />}>
+        <Tooltip label={<TooltipScholarSLP address={scholar.address} />} isDisabled={isLoading}>
           <div>
             <Text color={getSlpDayColor as any} fontWeight="bold">
               {scholar.slpDay} / day
