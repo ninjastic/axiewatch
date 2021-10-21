@@ -2,13 +2,13 @@ module.exports = {
   apps: [
     {
       name: 'server',
-      script: 'yarn server start:server',
+      script: 'node_modules/next/dist/bin/next',
+      args: 'start',
       exec_mode: 'cluster',
     },
     {
-      name: 'queue',
+      name: 'node_modules/next/dist/bin/next',
       script: 'yarn server start:queue',
-      exec_mode: 'cluster',
     },
   ],
 };
