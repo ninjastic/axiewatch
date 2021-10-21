@@ -1,14 +1,16 @@
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, 'packages', 'server', '.env') });
+
 module.exports = {
   apps: [
     {
       name: 'server',
-      script: 'node_modules/next/dist/bin/ts-node',
-      args: 'start',
+      script: 'packages/server/dist/server.js',
       exec_mode: 'cluster',
     },
     {
-      name: 'node_modules/next/dist/bin/next',
-      script: 'yarn server start:queue',
+      name: 'queue',
+      script: 'packages/server/dist/queue.js',
     },
   ],
 };
