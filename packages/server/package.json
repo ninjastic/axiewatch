@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "start:queue": "node ./dist/queue.js",
-    "start:server": "node ./dist/server.js",
+    "start:queue": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/queue.js",
+    "start:server": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/server.js",
     "dev:queue": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register ./src/queue.ts",
     "dev:server": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register ./src/server.ts",
     "prod:db:migrate": "dotenv -e .env.production.local node-pg-migrate",

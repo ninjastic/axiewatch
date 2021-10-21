@@ -7,11 +7,11 @@
     "strictPropertyInitialization": false,
     "strict": true,
     "outDir": "dist",                                     /* Enable all strict type-checking options. */
-    "rootDir": ".",
-    "baseUrl": ".",
+    "rootDir": "./src",
+    "baseUrl": "./src",
     "paths": {
-      "@src/*": ["./src/*"],
-      "@models/*": ["./src/models/*"],
+      "@src/*": ["*"],
+      "@models/*": ["models/*"],
     },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
