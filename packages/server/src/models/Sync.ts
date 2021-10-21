@@ -28,8 +28,8 @@ export default class Sync extends Model {
     required: ['user_id', 'data'],
     properties: {
       id: { type: 'integer' },
-      user_id: { type: 'integer' },
-      data: { type: 'object' },
+      user_id: { type: 'string' },
+      data: { type: 'array' },
     },
   };
 

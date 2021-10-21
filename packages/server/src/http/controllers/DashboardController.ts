@@ -99,10 +99,12 @@ export class DashboardController {
     });
 
     if (dashboard) {
-      dashboard = await Dashboard.query().updateAndFetch({
+      dashboard = await dashboard.$query().patchAndFetch({
         logo: customLogo,
         whitelist: whitelist ? JSON.stringify(whitelist) : null,
       });
+
+      return res.json(dashboard);
     }
 
     dashboard = await Dashboard.query().insert({
