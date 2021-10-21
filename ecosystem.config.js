@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'server',
-      script: 'node_modules/next/dist/bin/next',
+      script: 'node_modules/next/dist/bin/ts-node',
       args: 'start',
       exec_mode: 'cluster',
     },
