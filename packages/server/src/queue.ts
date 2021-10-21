@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { Job, Queue, QueueScheduler, Worker } from 'bullmq';
 import { tracking } from '@prisma/client';
 import cron from 'node-cron';
+
 import { getUniqueAddresses, trackScholarJob } from './jobs/trackScholarJob';
 
 async function main() {

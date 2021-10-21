@@ -2,9 +2,9 @@ import { Stat, StatLabel, StatNumber, StatHelpText, Skeleton } from '@chakra-ui/
 import { UseQueryResult } from 'react-query';
 import { Dayjs } from 'dayjs';
 
+import dayjs from '../../services/dayjs';
 import { Card } from '@components/Card';
 import { APIScholarResponse } from '@src/types/api';
-import dayjs from '@src/services/dayjs';
 
 interface NextClaimCardProps {
   data: UseQueryResult<APIScholarResponse>[];
@@ -15,7 +15,7 @@ export const NextClaimCard = ({ data, isLoading }: NextClaimCardProps): JSX.Elem
   const closestClaim = data
     .filter(result => result.isSuccess)
     .reduce((prev, currResult) => {
-      const lastClaim = currResult.data.scholar.last_claimed_item_at;
+      const { lastClaim } = currResult.data.scholar;
       const nextClaimDate = dayjs.unix(lastClaim).add(14, 'days');
       if (lastClaim === 0) return prev;
       if (!prev) return nextClaimDate;

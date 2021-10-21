@@ -28,7 +28,7 @@ export const useBatchScholar = ({ addresses, enabled = true }: UseBatchScholarPr
     queryKey: ['scholar', address],
     queryFn: async () => {
       const { data } = await serverApi.get<APIScholarResponse>('/scholar', {
-        params: { address, pvp: true, slp: true },
+        params: { address },
       });
 
       const scholarData = parseScholarData({ data });

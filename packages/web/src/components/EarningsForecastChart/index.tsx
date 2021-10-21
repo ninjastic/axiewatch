@@ -2,12 +2,12 @@ import { Flex, SkeletonCircle, Text, Divider, Stack, useTheme, useColorModeValue
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
 import { useRecoilValue } from 'recoil';
 
+import dayjs from '../../services/dayjs';
 import { scholarsMap } from '@src/recoil/scholars';
 import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
 import { parseScholarData } from '@src/services/utils/parseScholarData';
 import { usePrice } from '@src/services/hooks/usePrice';
 import { formatter } from '@src/services/formatter';
-import dayjs from '@src/services/dayjs';
 import { Card } from '@components/Card';
 
 const CustomTooltip = ({ active, payload, label }: any): JSX.Element => {
@@ -41,7 +41,7 @@ const CustomTooltip = ({ active, payload, label }: any): JSX.Element => {
   );
 };
 
-export const EarningsProjectionChart = (): JSX.Element => {
+export const EarningsForecastChart = (): JSX.Element => {
   const scholars = useRecoilValue(scholarsMap);
   const addresses = scholars.map(scholar => scholar.address);
   const { colors } = useTheme();
@@ -50,8 +50,7 @@ export const EarningsProjectionChart = (): JSX.Element => {
   const resultsWithSuccess = results.filter(result => result.isSuccess);
 
   const accumulated = resultsWithSuccess.reduce((prev, currResult) => {
-    const value = Math.abs(currResult.data.scholar.total - currResult.data.scholar.blockchain_related.balance);
-    return prev + value;
+    return prev + currResult.data.scholar.slp;
   }, 0);
 
   const totalSlpDay = resultsWithSuccess.reduce((prev, currResult) => {

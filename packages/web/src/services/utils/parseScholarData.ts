@@ -28,45 +28,35 @@ interface ParseScholarDataProps {
 }
 
 export function parseScholarData({ data, options }: ParseScholarDataProps): ParsedScholarData {
-  const {
-    total,
-    blockchain_related: { balance, checkpoint },
-    claimable_total,
-    last_claimed_item_at,
-  } = data.scholar;
-
-  const slp = Math.abs(total - balance);
-  const roninSlp = balance;
-  const totalSlp = total + checkpoint - balance;
-  const claimableSlp = claimable_total;
+  const { slp, roninSlp, totalSlp, lastClaim } = data.scholar;
+  const { yesterday, today, dates } = data.historical;
 
   const pvpElo = data.pvp?.elo ?? 0;
   const pvpRank = data.pvp?.rank ?? 0;
   const pvpErrored = data.pvp === null;
 
-  const lastClaim = last_claimed_item_at;
-  const nextClaim = last_claimed_item_at === 0 ? 0 : dayjs.unix(last_claimed_item_at).add(2, 'weeks').unix();
+  const nextClaim = lastClaim === 0 ? 0 : dayjs.unix(lastClaim).add(2, 'weeks').unix();
 
   const getYesterdaySlp = () => {
-    if (data.slp?.yesterday) {
-      if (data.slp.today) {
-        return data.slp?.today?.totalSlp - data.slp?.yesterday?.totalSlp;
+    if (yesterday) {
+      if (today) {
+        return today?.totalSlp - yesterday?.totalSlp;
       }
 
-      return totalSlp - data.slp?.yesterday?.totalSlp;
+      return totalSlp - yesterday?.totalSlp;
     }
 
     return null;
   };
 
-  const todaySlp = data.slp?.today ? totalSlp - data.slp?.today.totalSlp : null;
+  const todaySlp = today ? totalSlp - today.totalSlp : null;
 
-  const accumulated = data.slp?.dates.reduce(
+  const accumulated = dates.reduce(
     (acc, entry, index, array) => {
       const prevEntry = array[index - 1];
       if (!prevEntry) return acc;
 
-      if (dayjs.utc(entry.day).isBefore(dayjs.unix(last_claimed_item_at).endOf('day'))) {
+      if (dayjs.utc(entry.day).isBefore(dayjs.unix(lastClaim).endOf('day'))) {
         if (dayjs.utc().diff(dayjs.utc(entry.day), 'hours') <= 30 && index === array.length - 1) {
           return [acc[0] + (totalSlp - entry.totalSlp), acc[1] + 1];
         }
@@ -86,15 +76,14 @@ export function parseScholarData({ data, options }: ParseScholarDataProps): Pars
 
   const slpDay = accumulated && accumulated[1] > 0 ? Math.floor(accumulated[0] / accumulated[1]) : null;
 
-  const daysFromLastClaim = Math.ceil(Math.max(dayjs.utc().diff(dayjs.unix(last_claimed_item_at), 'hours'), 1) / 24);
-
+  const daysFromLastClaim = Math.ceil(Math.max(dayjs.utc().diff(dayjs.unix(lastClaim), 'hours'), 1) / 24);
   const slpDayFallback = Math.floor(slp / daysFromLastClaim);
 
   return {
     slp,
     roninSlp,
     totalSlp,
-    claimableSlp,
+    claimableSlp: 0,
     yesterdaySlp: getYesterdaySlp(),
     todaySlp,
     lastClaim,

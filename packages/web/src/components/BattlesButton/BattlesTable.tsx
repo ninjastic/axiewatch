@@ -49,7 +49,6 @@ export function BattlesTable({ data, address, type, perPage }: BattlesTableProps
             <Th>Type</Th>
             <Th>Result</Th>
             <Th>Opponent</Th>
-            <Th>Replay</Th>
           </Tr>
         </Thead>
 

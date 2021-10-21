@@ -10,7 +10,7 @@ interface EditScholarButtonParams {
   address: string;
 }
 
-export function EditScholarButton({ address }: EditScholarButtonParams) {
+export const EditScholarButton = ({ address }: EditScholarButtonParams): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
 
   const editScholarModal = useCreateModal({
@@ -32,4 +32,4 @@ export function EditScholarButton({ address }: EditScholarButtonParams) {
       Edit
     </Button>
   );
-}
+};

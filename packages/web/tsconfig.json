@@ -16,9 +16,9 @@
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {
-      "@src/*": ["src/*"],
-      "@utils/*": ["src/utils/*"],
-      "@components/*": ["src/components/*"],
+      "@src/*": ["./src/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@components/*": ["./src/components/*"],
     },
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

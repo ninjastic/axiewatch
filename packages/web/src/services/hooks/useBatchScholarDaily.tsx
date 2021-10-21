@@ -1,10 +1,10 @@
 import { useQueries, UseQueryOptions, UseQueryResult } from 'react-query';
 
-import { APIScholarResponseSlpDate } from '../../types/api';
+import { ScholarHistoricalDate } from '../../types/api';
 import { serverApi } from '../api';
 
 interface ScholarDailyResponse {
-  dates: APIScholarResponseSlpDate[];
+  dates: ScholarHistoricalDate[];
   isTracking: boolean | null;
 }
 

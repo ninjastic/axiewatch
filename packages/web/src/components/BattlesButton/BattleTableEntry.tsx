@@ -1,4 +1,4 @@
-import { Text, Tr, Td, HStack, Image, Box, SkeletonCircle, Button, Link, Tooltip } from '@chakra-ui/react';
+import { Text, Tr, Td, HStack, Image, Box, SkeletonCircle, Link, Tooltip } from '@chakra-ui/react';
 import { GiBattleGear } from 'react-icons/gi';
 import { FaPaw } from 'react-icons/fa';
 
@@ -10,7 +10,7 @@ interface BattleCardProps {
   address: string;
 }
 
-export function BattleTableEntry({ battle, address }: BattleCardProps) {
+export const BattleTableEntry = ({ battle, address }: BattleCardProps): JSX.Element => {
   const date = dayjs.utc(battle.created_at);
   const formattedDate = date.format('DD MMM YYYY, HH:mm:ss UTC');
   const relativeDate = date.fromNow();
@@ -40,8 +40,6 @@ export function BattleTableEntry({ battle, address }: BattleCardProps) {
     `https://storage.googleapis.com/assets.axieinfinity.com/axies/${id}/axie/axie-full-transparent.png`;
 
   const pveRuinLevel = battle.second_client_id.match(/chimera-\d+-(\d+)/)?.splice(1) ?? '-';
-
-  const replayUrl = `axie://?f=rpl&q=${battle.battle_uuid}`;
 
   return (
     <Tr>
@@ -95,10 +93,6 @@ export function BattleTableEntry({ battle, address }: BattleCardProps) {
           )}
         </HStack>
       </Td>
-
-      <Td>
-        <Button onClick={() => window.open(replayUrl, '_blank')}>Watch</Button>
-      </Td>
     </Tr>
   );
-}
+};

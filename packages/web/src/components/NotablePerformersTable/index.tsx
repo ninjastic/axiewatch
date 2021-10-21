@@ -19,16 +19,21 @@ import {
   MenuList,
   MenuItem,
   Tooltip,
+  Icon,
 } from '@chakra-ui/react';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
+import { RiSwordLine } from 'react-icons/ri';
 import { useRecoilValue } from 'recoil';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { UseQueryResult } from 'react-query';
 
 import dayjs from '../../services/dayjs';
 import { scholarsMap } from '@src/recoil/scholars';
 import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
 import { Card } from '@components/Card';
 import { parseScholarData } from '@src/services/utils/parseScholarData';
+import { APIScholarResponse } from '@src/types/api';
+import { SlpTrackingButton } from '../ScholarsGrid/Scholar/SlpTrackingButton';
 
 interface NumberMenuProps {
   number: number;
@@ -50,6 +55,87 @@ const NumberMenu = ({ number, setNumber }: NumberMenuProps): JSX.Element => {
   );
 };
 
+interface TableComponentProps {
+  label: string;
+  data: UseQueryResult<APIScholarResponse, unknown>[];
+  isLoading: boolean;
+}
+
+const TableComponent = ({ label, data, isLoading }: TableComponentProps): JSX.Element => {
+  const scholars = useRecoilValue(scholarsMap);
+
+  return (
+    <Card p={3}>
+      <GridItem colSpan={1} minH={48}>
+        <Text px={3} py={2} fontWeight="bold">
+          {label}
+        </Text>
+
+        {isLoading && (
+          <Flex align="center" justify="center" mt={5}>
+            <SkeletonCircle />
+          </Flex>
+        )}
+
+        {!isLoading && !data.length && (
+          <Flex align="center" justify="center" mt={5}>
+            <Text variant="faded">No data...</Text>
+          </Flex>
+        )}
+
+        {!isLoading && !!data.length && (
+          <Box maxH="300px" overflow="auto">
+            <Table size="sm" variant="unstyled" maxH="200px">
+              <Thead fontWeight="bold">
+                <Tr>
+                  <Td>Name</Td>
+                  <Td>per Day</Td>
+                  <Td>Yesterday</Td>
+                  <Td>Elo</Td>
+                  <Td>SLP</Td>
+                  <Td>History</Td>
+                </Tr>
+              </Thead>
+
+              <Tbody>
+                {data.map(result => {
+                  const { address } = result.data;
+                  const state = scholars.find(scholar => scholar.address === address);
+                  const { yesterdaySlp, slpDay, slp, pvpElo } = parseScholarData({ data: result.data });
+
+                  return (
+                    <Tr key={address}>
+                      <Td>{state.name}</Td>
+                      <Td fontWeight="bold">{slpDay}</Td>
+                      <Td>{yesterdaySlp ?? '-'}</Td>
+                      <Td>
+                        <HStack spacing={1}>
+                          <Icon as={RiSwordLine} />
+
+                          <Text>{pvpElo}</Text>
+                        </HStack>
+                      </Td>
+                      <Td>
+                        <HStack spacing={1}>
+                          <Image src="/images/axies/slp.png" height="14px" alt="slp" />
+                          <Text>{slp}</Text>
+                        </HStack>
+                      </Td>
+                      <Td>
+                        <SlpTrackingButton address={address} onlyIcon />
+                      </Td>
+                    </Tr>
+                  );
+                })}
+              </Tbody>
+            </Table>
+          </Box>
+        )}
+      </GridItem>
+    </Card>
+  );
+};
+
 export const NotablePerformersTable = (): JSX.Element => {
   const scholars = useRecoilValue(scholarsMap);
   const addresses = scholars.map(scholar => scholar.address);
@@ -57,28 +143,32 @@ export const NotablePerformersTable = (): JSX.Element => {
   const [scholarsNumber, setScholarsNumber] = useState(5);
 
   const { results, isLoading } = useBatchScholar({ addresses });
-  const resultsWithSuccess = results
-    .filter(result => result.isSuccess)
-    .filter(result => {
-      const state = scholars.find(scholar => scholar.address === result.data.scholar.client_id);
-      return !state.inactive;
-    })
-    .filter(result => {
-      const data = parseScholarData({ data: result.data });
-      return data.lastClaim !== 0 && dayjs.utc().isAfter(dayjs.unix(data.lastClaim).add(1, 'day'));
-    });
 
-  const sorted = resultsWithSuccess.sort((a, b) => {
-    const aData = parseScholarData({ data: a.data });
-    const bData = parseScholarData({ data: b.data });
+  const sortedScholars = useMemo(
+    () =>
+      results
+        .filter(result => result.isSuccess)
+        .filter(result => {
+          const state = scholars.find(scholar => scholar.address === result.data.address);
+          return !state.inactive;
+        })
+        .filter(result => {
+          const data = parseScholarData({ data: result.data });
+          return data.lastClaim !== 0 && dayjs.utc().isAfter(dayjs.unix(data.lastClaim).add(1, 'day'));
+        })
+        .sort((a, b) => {
+          const aData = parseScholarData({ data: a.data });
+          const bData = parseScholarData({ data: b.data });
 
-    if (aData.slpDay > bData.slpDay) return -1;
-    if (aData.slpDay < bData.slpDay) return 1;
-    return 0;
-  });
+          if (aData.slpDay > bData.slpDay) return -1;
+          if (aData.slpDay < bData.slpDay) return 1;
+          return 0;
+        }),
+    [results, scholars]
+  );
 
-  const topFive = sorted.slice(0, scholarsNumber);
-  const bottomFive = sorted.reverse().slice(0, scholarsNumber);
+  const topScholars = sortedScholars.slice(0, scholarsNumber);
+  const bottomScholars = sortedScholars.reverse().slice(0, scholarsNumber);
 
   return (
     <Stack>
@@ -99,119 +189,8 @@ export const NotablePerformersTable = (): JSX.Element => {
       </Flex>
 
       <SimpleGrid columns={{ base: 1, lg: 2 }} gap={3}>
-        <Card p={3}>
-          <GridItem colSpan={1} minH={48}>
-            <Text px={3} py={2} fontWeight="bold">
-              Top Performers
-            </Text>
-
-            {isLoading && (
-              <Flex align="center" justify="center" mt={5}>
-                <SkeletonCircle />
-              </Flex>
-            )}
-
-            {!isLoading && !sorted.length && (
-              <Flex align="center" justify="center" mt={5}>
-                <Text variant="faded">No data...</Text>
-              </Flex>
-            )}
-
-            {!isLoading && !!sorted.length && (
-              <Box maxH="300px" overflow="auto">
-                <Table size="sm" variant="unstyled" maxH="200px">
-                  <Thead fontWeight="bold">
-                    <Tr>
-                      <Td>Name</Td>
-                      <Td>Yesterday</Td>
-                      <Td>per Day</Td>
-                      <Td>SLP</Td>
-                    </Tr>
-                  </Thead>
-
-                  <Tbody>
-                    {topFive.map(result => {
-                      const address = result.data.scholar.client_id;
-                      const state = scholars.find(scholar => scholar.address === address);
-                      const data = parseScholarData({ data: result.data });
-
-                      return (
-                        <Tr key={address}>
-                          <Td>{state.name}</Td>
-                          <Td>{data.yesterdaySlp ?? '-'}</Td>
-                          <Td>{data.slpDay}</Td>
-                          <Td>
-                            <HStack spacing={1}>
-                              <Image src="/images/axies/slp.png" height="16px" alt="slp" />
-                              <Text>{data.slp}</Text>
-                            </HStack>
-                          </Td>
-                        </Tr>
-                      );
-                    })}
-                  </Tbody>
-                </Table>
-              </Box>
-            )}
-          </GridItem>
-        </Card>
-
-        <Card p={3}>
-          <GridItem colSpan={1} minH="48">
-            <Text px={3} py={2} fontWeight="bold">
-              Bottom Performers
-            </Text>
-
-            {isLoading && (
-              <Flex align="center" justify="center" mt={5}>
-                <SkeletonCircle />
-              </Flex>
-            )}
-
-            {!isLoading && !sorted.length && (
-              <Flex align="center" justify="center" mt={5}>
-                <Text variant="faded">No data...</Text>
-              </Flex>
-            )}
-
-            {!isLoading && !!sorted.length && (
-              <Box maxH="300px" overflow="auto">
-                <Table size="sm" variant="unstyled">
-                  <Thead>
-                    <Tr fontWeight="bold">
-                      <Td>Name</Td>
-                      <Td>Yesterday</Td>
-                      <Td>per Day</Td>
-                      <Td>SLP</Td>
-                    </Tr>
-                  </Thead>
-
-                  <Tbody>
-                    {bottomFive.map(result => {
-                      const address = result.data.scholar.client_id;
-                      const state = scholars.find(scholar => scholar.address === address);
-                      const data = parseScholarData({ data: result.data });
-
-                      return (
-                        <Tr key={address}>
-                          <Td>{state.name}</Td>
-                          <Td>{data.yesterdaySlp ?? '-'}</Td>
-                          <Td>{data.slpDay}</Td>
-                          <Td>
-                            <HStack spacing={1}>
-                              <Image src="/images/axies/slp.png" height="16px" alt="slp" />
-                              <Text>{data.slp}</Text>
-                            </HStack>
-                          </Td>
-                        </Tr>
-                      );
-                    })}
-                  </Tbody>
-                </Table>
-              </Box>
-            )}
-          </GridItem>
-        </Card>
+        <TableComponent label="Top Performers" data={topScholars} isLoading={isLoading} />
+        <TableComponent label="Bottom Performers" data={bottomScholars} isLoading={isLoading} />
       </SimpleGrid>
     </Stack>
   );

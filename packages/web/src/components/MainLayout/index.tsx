@@ -2,12 +2,15 @@ import { Flex, chakra } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
+import { toast } from 'react-toastify';
 
+import dayjs from '../../services/dayjs';
 import { useCreateModal } from '../../services/hooks/useCreateModal';
+import { useGameStatus } from '@src/services/hooks/useGameStatus';
 import { LoadingScreen } from './LoadingScreen';
+import { ResetPasswordModal } from './ResetPasswordModal';
 import { Sidebar } from './Sidebar';
 import Header from './Navbar';
-import { ResetPasswordModal } from './ResetPasswordModal';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -16,6 +19,8 @@ interface MainLayoutProps {
 export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+
+  const gameStatus = useGameStatus();
 
   const { onOpen, setExtra } = useCreateModal({
     id: 'resetPasswordModal',
@@ -46,6 +51,30 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
       }
     }
   }, [setExtra, onOpen]);
+
+  useEffect(() => {
+    if (isLoading) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    const now = dayjs().unix();
+    const maintenanceEnd = dayjs.unix(gameStatus.data?.to).format('HH:mm');
+    const maintenanceEndRelative = dayjs.unix(gameStatus.data?.to).fromNow();
+
+    if (!gameStatus.isLoading && now > gameStatus.data?.from && gameStatus.data?.to > now) {
+      toast(
+        `Looks like the game is under maintenance. It's scheduled to end ${maintenanceEndRelative} (${maintenanceEnd}).`,
+        {
+          type: 'error',
+          autoClose: 30000,
+        }
+      );
+    }
+  }, [gameStatus.isLoading, gameStatus.data?.from, gameStatus.data?.to]);
 
   const pageTitles = {
     scholars: 'Scholars',

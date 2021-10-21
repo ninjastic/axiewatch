@@ -1,7 +1,7 @@
 import { Axie } from '../../recoil/scholars';
 import { getTraits, getQualityAndPureness } from './axieUtils';
 
-interface ParsedAxieData extends Axie {
+export interface ParsedAxieData extends Axie {
   traits: ReturnType<typeof getTraits>;
   quality: number;
 }

@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 
 import { axieInfinityGraphQl } from '../api';
 import { Axie } from '../../recoil/scholars';
-import { parseAxieData } from '../utils/parseAxieData';
+import { parseAxieData, ParsedAxieData } from '../utils/parseAxieData';
 
 interface GraphQLResponse {
   [response: string]: {
@@ -12,7 +12,12 @@ interface GraphQLResponse {
   };
 }
 
-export function useBatchScholarAxie(addresses: string[]) {
+interface UseBatchScholarAxieData {
+  scholarAxies: ParsedAxieData[][];
+  isLoading: boolean;
+}
+
+export const useBatchScholarAxie = (addresses: string[]): UseBatchScholarAxieData => {
   async function load() {
     const chunksLength = 20;
 
@@ -97,4 +102,4 @@ export function useBatchScholarAxie(addresses: string[]) {
   });
 
   return { scholarAxies: data ?? [], isLoading };
-}
+};

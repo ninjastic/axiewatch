@@ -15,7 +15,7 @@ interface ScholarCardParams {
   refetch: () => void;
 }
 
-export function ScholarCard({ address, isLoading, isError, refetch }: ScholarCardParams) {
+export const ScholarCard = ({ address, isLoading, isError, refetch }: ScholarCardParams): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
 
   const scholarDetailsModal = useCreateModal({
@@ -35,4 +35,4 @@ export function ScholarCard({ address, isLoading, isError, refetch }: ScholarCar
       )}
     </Card>
   );
-}
+};

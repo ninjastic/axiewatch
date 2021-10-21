@@ -11,7 +11,7 @@ interface ScholarAxiesProps {
   shouldLoad?: boolean;
 }
 
-export function ScholarAxies({ address, shouldLoad = true }: ScholarAxiesProps) {
+export const ScholarAxies = ({ address, shouldLoad = true }: ScholarAxiesProps): JSX.Element => {
   const axies = useRecoilValue(scholarAxies(address));
 
   return (
@@ -72,4 +72,4 @@ export function ScholarAxies({ address, shouldLoad = true }: ScholarAxiesProps) 
       {shouldLoad && <LoadScholarAxies address={address} />}
     </>
   );
-}
+};

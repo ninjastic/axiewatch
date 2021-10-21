@@ -13,7 +13,7 @@ interface ScholarDetailsProps {
   address: string;
 }
 
-export function ScholarDetails({ address }: ScholarDetailsProps) {
+export const ScholarDetails = ({ address }: ScholarDetailsProps): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
 
   return (
@@ -33,4 +33,4 @@ export function ScholarDetails({ address }: ScholarDetailsProps) {
       </Stack>
     </Stack>
   );
-}
+};

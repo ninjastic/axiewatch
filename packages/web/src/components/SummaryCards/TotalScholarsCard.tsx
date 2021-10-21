@@ -1,6 +1,7 @@
 import { Stat, StatLabel, StatNumber, StatHelpText, Skeleton } from '@chakra-ui/react';
 import pluralize from 'pluralize';
 import { UseQueryResult } from 'react-query';
+import { useMemo } from 'react';
 
 import { Card } from '@components/Card';
 import { APIScholarResponse } from '@src/types/api';
@@ -12,15 +13,22 @@ interface TotalScholarsCardProps {
 }
 
 export const TotalScholarsCard = ({ data, isLoading }: TotalScholarsCardProps): JSX.Element => {
-  const totalSlpDay = data
-    .filter(result => result.isSuccess)
-    .reduce((prev, currResult) => {
-      const scholarData = parseScholarData({ data: currResult.data });
+  const totalSlpDay = useMemo(
+    () =>
+      data
+        .filter(result => result.isSuccess)
+        .reduce((prev, currResult) => {
+          const scholarData = parseScholarData({ data: currResult.data });
 
-      return prev + scholarData.slpDay;
-    }, 0);
+          return prev + scholarData.slpDay;
+        }, 0),
+    [data]
+  );
 
-  const averageSlp = data.length ? Math.floor(totalSlpDay / data.length) : 0;
+  const averageSlp = useMemo(
+    () => (data.length ? Math.floor(totalSlpDay / data.length) : 0),
+    [data.length, totalSlpDay]
+  );
 
   return (
     <Card p={3}>

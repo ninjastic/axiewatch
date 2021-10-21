@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import axios from 'axios';
 
 export class RpcController {
-  async post(req: Request, res: Response) {
+  async post(req: Request, res: Response): Promise<Response> {
     let endpoint: string;
 
     const writeMethods = ['eth_sendRawTransaction'];
@@ -17,7 +17,7 @@ export class RpcController {
       endpoint = 'https://api.roninchain.com/rpc';
     }
 
-    await axios
+    return axios
       .post(endpoint, req.body, {
         headers: {
           origin: 'moz-extension://a0904227-ee63-4d3d-aacc-82d592d1b746',
@@ -25,8 +25,6 @@ export class RpcController {
         },
       })
       .then(response => res.setHeader('endpoint', endpoint).json(response.data))
-      .catch(err => {
-        res.status(err.statusCode ?? 500).json({ error: err.message });
-      });
+      .catch(err => res.status(err.statusCode ?? 500).json({ error: err.message }));
   }
 }

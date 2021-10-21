@@ -1,5 +1,6 @@
-import { Stack, Text, HStack, Button, Image } from '@chakra-ui/react';
+import { Stack, Text, HStack, Button, Image, SimpleGrid, GridItem } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
+import { useMemo } from 'react';
 
 import { formatter } from '../../services/formatter';
 import { scholarSelector } from '../../recoil/scholars';
@@ -23,21 +24,28 @@ export const WalletCard = ({ address, data }: WalletCardProps): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
   const price = usePrice();
 
-  const amounts = {
-    slp: Math.round(data.slp),
-    axs: Math.round(data.axs * 1000) / 1000,
-    eth: Math.round(data.eth * 1000) / 1000,
-  };
+  const amounts = useMemo(
+    () => ({
+      slp: Math.round(data.slp),
+      axs: Math.round(data.axs * 1000) / 1000,
+      eth: Math.round(data.eth * 1000) / 1000,
+    }),
+    [data.axs, data.eth, data.slp]
+  );
 
-  const values = {
-    slp: formatter(price.values.slp * data.slp, price.locale),
-    axs: formatter(price.values.axs * data.axs, price.locale),
-    eth: formatter(price.values.eth * data.eth, price.locale),
-  };
+  const values = useMemo(
+    () => ({
+      slp: formatter(price.values.slp * data.slp, price.locale),
+      axs: formatter(price.values.axs * data.axs, price.locale),
+      eth: formatter(price.values.eth * data.eth, price.locale),
+    }),
+    [data.axs, data.eth, data.slp, price.locale, price.values.axs, price.values.eth, price.values.slp]
+  );
 
-  const totalWorth = formatter(
-    price.values.slp * data.slp + price.values.axs * data.axs + price.values.eth * data.eth,
-    price.locale
+  const totalWorth = useMemo(
+    () =>
+      formatter(price.values.slp * data.slp + price.values.axs * data.axs + price.values.eth * data.eth, price.locale),
+    [data.axs, data.eth, data.slp, price.locale, price.values.axs, price.values.eth, price.values.slp]
   );
 
   const profileUrl = `https://marketplace.axieinfinity.com/profile/${address.replace('0x', 'ronin:')}`;
@@ -73,47 +81,51 @@ export const WalletCard = ({ address, data }: WalletCardProps): JSX.Element => {
         </Stack>
       </HStack>
 
-      <Stack mt={{ base: 0, xl: 3 }} spacing={{ base: 3, xl: 10 }} direction={{ base: 'column', xl: 'row' }}>
-        <Stack spacing={0}>
-          <Text fontWeight="bold">Worth</Text>
-          <Text opacity={0.8}>~{totalWorth}</Text>
-        </Stack>
-
-        <HStack spacing={10}>
+      <SimpleGrid mt={{ base: 0, xl: 3 }} columns={4}>
+        <GridItem colSpan={{ base: 4, lg: 1 }}>
           <Stack spacing={0}>
-            <HStack>
-              <Image src="/images/axies/slp.png" width="18px" height="18px" alt="slp" />
-              <Text>{amounts.slp}</Text>
-            </HStack>
-
-            <Text opacity={0.8} fontSize="sm">
-              ({values.slp})
-            </Text>
+            <Text fontWeight="bold">Worth</Text>
+            <Text opacity={0.8}>~{totalWorth}</Text>
           </Stack>
+        </GridItem>
 
-          <Stack spacing={0}>
-            <HStack>
-              <Image src="/images/axies/axs.png" width="18px" height="18px" alt="axs" />
-              <Text>{amounts.axs}</Text>
-            </HStack>
+        <GridItem colSpan={3}>
+          <SimpleGrid mt={{ base: 5, xl: 0 }} columns={3} gap={2}>
+            <Stack spacing={0}>
+              <HStack>
+                <Image src="/images/axies/slp.png" width="18px" height="18px" alt="slp" />
+                <Text>{amounts.slp}</Text>
+              </HStack>
 
-            <Text opacity={0.8} fontSize="sm">
-              ({values.axs})
-            </Text>
-          </Stack>
+              <Text opacity={0.8} fontSize="sm">
+                ({values.slp})
+              </Text>
+            </Stack>
 
-          <Stack spacing={0}>
-            <HStack>
-              <Image src="/images/axies/eth.png" width="18px" height="18px" alt="eth" />
-              <Text>{amounts.eth}</Text>
-            </HStack>
+            <Stack spacing={0}>
+              <HStack>
+                <Image src="/images/axies/axs.png" width="18px" height="18px" alt="axs" />
+                <Text>{amounts.axs}</Text>
+              </HStack>
 
-            <Text opacity={0.8} fontSize="sm">
-              ({values.eth})
-            </Text>
-          </Stack>
-        </HStack>
-      </Stack>
+              <Text opacity={0.8} fontSize="sm">
+                ({values.axs})
+              </Text>
+            </Stack>
+
+            <Stack spacing={0}>
+              <HStack>
+                <Image src="/images/axies/eth.png" width="18px" height="18px" alt="eth" />
+                <Text>{amounts.eth}</Text>
+              </HStack>
+
+              <Text opacity={0.8} fontSize="sm">
+                ({values.eth})
+              </Text>
+            </Stack>
+          </SimpleGrid>
+        </GridItem>
+      </SimpleGrid>
     </Card>
   );
 };

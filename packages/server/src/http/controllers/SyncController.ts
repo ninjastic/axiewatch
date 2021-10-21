@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
-import { supabase } from '../services/supabase';
+
+import { supabase } from '../../services/supabase';
 
 export class SyncController {
-  async post(req: Request, res: Response) {
+  async post(req: Request, res: Response): Promise<Response> {
     const { authorization } = req.headers;
     const { scholars } = req.body;
 
@@ -20,18 +21,17 @@ export class SyncController {
 
     const inserted = await supabase
       .from('sync')
-      .upsert({ user_id: auth.user?.id, data: JSON.stringify(scholars) }, { onConflict: 'user_id' })
+      .upsert({ user_id: auth.user?.id, data: scholars }, { onConflict: 'user_id' })
       .single();
 
-    if (inserted.data?.data) {
-      const scholarsParsed = JSON.parse(inserted.data.data);
-      return res.status(200).json({ scholars: scholarsParsed });
+    if (!inserted.data?.data) {
+      return res.status(500).json({ error: 'Something went wrong' });
     }
 
-    return res.status(500).json({ error: 'Something went wrong' });
+    return res.status(200).json({ scholars: inserted.data?.data });
   }
 
-  async get(req: Request, res: Response) {
+  async get(req: Request, res: Response): Promise<Response> {
     const { authorization } = req.headers;
 
     if (!authorization) {
@@ -46,11 +46,6 @@ export class SyncController {
 
     const exists = await supabase.from('sync').select('*').eq('user_id', auth.user.id).single();
 
-    if (exists.data?.data) {
-      const scholarsParsed = JSON.parse(exists.data.data);
-      return res.status(200).json({ scholars: scholarsParsed });
-    }
-
-    return res.status(200).json({ scholars: [] });
+    return res.status(200).json({ scholars: exists.data?.data || [] });
   }
 }

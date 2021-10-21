@@ -2,7 +2,12 @@ import { useQueries, UseQueryOptions, UseQueryResult } from 'react-query';
 
 import { serverApi } from '../api';
 
-export function useBatchWalletTransactions(addresses: string[]) {
+interface UseBatchWalletTransactionsData {
+  isLoading: boolean;
+  results: UseQueryResult<any, any>[];
+}
+
+export const useBatchWalletTransactions = (addresses: string[]): UseBatchWalletTransactionsData => {
   const queries: UseQueryOptions[] = addresses.map(address => ({
     queryKey: ['walletTransactions', address],
     queryFn: async () => {
@@ -27,4 +32,4 @@ export function useBatchWalletTransactions(addresses: string[]) {
   const isLoading = results.some(r => r.isLoading);
 
   return { isLoading, results };
-}
+};

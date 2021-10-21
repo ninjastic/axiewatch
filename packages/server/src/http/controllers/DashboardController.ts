@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import { randomBytes } from 'crypto';
-import { supabase } from '../services/supabase';
-import { prisma } from '../services/prisma';
+
+import { supabase } from '../../services/supabase';
+import { prisma } from '../../services/prisma';
 
 export class DashboardController {
-  async get(req: Request, res: Response) {
+  async get(req: Request, res: Response): Promise<Response> {
     const { slug, user_id, email } = req.query;
 
     if (user_id) {
@@ -86,7 +87,7 @@ export class DashboardController {
     });
   }
 
-  async post(req: Request, res: Response) {
+  async post(req: Request, res: Response): Promise<Response> {
     const { authorization } = req.headers;
     const { whitelist, customLogo } = req.body;
 

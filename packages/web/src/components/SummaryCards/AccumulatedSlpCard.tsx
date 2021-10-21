@@ -64,15 +64,14 @@ export const AccumulatedSlpCard = ({ data, isLoading }: AccumulatedSlpCardProps)
     .filter(result => result.isSuccess)
     .reduce(
       (prev, currResult) => {
-        const state = scholars.find(scholar => scholar.address === currResult.data.scholar.client_id);
+        const state = scholars.find(scholar => scholar.address === currResult.data.address);
 
-        const value = Math.abs(currResult.data.scholar.total - currResult.data.scholar.blockchain_related.balance);
-        const manager = (value * state.shares.manager) / 100;
-        const scholar = (value * state.shares.scholar) / 100;
-        const investor = (value * (state.shares.investor ?? 0)) / 100;
+        const manager = (currResult.data.scholar.slp * state.shares.manager) / 100;
+        const scholar = (currResult.data.scholar.slp * state.shares.scholar) / 100;
+        const investor = (currResult.data.scholar.slp * (state.shares.investor ?? 0)) / 100;
 
         return {
-          total: prev.total + value,
+          total: prev.total + currResult.data.scholar.slp,
           manager: prev.manager + manager,
           scholars: prev.scholars + scholar,
           investor: prev.investor + investor,
@@ -98,7 +97,7 @@ export const AccumulatedSlpCard = ({ data, isLoading }: AccumulatedSlpCardProps)
 
         <StatNumber>
           <Tooltip label={<TotalTooltip values={values} fiatValues={fiatValues} />}>
-            <Skeleton isLoaded={!isLoading} h="35px" w="150px">
+            <Skeleton isLoaded={!isLoading} h="35px" w="175px">
               <Text>{Math.floor(values.total)} SLP</Text>
             </Skeleton>
           </Tooltip>

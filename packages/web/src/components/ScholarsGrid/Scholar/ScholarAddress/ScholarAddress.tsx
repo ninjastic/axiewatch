@@ -11,7 +11,7 @@ import {
   useOutsideClick,
   Box,
 } from '@chakra-ui/react';
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { MdContentCopy } from 'react-icons/md';
 import { useRecoilValue } from 'recoil';
 
@@ -22,7 +22,7 @@ interface ScholarAddressProps {
   showButton?: boolean;
 }
 
-export function ScholarAddress({ address, showButton = true }: ScholarAddressProps) {
+export const ScholarAddress = ({ address, showButton = true }: ScholarAddressProps): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
 
   const [isOpen, setIsOpen] = useState(false);
@@ -35,10 +35,16 @@ export function ScholarAddress({ address, showButton = true }: ScholarAddressPro
     handler: () => setIsOpen(false),
   });
 
-  const shortAddress = `${address.substr(0, 5)}...${address.substr(address.length - 5)}`;
+  const shortAddress = useMemo(() => `${address.substr(0, 5)}...${address.substr(address.length - 5)}`, [address]);
 
-  const { onCopy: onCopyAddress } = useClipboard(address.replace('0x', 'ronin:'));
-  const { onCopy: onCopyPaymentAddress } = useClipboard(scholar.paymentAddress?.replace('0x', 'ronin:'));
+  const normalizedAddress = useMemo(() => address.replace('0x', 'ronin:'), [address]);
+  const normalizedPaymentAddress = useMemo(
+    () => scholar.paymentAddress?.replace('0x', 'ronin:'),
+    [scholar.paymentAddress]
+  );
+
+  const { onCopy: onCopyAddress } = useClipboard(normalizedAddress);
+  const { onCopy: onCopyPaymentAddress } = useClipboard(normalizedPaymentAddress);
 
   return (
     <Flex align="center" ref={containerRef}>
@@ -91,4 +97,4 @@ export function ScholarAddress({ address, showButton = true }: ScholarAddressPro
       </Box>
     </Flex>
   );
-}
+};

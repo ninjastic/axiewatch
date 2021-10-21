@@ -8,7 +8,7 @@ import { DailySlpChart } from '../components/DailySlpChart';
 import { Card } from '../components/Card';
 import { PreferencesButton } from '@src/components/Header/PreferencesButton';
 import { NotablePerformersTable } from '@src/components/NotablePerformersTable';
-import { EarningsProjectionChart } from '@src/components/EarningsProjectionChart';
+import { EarningsForecastChart } from '@src/components/EarningsForecastChart';
 
 function DashboardPage() {
   return (
@@ -33,7 +33,7 @@ function DashboardPage() {
           <Stack>
             <HStack>
               <Text fontWeight="bold" fontSize="lg">
-                Earnings Projection
+                Earnings Forecast
               </Text>
 
               <Tooltip label="How much should be your total accumulated value assuming your scholars daily average is constant and you make no claims.">
@@ -44,7 +44,7 @@ function DashboardPage() {
             </HStack>
 
             <Card p={5}>
-              <EarningsProjectionChart />
+              <EarningsForecastChart />
             </Card>
           </Stack>
         </GridItem>

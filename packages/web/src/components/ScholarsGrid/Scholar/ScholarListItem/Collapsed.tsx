@@ -14,7 +14,7 @@ interface CollapsedProps {
   show: boolean;
 }
 
-export function Collapsed({ address, show }: CollapsedProps) {
+export const Collapsed = ({ address, show }: CollapsedProps): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
   const scholarFields = useRecoilValue(scholarFieldsAtom);
 
@@ -48,4 +48,4 @@ export function Collapsed({ address, show }: CollapsedProps) {
       </Flex>
     </Collapse>
   );
-}
+};

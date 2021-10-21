@@ -4,26 +4,18 @@ import { AxiosError } from 'axios';
 import Image from 'next/image';
 
 import { serverApi } from '../../../../services/api';
-
-interface Response {
-  gained_slp_response: {
-    gained_slp: number;
-    max_slp: number;
-  };
-  max_slp: number;
-  success: boolean;
-}
+import { APIScholarResponse } from '@src/types/api';
 
 interface PveStatsProps {
   address: string;
   shouldLoad?: boolean;
 }
 
-export function PveStats({ address, shouldLoad = true }: PveStatsProps) {
+export const PveStats = ({ address, shouldLoad = true }: PveStatsProps): JSX.Element => {
   const { data, isLoading, isError } = useQuery(
-    ['pveStats', address],
+    ['scholar', address],
     async () => {
-      const response = await serverApi.get<Response>('/pve', {
+      const response = await serverApi.get<APIScholarResponse>('/scholar', {
         params: { address },
       });
 
@@ -57,11 +49,11 @@ export function PveStats({ address, shouldLoad = true }: PveStatsProps) {
 
   return (
     <HStack align="flex-start">
-      <Image src="/images/axies/slp.png" width="18px" height="18px" />
+      <Image src="/images/axies/slp.png" width="18px" height="18px" alt="slp" />
 
       <Text>
-        {data?.gained_slp_response.gained_slp} / {data?.gained_slp_response.max_slp}
+        {data?.pve.slp} / {data?.pve.maxSlp}
       </Text>
     </HStack>
   );
-}
+};

@@ -1,5 +1,6 @@
 import { Stack, Text, SimpleGrid } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
+import { useMemo } from 'react';
 
 import { useBatchScholar } from '../../services/hooks/useBatchScholar';
 import { scholarsMap } from '../../recoil/scholars';
@@ -15,39 +16,37 @@ export const SummaryCards = (): JSX.Element => {
   const { results, isLoading } = useBatchScholar({ addresses });
   const resultsWithSuccess = results.filter(result => result.isSuccess);
 
-  const farmedYesterday = !isLoading
-    ? resultsWithSuccess.reduce((prev, currResult) => {
+  const farmedYesterday = useMemo(
+    () =>
+      resultsWithSuccess.reduce((prev, currResult) => {
         const { scholar } = currResult.data;
 
-        const yesterday = currResult.data.slp.yesterday?.totalSlp;
-        const today = currResult.data.slp.today?.totalSlp;
+        const yesterday = currResult.data.historical.yesterday?.totalSlp;
+        const today = currResult.data.historical.today?.totalSlp;
 
         if (!yesterday) return prev;
 
         if (!today) {
-          const currentTotal =
-            Math.abs(scholar.total - scholar.blockchain_related.balance) + scholar.blockchain_related.checkpoint;
-
-          return prev + (currentTotal - yesterday);
+          return prev + (scholar.totalSlp - yesterday);
         }
 
         return prev + (today - yesterday);
-      }, 0)
-    : null;
+      }, 0),
+    [resultsWithSuccess]
+  );
 
-  const farmedToday = !isLoading
-    ? resultsWithSuccess.reduce((prev, currResult) => {
+  const farmedToday = useMemo(
+    () =>
+      resultsWithSuccess.reduce((prev, currResult) => {
         const { scholar } = currResult.data;
-        const todayStart = currResult.data.slp.today?.totalSlp;
+        const todayStart = currResult.data.historical.today?.totalSlp;
 
         if (!todayStart) return prev;
 
-        const currentTotal =
-          Math.abs(scholar.total - scholar.blockchain_related.balance) + scholar.blockchain_related.checkpoint;
-
-        return prev + (currentTotal - todayStart);
-      }, 0)
-    : null;
+        return prev + (scholar.totalSlp - todayStart);
+      }, 0),
+    [resultsWithSuccess]
+  );
 
   return (
     <Stack>

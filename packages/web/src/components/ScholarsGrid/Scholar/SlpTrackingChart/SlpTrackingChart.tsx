@@ -8,15 +8,17 @@ import { useMemo, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import Link from 'next/link';
 
-import { APIScholarResponseSlpDate } from '../../../../types/api';
 import dayjs from '../../../../services/dayjs';
+import { formatter } from '@src/services/formatter';
+import { usePrice } from '@src/services/hooks/usePrice';
+import { ScholarHistoricalDate } from '../../../../types/api';
 import { serverApi } from '../../../../services/api';
 import { useAuth } from '../../../../services/hooks/useAuth';
 import { scholarSelector } from '../../../../recoil/scholars';
 import { Card } from '../../../Card';
 
 interface ApiResponse {
-  dates: APIScholarResponseSlpDate[];
+  dates: ScholarHistoricalDate[];
   isTracking: boolean | null;
 }
 
@@ -25,6 +27,7 @@ interface DailyChartProps {
 }
 
 function CustomTooltip({ active, payload, label }: any) {
+  const price = usePrice();
   const { colors } = useTheme();
 
   const tooltipSecondaryColor = useColorModeValue(colors.darkGray[700], colors.darkGray[200]);
@@ -33,28 +36,30 @@ function CustomTooltip({ active, payload, label }: any) {
     return null;
   }
 
+  const amount = payload[0].payload.slpAmount;
+
   return (
     <Card rounded="lg" shadow="lg" p={2}>
       <Text color={tooltipSecondaryColor} fontSize="sm">
         {dayjs.utc(label).format('DD MMM YYYY')}
       </Text>
-      <Text textAlign="center" fontWeight="bold">
-        {payload[0].payload.slpAmount} SLP
-      </Text>
+
+      <Stack spacing={0} textAlign="center">
+        <Text fontWeight="bold">{amount} SLP</Text>
+
+        <Text fontSize="sm" color={tooltipSecondaryColor}>
+          {formatter(amount * price.values.slp, price.locale)}
+        </Text>
+      </Stack>
     </Card>
   );
 }
 
-export function SlpTrackingChart({ address }: DailyChartProps) {
+export const SlpTrackingChart = ({ address }: DailyChartProps): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
 
   const { colors } = useTheme();
   const { session, isUserLoading } = useAuth();
-
-  const colorsChart = [
-    useColorModeValue(colors.darkGray[700], colors.dark.chart.first),
-    useColorModeValue(colors.darkGray[700], colors.dark.chart.second),
-  ];
 
   const { data, isLoading, isError, refetch } = useQuery(
     ['daily', address],
@@ -120,7 +125,7 @@ export function SlpTrackingChart({ address }: DailyChartProps) {
 
   useEffect(() => {
     if (!dates.length) refetch();
-  }, [session]);
+  }, [dates.length, refetch, session]);
 
   if (!scholar.loaded) {
     return (
@@ -157,7 +162,7 @@ export function SlpTrackingChart({ address }: DailyChartProps) {
         <HStack>
           <Text opacity={0.8}>Please, sign in and upload your scholars to the cloud to track.</Text>
 
-          <Link href="/signin">
+          <Link href="/signin" passHref>
             <Box cursor="pointer">
               <RiExternalLinkFill />
             </Box>
@@ -173,7 +178,7 @@ export function SlpTrackingChart({ address }: DailyChartProps) {
         <HStack>
           <Text opacity={0.8}>Not tracked, please upload to the cloud on your profile</Text>
 
-          <Link href="/profile">
+          <Link href="/profile" passHref>
             <Box cursor="pointer">
               <RiExternalLinkFill />
             </Box>
@@ -202,14 +207,7 @@ export function SlpTrackingChart({ address }: DailyChartProps) {
 
         <YAxis dataKey="slpAmount" axisLine={false} tickLine={false} tickCount={8} tick={{ fill: colors.gray[500] }} />
 
-        <defs>
-          <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={colorsChart[0]} />
-            <stop offset="95%" stopColor={colorsChart[1]} />
-          </linearGradient>
-        </defs>
-
-        <Bar dataKey="slpAmount" stroke={colors['gray.500']} fill="url(#color)">
+        <Bar dataKey="slpAmount" stroke={colors['gray.500']} fill="#ffa600">
           <LabelList dataKey="slpAmount" position="top" style={{ fontSize: '80%', fill: colors.darkGray[500] }} />
         </Bar>
 
@@ -219,4 +217,4 @@ export function SlpTrackingChart({ address }: DailyChartProps) {
       </BarChart>
     </ResponsiveContainer>
   );
-}
+};

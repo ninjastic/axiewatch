@@ -3,7 +3,12 @@ import { ethers } from 'ethers';
 
 import slpAbi from '../../constants/abi/SLP.json';
 
-export function useBatchWallet(addresses: string[]) {
+interface UseBatchWalletData {
+  isLoading: boolean;
+  results: UseQueryResult<any, any>[];
+}
+
+export const useBatchWallet = (addresses: string[]): UseBatchWalletData => {
   const provider = new ethers.providers.JsonRpcProvider(
     {
       url: `${process.env.NEXT_PUBLIC_SERVER_URL}/rpc`,
@@ -51,4 +56,4 @@ export function useBatchWallet(addresses: string[]) {
   const isLoading = results.some(r => r.isLoading);
 
   return { isLoading, results };
-}
+};

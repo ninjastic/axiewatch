@@ -49,7 +49,10 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
     [lastClaim, nextClaim]
   );
 
-  const slpDayValueText = formatter(slpDay * price.values.slp, price.locale);
+  const slpDayValueText = useMemo(
+    () => formatter(slpDay * price.values.slp, price.locale),
+    [price.locale, price.values.slp, slpDay]
+  );
 
   const getSlpDayColor = useCallback(() => {
     if (slpDay >= 120) return 'green.200';
@@ -58,12 +61,13 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
     return 'white';
   }, [slpDay]);
 
-  const lastClaimText = lastClaim === 0 ? 'never' : dayjs.unix(lastClaim).fromNow();
+  const lastClaimText = useMemo(() => (lastClaim === 0 ? 'never' : dayjs.unix(lastClaim).fromNow()), [lastClaim]);
 
   const nextClaimIsBeforeText = lastClaim === 0 ? '-' : 'now ✨';
-  const nextClaimText = dayjs.unix(nextClaim).isBefore(dayjs())
-    ? nextClaimIsBeforeText
-    : dayjs.unix(nextClaim).fromNow();
+  const nextClaimText = useMemo(
+    () => (dayjs.unix(nextClaim).isBefore(dayjs()) ? nextClaimIsBeforeText : dayjs.unix(nextClaim).fromNow()),
+    [nextClaim, nextClaimIsBeforeText]
+  );
 
   return (
     <Stack p={5}>

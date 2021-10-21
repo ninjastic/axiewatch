@@ -19,7 +19,7 @@ interface ScholarClaimCardProps {
   toggleSelect: () => void;
 }
 
-export function ScholarClaimCard({ scholarData, isSelected, toggleSelect }: ScholarClaimCardProps) {
+export const ScholarClaimCard = ({ scholarData, isSelected, toggleSelect }: ScholarClaimCardProps): JSX.Element => {
   const { name, address, slp, shares, paymentAddress, hasPrivateKey, isConfigured } = scholarData;
 
   const setPrivateKeyModal = useCreateModal({
@@ -67,7 +67,7 @@ export function ScholarClaimCard({ scholarData, isSelected, toggleSelect }: Scho
             <Text fontWeight="bold">{name}</Text>
 
             <HStack>
-              <Image src="/images/axies/slp.png" width="16px" height="16px" />
+              <Image src="/images/axies/slp.png" width="16px" height="16px" alt="slp" />
               <Text>{slp}</Text>
 
               <Text fontSize="sm" opacity={0.8}>
@@ -104,4 +104,4 @@ export function ScholarClaimCard({ scholarData, isSelected, toggleSelect }: Scho
       </SimpleGrid>
     </Box>
   );
-}
+};

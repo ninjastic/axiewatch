@@ -6,7 +6,7 @@ interface TransactionsTableProps {
   transactions: any;
 }
 
-export function TransactionsTable({ transactions }: TransactionsTableProps) {
+export const TransactionsTable = ({ transactions }: TransactionsTableProps): JSX.Element => {
   return (
     <Box overflowX="auto">
       <Table size="sm">
@@ -31,4 +31,4 @@ export function TransactionsTable({ transactions }: TransactionsTableProps) {
       </Table>
     </Box>
   );
-}
+};

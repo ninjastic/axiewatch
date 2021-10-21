@@ -11,7 +11,7 @@ interface ErroredCardProps {
   refetch: () => void;
 }
 
-export function ErroredCard({ address, refetch }: ErroredCardProps) {
+export const ErroredCard = ({ address, refetch }: ErroredCardProps): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
 
   return (
@@ -47,4 +47,4 @@ export function ErroredCard({ address, refetch }: ErroredCardProps) {
       </ButtonGroup>
     </Stack>
   );
-}
+};

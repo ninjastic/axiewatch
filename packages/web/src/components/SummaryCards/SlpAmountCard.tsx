@@ -30,7 +30,7 @@ export const SlpAmountCard = ({ label, amount, isLoading }: SlpAmountCardProps):
         </HStack>
 
         <StatNumber>
-          <Skeleton isLoaded={!isLoading} h="35px" w="150px">
+          <Skeleton isLoaded={!isLoading} h="35px" w="175px">
             {Math.floor(amount)} SLP
           </Skeleton>
         </StatNumber>

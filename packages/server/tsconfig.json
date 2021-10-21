@@ -10,11 +10,8 @@
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {
-      "@src/*": ["src/*"],
-      "@shared/*": ["src/shared/*"],
-      "@modules/*": ["src/modules/*"],
-      "@lib/*": ["src/lib/*"],
-      "@config/*": ["src/config/*"],
+      "@src/*": ["./src/*"],
+      "@models/*": ["./src/models/*"],
     },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

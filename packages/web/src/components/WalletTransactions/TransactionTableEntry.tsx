@@ -12,7 +12,7 @@ interface TransactionTableEntryProps {
   transaction: any;
 }
 
-export function TransactionTableEntry({ transaction }: TransactionTableEntryProps) {
+export const TransactionTableEntry = ({ transaction }: TransactionTableEntryProps): JSX.Element => {
   const scholars = useRecoilValue(scholarsMap);
   const scholar = scholars.find(s => s.address === transaction.context);
 
@@ -160,8 +160,8 @@ export function TransactionTableEntry({ transaction }: TransactionTableEntryProp
 
     if (action === 'Transfer ETH' || action === 'Transfer AXS') {
       const data = iface.decodeFunctionData('transfer', input);
-      const value = ethers.utils.formatEther(data._value);
-      return value;
+      const value = Number(ethers.utils.formatEther(data._value));
+      return Math.round(value * 10000) / 10000;
     }
 
     if (action === 'Withdraw SLP') {
@@ -186,7 +186,7 @@ export function TransactionTableEntry({ transaction }: TransactionTableEntryProp
       if (action === 'Stake AXS') {
         const { data } = transaction.logs.length === 2 ? transaction.logs[0] : transaction.logs[1];
         const value = parseInt(data, 16);
-        return value / 10 ** 18;
+        return Math.round((value / 10 ** 18) * 1000) / 1000;
       }
 
       if (action === 'Unstake AXS') {
@@ -265,4 +265,4 @@ export function TransactionTableEntry({ transaction }: TransactionTableEntryProp
       <Td>{getStatusIcon()}</Td>
     </Tr>
   );
-}
+};

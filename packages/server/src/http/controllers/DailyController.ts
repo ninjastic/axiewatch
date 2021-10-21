@@ -1,16 +1,12 @@
 import { Request, Response } from 'express';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import { cache } from '../services/cache';
-import { prisma } from '../services/prisma';
-import { supabase } from '../services/supabase';
 
-interface SyncScholar {
-  address: string;
-}
+import dayjs from '@src/services/dayjs';
+import { cache } from '@src/services/cache';
+import { supabase } from '@src/services/supabase';
+import Sync from '@src/models/Sync';
+import Tracking from '@src/models/Tracking';
 
 async function getDaily(address: string, authorization: string) {
-  dayjs.extend(utc);
   const cacheKey = `@daily:${address}:days`;
   const cacheTime = 1000 * 60 * 5; // 5 minutes
 
@@ -19,37 +15,20 @@ async function getDaily(address: string, authorization: string) {
   const { user } = await supabase.auth.api.getUser(authorization);
 
   if (user) {
-    const tracking = await prisma.sync
-      .findUnique({
-        where: {
-          user_id: user.id,
-        },
-      })
-      .then(response =>
-        (JSON.parse(response?.data || '[]') as SyncScholar[]).find(scholar => scholar.address === address)
-      );
-
-    isTracking = !!tracking;
+    isTracking = !!(await Sync.query()
+      .select('id')
+      .where('user_id', user.id)
+      .then(response => response));
   }
 
   const cached = await cache.get(cacheKey);
   if (cached) return { ...JSON.parse(cached), isTracking };
 
-  const days = await prisma.tracking.findMany({
-    where: {
-      address,
-      createdAt: {
-        gte: dayjs.utc().subtract(14, 'day').startOf('day').toDate(),
-      },
-    },
-    select: {
-      slpAmount: true,
-      createdAt: true,
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+  const days = await Tracking.query()
+    .select('slpAmount', 'createdAt')
+    .where('address', address)
+    .andWhere('createdAt', '>=', dayjs.utc().subtract(14, 'day').startOf('day').toDate())
+    .orderBy('createdAt', 'DESC');
 
   const daysFormatted =
     days
@@ -68,7 +47,7 @@ async function getDaily(address: string, authorization: string) {
 }
 
 export class DailyController {
-  async get(req: Request, res: Response) {
+  async get(req: Request, res: Response): Promise<Response> {
     const { address } = req.query;
     const authorization = req.get('authorization');
 

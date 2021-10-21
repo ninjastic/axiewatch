@@ -1,13 +1,14 @@
 import { SkeletonCircle, Text, Flex, Stack, HStack, Divider, useTheme, useColorModeValue } from '@chakra-ui/react';
-import { BarChart, ResponsiveContainer, XAxis, YAxis, Bar, Tooltip, CartesianGrid, Legend } from 'recharts';
+import { BarChart, ResponsiveContainer, XAxis, YAxis, Bar, Tooltip, CartesianGrid, Legend, LabelList } from 'recharts';
 import { useRecoilValue } from 'recoil';
 import dynamic from 'next/dynamic';
+import { useMemo } from 'react';
 
 import dayjs from '../../services/dayjs';
 import { formatter } from '../../services/formatter';
 import { scholarsMap } from '../../recoil/scholars';
-import { useBatchScholarDaily } from '../../services/hooks/useBatchScholarDaily';
 import { usePrice } from '../../services/hooks/usePrice';
+import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
 import { Card } from '../Card';
 
 const CustomTooltip = ({ active, payload, label }: any): JSX.Element => {
@@ -53,51 +54,66 @@ const CustomTooltip = ({ active, payload, label }: any): JSX.Element => {
   );
 };
 
+interface HistoricalSlpDate {
+  day: string;
+  total: number;
+  manager: number;
+  scholars: number;
+  investor: number;
+}
+
 const DailySlpChartComponent = (): JSX.Element => {
   const scholars = useRecoilValue(scholarsMap);
-  const addresses = scholars.map(scholar => scholar.address);
+  const addresses = scholars.filter(scholar => !scholar.inactive).map(scholar => scholar.address);
 
   const { colors } = useTheme();
-  const { results, isLoading } = useBatchScholarDaily({ addresses });
+  const { results, isLoading } = useBatchScholar({ addresses });
 
-  const data = !isLoading
-    ? results
-        .filter(result => result.isSuccess)
-        .reduce((prevResult, currResult) => {
-          const draft = [...prevResult];
-          const scholar = scholars.find(schol => schol.address === currResult.data?.address);
+  const data = useMemo(() => {
+    return results
+      .filter(result => result.isSuccess)
+      .reduce((prevResult, currResult) => {
+        const draft = [...prevResult];
+        const scholar = scholars.find(schol => schol.address === currResult.data?.address);
 
-          if (!scholar) return draft;
+        if (!scholar) return draft;
 
-          currResult.data?.dates.forEach((date, index, array) => {
-            const dayIndex = draft.findIndex(d => d.day === date.day);
-            const prevDate = array[index - 1];
+        currResult.data?.historical.dates.forEach((date, index, array) => {
+          const dayIndex = draft.findIndex(d => d.day === date.day);
+          const prevDate = array[index - 1];
 
-            if (!prevDate) return;
+          if (!prevDate) return;
 
-            if (dayjs.utc(prevDate.day).add(1, 'day').day() !== dayjs.utc(date.day).day()) return;
+          if (dayjs.utc(prevDate.day).add(1, 'day').day() !== dayjs.utc(date.day).day()) return;
 
-            if (dayIndex !== -1) {
-              const value = date.totalSlp - prevDate.totalSlp;
-              draft[dayIndex].manager += (value * scholar?.shares.manager) / 100;
-              draft[dayIndex].scholars += (value * scholar?.shares.scholar) / 100;
-              draft[dayIndex].investor += (value * (scholar?.shares.investor ?? 0)) / 100;
-              return;
-            }
-
+          if (dayIndex !== -1) {
             const value = date.totalSlp - prevDate.totalSlp;
+            draft[dayIndex].total += value;
+            draft[dayIndex].manager += (value * scholar?.shares.manager) / 100;
+            draft[dayIndex].scholars += (value * scholar?.shares.scholar) / 100;
+            draft[dayIndex].investor += (value * (scholar?.shares.investor ?? 0)) / 100;
+            return;
+          }
 
-            draft.push({
-              day: date.day,
-              manager: (value * scholar?.shares.manager) / 100,
-              scholars: (value * scholar?.shares.scholar) / 100,
-              investor: (value * (scholar?.shares.investor ?? 0)) / 100,
-            });
+          const value = date.totalSlp - prevDate.totalSlp;
+
+          draft.push({
+            day: date.day,
+            total: value,
+            manager: (value * scholar?.shares.manager) / 100,
+            scholars: (value * scholar?.shares.scholar) / 100,
+            investor: (value * (scholar?.shares.investor ?? 0)) / 100,
           });
+        });
 
-          return draft;
-        }, [] as any[])
-    : [];
+        return draft;
+      }, [] as HistoricalSlpDate[])
+      .sort((a, b) => {
+        if (a.day > b.day) return 1;
+        if (a.day < b.day) return -1;
+        return 0;
+      });
+  }, [results, scholars]);
 
   if (isLoading) {
     return (
@@ -138,7 +154,9 @@ const DailySlpChartComponent = (): JSX.Element => {
 
         <Bar dataKey="investor" fill="#58508d" stackId="1" />
         <Bar dataKey="manager" fill="#bc5090" stackId="1" />
-        <Bar dataKey="scholars" fill="#ffa600" stackId="1" />
+        <Bar dataKey="scholars" fill="#ffa600" stackId="1">
+          <LabelList dataKey="total" position="top" style={{ fontSize: '80%', fill: colors.darkGray[500] }} />
+        </Bar>
 
         <Tooltip content={<CustomTooltip />} />
         <CartesianGrid strokeDasharray="3 3" opacity={0.15} vertical={false} />

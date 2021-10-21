@@ -25,39 +25,45 @@ export interface APIBattlesResponse {
 
 // scholar
 
-export type APIScholarResponseScholar = {
-  client_id: string;
-  total: number;
-  blockchain_related: {
-    balance: number;
-    checkpoint: number;
-  };
-  claimable_total: number;
-  last_claimed_item_at: number;
-};
+export interface ScholarData {
+  slp: number;
+  roninSlp: number;
+  totalSlp: number;
+  lastClaim: number;
+}
 
-export type APIScholarResponsePvp = {
-  client_id: string;
-  draw_total: number;
-  elo: number;
-  lose_total: number;
+export interface ScholarPvpData {
   name: string;
+  elo: number;
   rank: number;
-} | null;
+}
 
-export type APIScholarResponseSlpDate = {
+export interface ScholarAdventureData {
+  slp: number;
+  maxSlp: number;
+}
+
+export interface ScholarHistoricalDate {
   day: string;
   totalSlp: number;
-};
+}
 
-export type APIScholarResponseSlp = {
-  dates: APIScholarResponseSlpDate[];
-  yesterday: APIScholarResponseSlpDate | null;
-  today: APIScholarResponseSlpDate | null;
-} | null;
+export interface ScholarHistoricalSlpData {
+  dates: ScholarHistoricalDate[];
+  yesterday: ScholarHistoricalDate | undefined;
+  today: ScholarHistoricalDate | undefined;
+}
 
 export interface APIScholarResponse {
-  scholar: APIScholarResponseScholar;
-  pvp: APIScholarResponsePvp;
-  slp: APIScholarResponseSlp;
+  address: string;
+  scholar: ScholarData;
+  pvp: ScholarPvpData;
+  pve: ScholarAdventureData;
+  historical: ScholarHistoricalSlpData;
+}
+
+export interface APIGameStatusResponse {
+  from: number;
+  to: number;
+  message: string;
 }
