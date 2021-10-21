@@ -2,17 +2,16 @@ import { Request, Response } from 'express';
 import { randomBytes } from 'crypto';
 
 import { supabase } from '../../services/supabase';
-import { prisma } from '../../services/prisma';
+import Dashboard from '@models/Dashboard';
+import Sync from '@models/Sync';
 
 export class DashboardController {
   async get(req: Request, res: Response): Promise<Response> {
     const { slug, user_id, email } = req.query;
 
     if (user_id) {
-      const dashboard = await prisma.dashboard.findUnique({
-        where: {
-          user_id: String(user_id),
-        },
+      const dashboard = await Dashboard.query().findOne({
+        user_id,
       });
 
       if (!dashboard) {
@@ -26,10 +25,8 @@ export class DashboardController {
       return res.status(400).json({ error: 'Missing slug' });
     }
 
-    const dashboard = await prisma.dashboard.findUnique({
-      where: {
-        slug: String(slug),
-      },
+    const dashboard = await Dashboard.query().findOne({
+      slug,
     });
 
     if (!dashboard) {
@@ -40,13 +37,11 @@ export class DashboardController {
       const parsedWhitelist = JSON.parse(dashboard.whitelist);
 
       if (parsedWhitelist.includes(email)) {
-        const scholars = await prisma.sync.findUnique({
-          where: {
-            user_id: dashboard.user_id,
-          },
+        const scholars = await Sync.query().findOne({
+          user_id: dashboard.user_id,
         });
 
-        const parsedScholars = (JSON.parse(scholars?.data || '[]') as any[]).map((scholar: any) => ({
+        const parsedScholars = scholars?.data.map(scholar => ({
           address: scholar.address,
           name: scholar.name,
           inactive: scholar.inactive,
@@ -66,13 +61,11 @@ export class DashboardController {
       }
     }
 
-    const scholars = await prisma.sync.findUnique({
-      where: {
-        user_id: dashboard.user_id,
-      },
+    const scholars = await Sync.query().findOne({
+      user_id: dashboard.user_id,
     });
 
-    const parsedScholars = (JSON.parse(scholars?.data || '[]') as any[]).map((scholar: any) => ({
+    const parsedScholars = scholars?.data.map(scholar => ({
       address: scholar.address,
       name: scholar.name,
       inactive: scholar.inactive,
@@ -101,21 +94,23 @@ export class DashboardController {
       return res.status(401).json({ error: 'Invalid user' });
     }
 
-    const dashboard = await prisma.dashboard.upsert({
-      where: {
-        user_id: auth.user.id,
-      },
-      update: {
+    let dashboard = await Dashboard.query().findOne({
+      user_id: auth.user.id,
+    });
+
+    if (dashboard) {
+      dashboard = await Dashboard.query().updateAndFetch({
         logo: customLogo,
         whitelist: whitelist ? JSON.stringify(whitelist) : null,
-      },
-      create: {
-        logo: customLogo,
-        whitelist: whitelist ? JSON.stringify(whitelist) : null,
-        user_id: auth.user.id,
-        slug: randomBytes(10).toString('hex'),
-        type: 1,
-      },
+      });
+    }
+
+    dashboard = await Dashboard.query().insert({
+      logo: customLogo,
+      whitelist: whitelist ? JSON.stringify(whitelist) : null,
+      user_id: auth.user.id,
+      slug: randomBytes(10).toString('hex'),
+      type: 1,
     });
 
     return res.json(dashboard);

@@ -9,7 +9,7 @@ export default class Dashboard extends Model {
 
   logo: string;
 
-  whitelist: string;
+  whitelist: string | null;
 
   type!: number;
 
