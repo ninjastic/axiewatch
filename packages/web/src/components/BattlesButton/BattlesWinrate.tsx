@@ -35,11 +35,11 @@ export const BattlesWinrate = ({ address, data }: BattlesWinrateProps): JSX.Elem
 
       <HStack>
         <HStack spacing={0}>
-          <Text color="green.200">{win}</Text>
+          <Text color="green.300">{win}</Text>
           <Text>/</Text>
-          <Text color="gray.200">{draw}</Text>
+          <Text color="gray.400">{draw}</Text>
           <Text>/</Text>
-          <Text color="red.200">{lose}</Text>
+          <Text color="red.300">{lose}</Text>
         </HStack>
 
         <Text>({winRate}%)</Text>
