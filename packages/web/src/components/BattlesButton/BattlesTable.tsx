@@ -1,5 +1,6 @@
-import { Table, Thead, Tr, Th, Tbody, Flex, Button, Text, Box } from '@chakra-ui/react';
+import { Table, Thead, Tr, Th, Tbody, Flex, Button, Text, Box, HStack, Tooltip } from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 
 import { APIBattlesResponseItem } from '../../types/api';
 import { BattleTableEntry } from './BattleTableEntry';
@@ -11,7 +12,7 @@ interface BattlesTableProps {
   perPage: number;
 }
 
-export function BattlesTable({ data, address, type, perPage }: BattlesTableProps) {
+export const BattlesTable = ({ data, address, type, perPage }: BattlesTableProps): JSX.Element => {
   const [page, setPage] = useState(0);
 
   const filteredData = useMemo(
@@ -49,6 +50,17 @@ export function BattlesTable({ data, address, type, perPage }: BattlesTableProps
             <Th>Type</Th>
             <Th>Result</Th>
             <Th>Opponent</Th>
+            <Th>
+              <HStack>
+                <Text>Replay</Text>
+
+                <Tooltip label="This feature will be removed in a near future due to a incoming game update.">
+                  <Box>
+                    <AiOutlineInfoCircle size={14} />
+                  </Box>
+                </Tooltip>
+              </HStack>
+            </Th>
           </Tr>
         </Thead>
 
@@ -74,4 +86,4 @@ export function BattlesTable({ data, address, type, perPage }: BattlesTableProps
       </Flex>
     </Box>
   );
-}
+};

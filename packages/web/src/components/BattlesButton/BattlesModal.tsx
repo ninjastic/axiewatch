@@ -7,6 +7,7 @@ import { serverApi } from '../../services/api';
 import { BattlesTable } from './BattlesTable';
 import { BattleTypeSelector } from './BattleTypeSelector';
 import { BattleRowsPerPageSelector } from './BattleRowsPerPageSelector';
+import { BattlesWinrate } from './BattlesWinrate';
 
 type BattleType = 'All' | 'PVP' | 'PVE';
 
@@ -54,6 +55,8 @@ export const BattlesModal = ({ address }: BattlesModalProps): JSX.Element => {
         <Text fontSize="lg">Total of {data.items.length} battles</Text>
 
         <HStack>
+          <BattlesWinrate address={address} data={data} />
+
           <BattleRowsPerPageSelector value={perPage} onChange={setPerPage} />
 
           <BattleTypeSelector value={type} onChange={selected => setType((selected as BattleType) ?? 'All')} />

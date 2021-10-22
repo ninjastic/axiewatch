@@ -6,7 +6,7 @@ interface BattleRowsPerPageSelectorProps {
   onChange(value: number): void;
 }
 
-export function BattleRowsPerPageSelector({ value, onChange }: BattleRowsPerPageSelectorProps) {
+export const BattleRowsPerPageSelector = ({ value, onChange }: BattleRowsPerPageSelectorProps): JSX.Element => {
   return (
     <Menu isLazy>
       <MenuButton as={Button} rightIcon={<FiChevronDown />} w="145px" variant="ghost">
@@ -20,4 +20,4 @@ export function BattleRowsPerPageSelector({ value, onChange }: BattleRowsPerPage
       </MenuList>
     </Menu>
   );
-}
+};
