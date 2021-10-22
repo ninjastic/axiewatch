@@ -20,7 +20,7 @@ import {
 import { useQuery } from 'react-query';
 import { AiOutlineTrophy } from 'react-icons/ai';
 import { RiSwordLine } from 'react-icons/ri';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Form, Formik } from 'formik';
 import { NextSeo } from 'next-seo';
@@ -31,6 +31,7 @@ import { useBatchScholar } from '../../services/hooks/useBatchScholar';
 import { parseScholarData } from '../../services/utils/parseScholarData';
 import { Card } from '../../components/Card';
 import { LoadingScreen } from '../../components/MainLayout/LoadingScreen';
+import { BallScaleLoading } from '@src/components/BallScaleLoading';
 
 export const DashboardSlug = (): JSX.Element => {
   const slug = window.location.pathname.replace('/dashboard/', '');
@@ -53,39 +54,54 @@ export const DashboardSlug = (): JSX.Element => {
     { staleTime: 1000 * 60 * 15 }
   );
 
-  const { results } = useBatchScholar({
-    addresses: data?.scholars ? data.scholars.map(scholar => scholar.address) : [],
+  const addresses = data?.scholars ? data.scholars.map(scholar => scholar.address) : [];
+
+  const { results, isLoading: isLoadingScholars } = useBatchScholar({
+    addresses,
     enabled: data && !isLoading,
   });
 
-  const scholars = results.map((result, index) => ({
-    name: data.scholars[index].name,
-    address: data.scholars[index].address,
-    inactive: data.scholars[index].inactive,
-    ...(result.isSuccess ? parseScholarData({ data: result.data }) : {}),
-  }));
+  const scholars = useMemo(
+    () =>
+      results.map((result, index) => ({
+        name: data.scholars[index].name,
+        address: data.scholars[index].address,
+        inactive: data.scholars[index].inactive,
+        ...(result.isSuccess ? parseScholarData({ data: result.data }) : {}),
+      })),
+    [data?.scholars, results]
+  );
 
-  const filteredScholars = scholars.filter(scholar => !scholar.inactive);
+  const filteredScholars = useMemo(() => scholars.filter(scholar => !scholar.inactive), [scholars]);
 
-  const sortedScholars = filteredScholars.sort((a, b) => {
-    if (a.pvpElo > b.pvpElo) return -1;
-    if (a.pvpElo < b.pvpElo) return 1;
-    return 0;
-  });
+  const sortedScholars = useMemo(
+    () =>
+      !isLoadingScholars
+        ? filteredScholars.sort((a, b) => {
+            if (a.pvpElo > b.pvpElo) return -1;
+            if (a.pvpElo < b.pvpElo) return 1;
+            return 0;
+          })
+        : [],
+    [filteredScholars, isLoadingScholars]
+  );
 
-  const getIndexWeight = (index: number) => (index < 3 ? 'bold' : 'normal');
+  const getIndexWeight = useCallback((index: number) => (index < 3 ? 'bold' : 'normal'), []);
 
-  const getNamePrefix = (index: number) => {
-    if (sortedScholars.length > 20 && index < 10) {
-      return '🔥 ';
-    }
+  const getNamePrefix = useCallback(
+    (index: number) => {
+      if (sortedScholars.length > 20 && index < 10) {
+        return '🔥 ';
+      }
 
-    if (sortedScholars.length > 10 && index < 3) {
-      return '🔥 ';
-    }
+      if (sortedScholars.length > 10 && index < 3) {
+        return '🔥 ';
+      }
 
-    return '';
-  };
+      return '';
+    },
+    [sortedScholars.length]
+  );
 
   const handleAuthenticate = async (formData: { email: string }) => {
     if (!formData.email) {
@@ -168,69 +184,78 @@ export const DashboardSlug = (): JSX.Element => {
 
           <Box maxW="1450px" margin="auto">
             <Card p={5} overflowX="auto">
-              <Table variant="unstyled">
-                <Thead>
-                  <Tr>
-                    <Th>#</Th>
-                    <Th>Name</Th>
-                    <Th>Elo</Th>
-                    <Th>Rank</Th>
-                    <Th>SLP</Th>
-                  </Tr>
-                </Thead>
+              {isLoadingScholars ? (
+                <Stack spacing={3} my={5} align="center">
+                  <BallScaleLoading />
 
-                <Tbody>
-                  {sortedScholars.map((scholar, index) => {
-                    if (scholar.pvpErrored) {
-                      results[index].refetch();
-                    }
+                  <Stack>
+                    <Text fontWeight="bold">Loading scholars...</Text>
+                    <Text>
+                      {results.filter(result => result.isSuccess).length}/{results.length}
+                    </Text>
+                  </Stack>
+                </Stack>
+              ) : (
+                <Table variant="unstyled">
+                  <Thead>
+                    <Tr>
+                      <Th>#</Th>
+                      <Th>Name</Th>
+                      <Th>Elo</Th>
+                      <Th>Rank</Th>
+                      <Th>SLP</Th>
+                    </Tr>
+                  </Thead>
 
-                    return (
-                      <Tr key={scholar.address}>
-                        <Td fontWeight={getIndexWeight(index)}>{index + 1}</Td>
+                  <Tbody>
+                    {sortedScholars.map((scholar, index) => {
+                      return (
+                        <Tr key={`${scholar.address}-${scholar.name}`}>
+                          <Td fontWeight={getIndexWeight(index)}>{index + 1}</Td>
 
-                        <Td>
-                          <SkeletonText isLoaded={scholar.loaded} noOfLines={1} w="200px">
-                            <Text whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden" maxW="200px">
-                              {getNamePrefix(index)}
-                              {scholar.name}
-                            </Text>
-                          </SkeletonText>
-                        </Td>
-
-                        <Td>
-                          <SkeletonText isLoaded={scholar.loaded} noOfLines={1} width="100px">
-                            <HStack>
-                              <RiSwordLine />
-                              <Text>{scholar.pvpElo}</Text>
-                            </HStack>
-                          </SkeletonText>
-                        </Td>
-
-                        <Td>
-                          <SkeletonText isLoaded={scholar.loaded} noOfLines={1} width="100px">
-                            <HStack>
-                              <AiOutlineTrophy />
-                              <Text whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
-                                {scholar.pvpRank}
+                          <Td>
+                            <SkeletonText isLoaded={scholar.loaded} noOfLines={1} w="200px">
+                              <Text whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden" maxW="200px">
+                                {getNamePrefix(index)}
+                                {scholar.name}
                               </Text>
-                            </HStack>
-                          </SkeletonText>
-                        </Td>
+                            </SkeletonText>
+                          </Td>
 
-                        <Td>
-                          <SkeletonText isLoaded={scholar.loaded} noOfLines={1} width="100px">
-                            <HStack>
-                              <Image src="/images/axies/slp.png" height="16px" alt="slp" />
-                              <Text>{scholar.slp}</Text>
-                            </HStack>
-                          </SkeletonText>
-                        </Td>
-                      </Tr>
-                    );
-                  })}
-                </Tbody>
-              </Table>
+                          <Td>
+                            <SkeletonText isLoaded={scholar.loaded} noOfLines={1} width="100px">
+                              <HStack>
+                                <RiSwordLine />
+                                <Text>{scholar.pvpElo}</Text>
+                              </HStack>
+                            </SkeletonText>
+                          </Td>
+
+                          <Td>
+                            <SkeletonText isLoaded={scholar.loaded} noOfLines={1} width="100px">
+                              <HStack>
+                                <AiOutlineTrophy />
+                                <Text whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
+                                  {scholar.pvpRank}
+                                </Text>
+                              </HStack>
+                            </SkeletonText>
+                          </Td>
+
+                          <Td>
+                            <SkeletonText isLoaded={scholar.loaded} noOfLines={1} width="100px">
+                              <HStack>
+                                <Image src="/images/axies/slp.png" height="16px" alt="slp" />
+                                <Text>{scholar.slp}</Text>
+                              </HStack>
+                            </SkeletonText>
+                          </Td>
+                        </Tr>
+                      );
+                    })}
+                  </Tbody>
+                </Table>
+              )}
             </Card>
 
             <Text textAlign="right" fontSize="sm" color="gray.400" mt={2}>

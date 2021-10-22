@@ -18,16 +18,18 @@ import {
 } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 import dynamic from 'next/dynamic';
+import { useMemo } from 'react';
 
 import dayjs from '../services/dayjs';
 import { formatter } from '../services/formatter';
-import { allScholarsSelector, ScholarSelector } from '../recoil/scholars';
+import { allScholarsSelector, ScholarSelector, scholarsMap } from '../recoil/scholars';
 import { usePrice } from '../services/hooks/usePrice';
 import { useBatchScholar } from '../services/hooks/useBatchScholar';
 import { BallScaleLoading } from '../components/BallScaleLoading';
 import { PreferencesButton } from '../components/Header/PreferencesButton';
 import { PriceTicker } from '../components/Header/PriceTicker';
 import { ScholarAddress } from '../components/ScholarsGrid/Scholar/ScholarAddress';
+import { parseScholarData } from '@src/services/utils/parseScholarData';
 
 interface ScholarDates {
   month: number;
@@ -38,48 +40,59 @@ interface ScholarDates {
 }
 
 export const Calendar = (): JSX.Element => {
-  const scholars = useRecoilValue(allScholarsSelector).filter(scholar => !scholar.errored);
-  const addresses = scholars.map(scholar => scholar.address);
-
-  const { isLoading } = useBatchScholar({ addresses });
-
   const price = usePrice();
 
-  const dates = scholars
-    .filter(scholar => scholar.loaded && scholar.lastClaim !== 0 && !scholar.inactive)
-    .sort((a, b) => {
-      if (a.nextClaim === 0) return 1;
-      if (b.nextClaim === 0) return -1;
+  const scholars = useRecoilValue(scholarsMap);
+  const addresses = scholars.map(scholar => scholar.address);
+  const { isLoading, results } = useBatchScholar({ addresses });
 
-      if (dayjs.unix(a.nextClaim).isBefore(dayjs.unix(b.nextClaim))) {
-        return -1;
-      }
+  const dates = useMemo(
+    () =>
+      !isLoading
+        ? results
+            .filter(
+              result => result.isSuccess && !scholars.find(scholar => scholar.address === result.data.address).inactive
+            )
+            .sort((a, b) => {
+              if (a.data.scholar.lastClaim === 0) return 1;
+              if (b.data.scholar.lastClaim === 0) return -1;
 
-      return 1;
-    })
-    .reduce((prev, curr) => {
-      const nextClaim = dayjs.unix(curr.nextClaim);
+              if (dayjs.unix(a.data.scholar.lastClaim).isBefore(dayjs.unix(b.data.scholar.lastClaim))) {
+                return -1;
+              }
 
-      const day = nextClaim.date();
-      const month = nextClaim.month() + 1;
+              return 1;
+            })
+            .reduce((prev, curr) => {
+              const scholar = scholars.find(({ address }) => address === curr.data.address);
+              const data = parseScholarData({ data: curr.data });
+              const state = { ...scholar, ...data };
 
-      const monthIndex = prev.findIndex(p => p.month === month);
+              const nextClaim = dayjs.unix(data.nextClaim);
 
-      if (monthIndex !== -1) {
-        const dayIndex = prev[monthIndex].days.findIndex(p => p.day === day);
+              const day = nextClaim.date();
+              const month = nextClaim.month() + 1;
 
-        if (dayIndex !== -1) {
-          prev[monthIndex].days[dayIndex].scholars.push(curr);
-          return prev;
-        }
+              const monthIndex = prev.findIndex(p => p.month === month);
 
-        prev[monthIndex].days.push({ day, scholars: [curr] });
-        return prev;
-      }
+              if (monthIndex !== -1) {
+                const dayIndex = prev[monthIndex].days.findIndex(p => p.day === day);
 
-      prev.push({ month, days: [{ day, scholars: [curr] }] });
-      return prev;
-    }, [] as ScholarDates[]);
+                if (dayIndex !== -1) {
+                  prev[monthIndex].days[dayIndex].scholars.push(state);
+                  return prev;
+                }
+
+                prev[monthIndex].days.push({ day, scholars: [state] });
+                return prev;
+              }
+
+              prev.push({ month, days: [{ day, scholars: [state] }] });
+              return prev;
+            }, [] as ScholarDates[])
+        : [],
+    [isLoading, results, scholars]
+  );
 
   return (
     <Box h="full" maxW="1450px" margin="auto" p={3}>
@@ -104,7 +117,7 @@ export const Calendar = (): JSX.Element => {
             <Text fontWeight="bold">Loading scholars...</Text>
 
             <Text>
-              {scholars.filter(scholar => scholar.loaded).length}/{scholars.length}
+              {results.filter(result => result.isSuccess).length}/{scholars.length}
             </Text>
           </Flex>
         </Box>

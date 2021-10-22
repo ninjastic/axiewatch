@@ -16,7 +16,11 @@ export const AxieInfo = ({ axieData }: AxieInfoProps): JSX.Element => {
       <Text fontWeight="bold">{axieData.name}</Text>
 
       <HStack align="flex-start">
-        <Tag>{scholar.name}</Tag>
+        <Tag>
+          <Text textOverflow="ellipsis" overflowX="hidden" whiteSpace="nowrap" maxW="100px">
+            {scholar.name}
+          </Text>
+        </Tag>
         <Tag>Breed: {axieData.breedCount} / 7</Tag>
         <Tag>{Math.round(axieData.quality * 100)}%</Tag>
       </HStack>

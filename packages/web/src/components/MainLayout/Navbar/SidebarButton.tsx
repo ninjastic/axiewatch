@@ -10,7 +10,7 @@ interface SidebarButtonProps extends ButtonProps {
   disabled?: boolean;
 }
 
-export function SidebarButton({ name, path, disabled = false, ...rest }: SidebarButtonProps) {
+export const SidebarButton = ({ name, path, disabled = false, ...rest }: SidebarButtonProps): JSX.Element => {
   return (
     <ChakraLink href={path}>
       <Button
@@ -39,4 +39,4 @@ export function SidebarButton({ name, path, disabled = false, ...rest }: Sidebar
       </Button>
     </ChakraLink>
   );
-}
+};

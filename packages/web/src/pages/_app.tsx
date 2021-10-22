@@ -1,9 +1,11 @@
 import { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import { RecoilRoot } from 'recoil';
-import { QueryClientProvider, QueryClient } from 'react-query';
 import { DefaultSeo } from 'next-seo';
 import { ToastContainer, cssTransition } from 'react-toastify';
+import { QueryClientProvider, QueryClient } from 'react-query';
+import { persistQueryClient } from 'react-query/persistQueryClient-experimental';
+import { createWebStoragePersistor } from 'react-query/createWebStoragePersistor-experimental';
 import Head from 'next/head';
 import '@fontsource/inter';
 import '@fontsource/bowlby-one-sc';
@@ -17,6 +19,13 @@ import { ModalController } from '../components/ModalController';
 import { TrackingScripts } from '../components/TrackingScripts';
 
 const queryClient = new QueryClient();
+
+const localStoragePersistor = createWebStoragePersistor({ storage: process.browser ? window.localStorage : undefined });
+
+persistQueryClient({
+  queryClient,
+  persistor: localStoragePersistor,
+});
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (

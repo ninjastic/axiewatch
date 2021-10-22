@@ -25,7 +25,7 @@ export const useScholar = ({ address }: UseScholarProps): UseQueryResult<APIScho
     ['scholar', address],
     async () => {
       const response = await serverApi.get<APIScholarResponse>('/scholar', {
-        params: { address, pvp: true, slp: true },
+        params: { address },
       });
 
       return response.data;

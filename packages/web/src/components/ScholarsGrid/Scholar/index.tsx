@@ -9,7 +9,7 @@ interface AxieCardParams {
 }
 
 export const Scholar = ({ address }: AxieCardParams): JSX.Element => {
-  const { isLoading, isError, refetch } = useScholar({ address });
+  const { isLoading, isError, isFetching, refetch } = useScholar({ address });
 
   const isWideVersion = useBreakpointValue(
     {
@@ -19,8 +19,10 @@ export const Scholar = ({ address }: AxieCardParams): JSX.Element => {
   );
 
   if (isWideVersion) {
-    return <ScholarListItem address={address} isLoading={isLoading} isError={isError} refetch={refetch} />;
+    return (
+      <ScholarListItem address={address} isLoading={isLoading || isFetching} isError={isError} refetch={refetch} />
+    );
   }
 
-  return <ScholarCard address={address} isLoading={isLoading} isError={isError} refetch={refetch} />;
+  return <ScholarCard address={address} isLoading={isLoading || isFetching} isError={isError} refetch={refetch} />;
 };

@@ -1,7 +1,7 @@
 import { IconButton, useColorMode } from '@chakra-ui/react';
 import { RiMoonLine, RiSunLine } from 'react-icons/ri';
 
-export function ColorSwitchIcon() {
+export const ColorSwitchIcon = (): JSX.Element => {
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
@@ -17,4 +17,4 @@ export function ColorSwitchIcon() {
       }}
     />
   );
-}
+};

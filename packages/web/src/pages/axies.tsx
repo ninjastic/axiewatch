@@ -61,25 +61,7 @@ export const Axies = (): JSX.Element => {
   const setAxieParts = useSetRecoilState(axiePartsAtom);
   const [preferences, setPreferences] = useRecoilState(preferencesAtom);
 
-  const columns = useBreakpointValue(
-    {
-      base: 1,
-      md: 3,
-      lg: 4,
-    },
-    'lg'
-  );
-
-  const isWideVersion = useBreakpointValue(
-    {
-      base: false,
-      lg: true,
-    },
-    'lg'
-  );
-
   const addresses = useMemo(() => scholars.map(scholar => scholar.address), [scholars]);
-
   const { scholarAxies, isLoading } = useBatchScholarAxie(addresses);
 
   const axiesCount = useMemo(() => scholarAxies.reduce((count, axies) => count + axies.length, 0), [scholarAxies]);
@@ -114,7 +96,7 @@ export const Axies = (): JSX.Element => {
       Object.values(filteredAxies)
         .map(axies => !!axies.length)
         .filter(v => v).length,
-    [filteredAxies, filters]
+    [filteredAxies]
   );
 
   useEffect(() => {
@@ -156,8 +138,8 @@ export const Axies = (): JSX.Element => {
 
       {!isLoading && !!scholarAxies.length && (
         <Stack spacing={10} mt={5}>
-          <Flex justify="space-between" align="center" direction={isWideVersion ? 'row' : 'column'}>
-            <HStack mb={isWideVersion ? 0 : 5}>
+          <Flex justify="space-between" align="center" direction={{ base: 'column', lg: 'row' }}>
+            <HStack mb={{ base: 5, lg: 0 }}>
               <Stat>
                 <StatLabel>N° of Axies</StatLabel>
                 <StatNumber>{axiesCount}</StatNumber>
@@ -187,7 +169,7 @@ export const Axies = (): JSX.Element => {
             </HStack>
           </Flex>
 
-          <SimpleGrid columns={columns} gap={3} pb={5}>
+          <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} gap={3} pb={5}>
             {filteredAxies.map(axies =>
               axies.map(axie => (
                 <Card py={5} px={3} key={axie.id}>
