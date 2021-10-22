@@ -24,7 +24,7 @@ export const usePrice = (): Price => {
       const response = await axios.get<PriceResponse>('https://api.coingecko.com/api/v3/simple/price', {
         params: {
           ids: 'smooth-love-potion,axie-infinity,ethereum',
-          vs_currencies: 'usd,brl,eth,php,thb,aud,cad,idr,chf,gbp,mxn,eur,inr,ars,vnd,uah,rub,aed,myr,sgd,jpy',
+          vs_currencies: 'usd,brl,eth,php,thb,aud,cad,idr,chf,gbp,mxn,eur,inr,ars,vnd,uah,rub,aed,myr,sgd,jpy,ils',
         },
         timeout: 1000 * 10, // 10 seconds
       });

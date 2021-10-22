@@ -32,6 +32,7 @@ export const CurrencySelect = ({ setFieldValue }: CurrencySelectProps): JSX.Elem
     'aed',
     'myr',
     'jpy',
+    'ils',
   ];
 
   const options = currencies.map(currency => ({

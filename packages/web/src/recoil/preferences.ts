@@ -31,7 +31,8 @@ export interface Preferences {
     | 'uah'
     | 'rub'
     | 'myr'
-    | 'jpy';
+    | 'jpy'
+    | 'ils';
   theme: string;
   includeRoninBalance: boolean;
   doNotShowInitialWarning: boolean;
