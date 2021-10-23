@@ -1,14 +1,15 @@
 import 'dotenv/config';
 import { Job, Queue, QueueScheduler, Worker } from 'bullmq';
-import { tracking } from '@prisma/client';
 import cron from 'node-cron';
+import './services/database';
 
 import { getUniqueAddresses, trackScholarJob } from './jobs/trackScholarJob';
+import Tracking from './models/Tracking';
 
 async function main() {
   const connection = {
     host: 'localhost',
-    port: Number(process.env.REDIS_PORT) || 6379,
+    port: Number(process.env.REDIS_PORT || 6379),
     password: process.env.REDIS_PASSWORD,
   };
 
@@ -17,6 +18,11 @@ async function main() {
     defaultJobOptions: {
       removeOnComplete: true,
       removeOnFail: true,
+      attempts: 3,
+      backoff: {
+        type: 'exponential',
+        delay: 1000,
+      },
     },
   });
 
@@ -24,9 +30,13 @@ async function main() {
   await scheduler.waitUntilReady();
 
   const worker = new Worker('scholarsQueue', async (job: Job) => trackScholarJob(job.data.address), {
-    limiter: { max: 2, duration: 200 },
+    limiter: { max: 3, duration: 300 },
     connection,
   });
+
+  await queue.drain(true);
+
+  console.log('getting unique addresses');
 
   const addresses = await getUniqueAddresses();
 
@@ -43,7 +53,7 @@ async function main() {
     console.log('starting', job.data.address);
   });
 
-  worker.on('completed', (job: Job, result: tracking) => {
+  worker.on('completed', (job: Job, result: Tracking) => {
     console.log('done', result.address, result.slpAmount);
   });
 
