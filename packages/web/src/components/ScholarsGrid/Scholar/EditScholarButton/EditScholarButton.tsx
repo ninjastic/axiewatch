@@ -12,7 +12,7 @@ interface EditScholarButtonParams {
   onlyIcon?: boolean;
 }
 
-export const EditScholarButton = ({ address, size = 'lg', onlyIcon = false }: EditScholarButtonParams): JSX.Element => {
+export const EditScholarButton = ({ address, size = 'md', onlyIcon = false }: EditScholarButtonParams): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
 
   const editScholarModal = useCreateModal({
