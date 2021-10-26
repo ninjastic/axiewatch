@@ -8,11 +8,11 @@ import { EditScholarModal } from './EditScholarModal';
 
 interface EditScholarButtonParams {
   address: string;
-  size: string;
+  size?: string;
   onlyIcon?: boolean;
 }
 
-export const EditScholarButton = ({ address, size, onlyIcon = false }: EditScholarButtonParams): JSX.Element => {
+export const EditScholarButton = ({ address, size = 'lg', onlyIcon = false }: EditScholarButtonParams): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
 
   const editScholarModal = useCreateModal({
@@ -24,7 +24,7 @@ export const EditScholarButton = ({ address, size, onlyIcon = false }: EditSchol
 
   return onlyIcon ? (
     <IconButton
-      size={size || 'lg'}
+      size={size}
       aria-label="Edit Scholar"
       icon={<BsPencilSquare />}
       onClick={e => {
@@ -35,7 +35,7 @@ export const EditScholarButton = ({ address, size, onlyIcon = false }: EditSchol
   ) : (
     <Button
       aria-label="Edit scholar"
-      size={size || 'lg'}
+      size={size}
       leftIcon={<BsPencilSquare />}
       onClick={e => {
         e.stopPropagation();
