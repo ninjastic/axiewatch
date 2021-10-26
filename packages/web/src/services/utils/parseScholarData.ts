@@ -29,7 +29,7 @@ interface ParseScholarDataProps {
 
 export function parseScholarData({ data, options }: ParseScholarDataProps): ParsedScholarData {
   const { slp, roninSlp, totalSlp, lastClaim } = data.scholar;
-  const { yesterday, today, dates } = data.historical;
+  const { yesterday, today, dates } = data.historical || {};
 
   const pvpElo = data.pvp?.elo ?? 0;
   const pvpRank = data.pvp?.rank ?? 0;
@@ -43,7 +43,9 @@ export function parseScholarData({ data, options }: ParseScholarDataProps): Pars
         return today?.totalSlp - yesterday?.totalSlp;
       }
 
-      return totalSlp - yesterday?.totalSlp;
+      if (dayjs.utc().hour() <= 6) {
+        return totalSlp - yesterday?.totalSlp;
+      }
     }
 
     return null;
@@ -51,7 +53,7 @@ export function parseScholarData({ data, options }: ParseScholarDataProps): Pars
 
   const todaySlp = today ? totalSlp - today.totalSlp : null;
 
-  const accumulated = dates.reduce(
+  const accumulated = dates?.reduce(
     (acc, entry, index, array) => {
       const prevEntry = array[index - 1];
       if (!prevEntry) return acc;

@@ -104,7 +104,7 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
                 _hover={{
                   textDecor: isLoading ? 'none' : 'underline',
                 }}
-                color={isLoading ? 'inherit' : 'red.200'}
+                color={isLoading ? 'inherit' : 'red.300'}
               >
                 Retry
               </Text>

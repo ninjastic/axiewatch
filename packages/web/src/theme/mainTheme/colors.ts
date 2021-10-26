@@ -8,7 +8,6 @@ export const colors = {
     },
     faded: '#3C3C3C',
   },
-
   dark: {
     background: '#1A202C',
     card: '#282B39',
@@ -16,7 +15,7 @@ export const colors = {
       first: '#8c8c8c',
       second: '#737373',
     },
-    faded: '#676767',
+    faded: '#67697a',
   },
   darkGray: {
     50: '#f1f1f9',

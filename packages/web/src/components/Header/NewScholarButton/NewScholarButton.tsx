@@ -1,5 +1,5 @@
-import { IconButton } from '@chakra-ui/react';
-import { RiAddFill } from 'react-icons/ri';
+import { Button } from '@chakra-ui/react';
+import { BsFillPersonPlusFill } from 'react-icons/bs';
 
 import { useCreateModal } from '../../../services/hooks/useCreateModal';
 import { NewScholarModal } from './NewScholarModal';
@@ -12,5 +12,9 @@ export const NewScholarButton = (): JSX.Element => {
     size: '2xl',
   });
 
-  return <IconButton aria-label="Add scholar" icon={<RiAddFill />} onClick={newScholarModal.onOpen} variant="ghost" />;
+  return (
+    <Button leftIcon={<BsFillPersonPlusFill />} onClick={newScholarModal.onOpen}>
+      New Scholar
+    </Button>
+  );
 };

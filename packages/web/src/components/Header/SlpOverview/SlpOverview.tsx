@@ -33,7 +33,7 @@ export const SlpOverview = (): JSX.Element => {
   useEffect(() => () => clearInterval(timeout), [timeout]);
 
   return (
-    <Stack direction={{ sm: 'column', lg: 'row' }} spacing={5}>
+    <Stack direction={{ base: 'column', lg: 'row' }} spacing={5}>
       <HStack spacing={{ sm: 10, lg: 5 }}>
         <Stat w="120px">
           <StatLabel>Total SLP</StatLabel>

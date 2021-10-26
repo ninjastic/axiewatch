@@ -21,8 +21,8 @@ export const SummaryCards = (): JSX.Element => {
       resultsWithSuccess.reduce((prev, currResult) => {
         const { scholar } = currResult.data;
 
-        const yesterday = currResult.data.historical.yesterday?.totalSlp;
-        const today = currResult.data.historical.today?.totalSlp;
+        const yesterday = currResult.data.historical?.yesterday?.totalSlp;
+        const today = currResult.data.historical?.today?.totalSlp;
 
         if (!yesterday) return prev;
 
@@ -39,7 +39,7 @@ export const SummaryCards = (): JSX.Element => {
     () =>
       resultsWithSuccess.reduce((prev, currResult) => {
         const { scholar } = currResult.data;
-        const todayStart = currResult.data.historical.today?.totalSlp;
+        const todayStart = currResult.data.historical?.today?.totalSlp;
 
         if (!todayStart) return prev;
 

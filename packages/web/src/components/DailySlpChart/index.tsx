@@ -78,7 +78,7 @@ const DailySlpChartComponent = (): JSX.Element => {
 
         if (!scholar) return draft;
 
-        currResult.data?.historical.dates.forEach((date, index, array) => {
+        currResult.data?.historical?.dates.forEach((date, index, array) => {
           const dayIndex = draft.findIndex(d => d.day === date.day);
           const prevDate = array[index - 1];
 

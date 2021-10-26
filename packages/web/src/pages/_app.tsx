@@ -20,13 +20,14 @@ import { TrackingScripts } from '../components/TrackingScripts';
 
 const queryClient = new QueryClient();
 
-const localStoragePersistor = createWebStoragePersistor({ storage: process.browser ? window.localStorage : undefined });
+if (process.browser) {
+  const localStoragePersistor = createWebStoragePersistor({ storage: window.localStorage });
 
-persistQueryClient({
-  queryClient,
-  persistor: localStoragePersistor,
-});
-
+  persistQueryClient({
+    queryClient,
+    persistor: localStoragePersistor,
+  });
+}
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
     <QueryClientProvider client={queryClient}>

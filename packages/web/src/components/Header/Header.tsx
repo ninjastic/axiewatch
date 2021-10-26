@@ -1,4 +1,4 @@
-import { Stack, HStack, useMediaQuery } from '@chakra-ui/react';
+import { Stack, HStack } from '@chakra-ui/react';
 
 import { PriceTicker } from './PriceTicker';
 import { ExportButton } from './ExportButton';
@@ -6,24 +6,25 @@ import { PreferencesButton } from './PreferencesButton';
 import { NewScholarButton } from './NewScholarButton/NewScholarButton';
 import { SlpOverview } from './SlpOverview/SlpOverview';
 
-export function Header() {
-  const [isWideVersion] = useMediaQuery('(min-width: 750px)');
-
+export const Header = (): JSX.Element => {
   return (
     <Stack
       justify="space-between"
-      align={isWideVersion ? 'flex-start' : 'center'}
-      direction={isWideVersion ? 'row' : 'column'}
-      spacing={isWideVersion ? 3 : 5}
+      align={{ base: 'center', lg: 'flex-start ' }}
+      direction={{ base: 'column', lg: 'row' }}
+      spacing={{ base: 5, lg: 3 }}
     >
       <SlpOverview />
 
-      <HStack spacing={3}>
-        <PriceTicker />
-        <ExportButton />
-        <PreferencesButton />
+      <Stack spacing={3} direction={{ base: 'column', lg: 'row' }}>
+        <HStack spacing={3}>
+          <PriceTicker />
+          <ExportButton />
+          <PreferencesButton />
+        </HStack>
+
         <NewScholarButton />
-      </HStack>
+      </Stack>
     </Stack>
   );
-}
+};

@@ -60,7 +60,7 @@ export const ScholarFieldArenaElo = ({ address, isLoading, refetch }: ScholarFie
                 _hover={{
                   textDecor: isLoading ? 'none' : 'underline',
                 }}
-                color={isLoading ? 'inherit' : 'red.200'}
+                color={isLoading ? 'inherit' : 'red.300'}
               >
                 Retry
               </Text>
