@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 import { UserCredentials, Session, User } from '@supabase/supabase-js';
 
-interface AuthAtom {
+export interface AuthAtom {
   signIn: (payload: UserCredentials) => Promise<void>;
   signUp: (payload: UserCredentials) => Promise<void>;
   signOut: () => void;

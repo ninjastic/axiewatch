@@ -1,67 +1,79 @@
 import { useRecoilState } from 'recoil';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { UserCredentials } from '@supabase/supabase-js';
 import { toast } from 'react-toastify';
 
 import { supabase } from '../supabase';
-import { authAtom } from '../../recoil/auth';
+import { authAtom, AuthAtom } from '../../recoil/auth';
 
-export function useAuth() {
+export const useAuth = (): AuthAtom => {
   const [auth, setAuth] = useRecoilState(authAtom);
 
-  async function signUp(payload: UserCredentials) {
-    setAuth(prev => ({ ...prev, isLoading: true }));
-    const { error } = await supabase.auth.signUp(payload);
-    if (error) {
-      toast(error.message, {
-        type: 'error',
-      });
-    }
-    setAuth(prev => ({ ...prev, isLoading: false }));
-  }
+  const signUp = useCallback(
+    async (payload: UserCredentials) => {
+      setAuth(prev => ({ ...prev, isLoading: true }));
+      const { error } = await supabase.auth.signUp(payload);
+      if (error) {
+        toast(error.message, {
+          type: 'error',
+        });
+      }
+      setAuth(prev => ({ ...prev, isLoading: false }));
+    },
+    [setAuth]
+  );
 
-  async function signIn(payload: UserCredentials) {
-    setAuth(prev => ({ ...prev, isLoading: true }));
-    const { error } = await supabase.auth.signIn(payload);
-    if (error) {
-      toast(error.message, {
-        type: 'error',
-      });
-    }
-    setAuth(prev => ({ ...prev, isLoading: false }));
-  }
+  const signIn = useCallback(
+    async (payload: UserCredentials) => {
+      setAuth(prev => ({ ...prev, isLoading: true }));
+      const { error } = await supabase.auth.signIn(payload);
+      if (error) {
+        toast(error.message, {
+          type: 'error',
+        });
+      }
+      setAuth(prev => ({ ...prev, isLoading: false }));
+    },
+    [setAuth]
+  );
 
-  async function resetPassword(email: string) {
-    setAuth(prev => ({ ...prev, isLoading: true }));
-    const { error } = await supabase.auth.api.resetPasswordForEmail(email);
-    if (error) {
-      toast(error.message, {
-        type: 'error',
-      });
-    } else {
-      toast('Please check your inbox for a reset password email.', {
-        type: 'success',
-      });
-    }
-    setAuth(prev => ({ ...prev, isLoading: false }));
-  }
+  const resetPassword = useCallback(
+    async (email: string) => {
+      setAuth(prev => ({ ...prev, isLoading: true }));
+      const { error } = await supabase.auth.api.resetPasswordForEmail(email);
+      if (error) {
+        toast(error.message, {
+          type: 'error',
+        });
+      } else {
+        toast('Please check your inbox for a reset password email.', {
+          type: 'success',
+        });
+      }
+      setAuth(prev => ({ ...prev, isLoading: false }));
+    },
+    [setAuth]
+  );
 
-  async function updatePasword(accessToken: string, newPassword: string) {
-    setAuth(prev => ({ ...prev, isLoading: true }));
-    const { error } = await supabase.auth.api.updateUser(accessToken, {
-      password: newPassword,
-    });
-    if (error) {
-      toast(error.message, {
-        type: 'error',
+  const updatePasword = useCallback(
+    async (accessToken: string, newPassword: string) => {
+      setAuth(prev => ({ ...prev, isLoading: true }));
+      const { error } = await supabase.auth.api.updateUser(accessToken, {
+        password: newPassword,
       });
-    } else {
-      toast('Password was updated.', {
-        type: 'success',
-      });
-    }
-    setAuth(prev => ({ ...prev, isLoading: false }));
-  }
+      if (error) {
+        toast(error.message, {
+          type: 'error',
+        });
+      } else {
+        toast('Password was updated.', {
+          type: 'success',
+        });
+      }
+      setAuth(prev => ({ ...prev, isLoading: false }));
+    },
+    [setAuth]
+  );
 
   useEffect(() => {
     const session = supabase.auth.session();
@@ -90,7 +102,7 @@ export function useAuth() {
     return () => {
       authListener?.unsubscribe();
     };
-  }, []);
+  }, [resetPassword, setAuth, signIn, signUp, updatePasword]);
 
   return auth;
-}
+};
