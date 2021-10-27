@@ -9,9 +9,6 @@ export const ButtonStyles = {
       color: mode('white', 'white')(props),
       _hover: {
         bg: mode('gray.500', 'whiteAlpha.300')(props),
-        _disabled: {
-          bg: mode('gray.500', 'whiteAlpha.400')(props),
-        },
       },
       _active: {
         bg: mode('gray.500', 'whiteAlpha.400')(props),
