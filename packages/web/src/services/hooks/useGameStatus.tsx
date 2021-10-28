@@ -17,12 +17,12 @@ export const useGameStatus = (): UseGameStatusData => {
       return data;
     },
     {
-      staleTime: 1000 * 60 * 10,
+      staleTime: 1000 * 60 * 1,
     }
   );
 
   const now = dayjs().unix();
-  const isMaintenance = !result.isLoading && now > result.data?.from && result.data?.to > now;
+  const isMaintenance = result.isSuccess && now > result.data?.from && result.data?.to > now;
 
   return { ...result, isMaintenance };
 };
