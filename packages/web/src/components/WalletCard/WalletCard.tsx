@@ -48,7 +48,7 @@ export const WalletCard = ({ address, data }: WalletCardProps): JSX.Element => {
     [data.axs, data.eth, data.slp, price.locale, price.values.axs, price.values.eth, price.values.slp]
   );
 
-  const profileUrl = `https://marketplace.axieinfinity.com/profile/${address.replace('0x', 'ronin:')}`;
+  const profileUrl = `https://marketplace.axieinfinity.com/profile/${address.replace('0x', 'ronin:')}/axie`;
   const explorerUrl = `https://explorer.roninchain.com/address/${address.replace('0x', 'ronin:')}`;
 
   return (
