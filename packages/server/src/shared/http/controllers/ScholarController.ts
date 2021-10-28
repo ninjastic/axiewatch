@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+import AppError from '@src/shared/errors/AppError';
 import { getScholar } from '../services/getScholar';
 import { getScholarPvp } from '../services/getScholarPvp';
 import { getScholarHistoricalSlp } from '../services/getScholarHistoricalSlp';
@@ -10,7 +11,7 @@ export class ScholarController {
     const { address } = req.query as { [address: string]: string };
 
     if (!address) {
-      return res.status(400).json({ error: 'Missing address' });
+      throw new AppError('Missing address', 400);
     }
 
     const scholar = await getScholar(address);

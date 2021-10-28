@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { supabase } from '@src/services/supabase';
+import AppError from '@src/shared/errors/AppError';
 import Sync from '@src/models/Sync';
 import { getScholarHistoricalSlp } from '../services/getScholarHistoricalSlp';
 
@@ -10,11 +11,11 @@ export class DailyController {
     const authorization = req.get('authorization');
 
     if (!address) {
-      return res.status(400).json({ error: 'Missing address' });
+      throw new AppError('Missing address', 400);
     }
 
     if (!address) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      throw new AppError('Unauthorized', 401);
     }
 
     let isTracking: boolean | null = null;

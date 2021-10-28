@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { supabase } from '../../../services/supabase';
+import AppError from '@src/shared/errors/AppError';
 import Sync from '@models/Sync';
 
 export class SyncController {
@@ -8,13 +9,13 @@ export class SyncController {
     const { authorization } = req.headers;
 
     if (!authorization) {
-      return res.status(400).json({ error: 'Missing authorization token' });
+      throw new AppError('Missing authorization token', 400);
     }
 
     const auth = await supabase.auth.api.getUser(authorization);
 
     if (!auth.user) {
-      return res.status(401).json({ error: 'Invalid user' });
+      throw new AppError('Invalid user', 401);
     }
 
     const sync = await Sync.query().findOne({
@@ -29,17 +30,17 @@ export class SyncController {
     const { scholars } = req.body;
 
     if (!authorization) {
-      return res.status(400).json({ error: 'Missing authorization token' });
+      throw new AppError('Missing authorization token', 400);
     }
 
     const auth = await supabase.auth.api.getUser(authorization);
 
     if (!auth.user) {
-      return res.status(401).json({ error: 'Invalid user' });
+      throw new AppError('Invalid user', 401);
     }
 
     if (!scholars) {
-      return res.status(400).json({ error: 'Missing scholars data' });
+      throw new AppError('Missing scholars data', 400);
     }
 
     let sync = await Sync.query().findOne({

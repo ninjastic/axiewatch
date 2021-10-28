@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { randomBytes } from 'crypto';
 
 import { supabase } from '../../../services/supabase';
+import AppError from '@src/shared/errors/AppError';
 import Dashboard from '@models/Dashboard';
 import Sync from '@models/Sync';
 
@@ -15,14 +16,14 @@ export class DashboardController {
       });
 
       if (!dashboard) {
-        return res.status(404).json({ error: 'Dashboard not found' });
+        throw new AppError('Dashboard not found', 404);
       }
 
       return res.json(dashboard);
     }
 
     if (!slug) {
-      return res.status(400).json({ error: 'Missing slug' });
+      throw new AppError('Missing slug', 400);
     }
 
     const dashboard = await Dashboard.query().findOne({
@@ -30,7 +31,7 @@ export class DashboardController {
     });
 
     if (!dashboard) {
-      return res.json(404).json({ error: 'Dashboard not found' });
+      throw new AppError('Dashboard not found', 404);
     }
 
     if (dashboard.whitelist) {
@@ -57,7 +58,7 @@ export class DashboardController {
       }
 
       if (email) {
-        return res.status(404).json({ error: 'Unauthorized' });
+        throw new AppError('Unauthorized', 401);
       }
     }
 
@@ -85,13 +86,13 @@ export class DashboardController {
     const { whitelist, customLogo } = req.body;
 
     if (!authorization) {
-      return res.status(400).json({ error: 'Missing authorization token' });
+      throw new AppError('Missing authorization token', 400);
     }
 
     const auth = await supabase.auth.api.getUser(authorization);
 
     if (!auth.user) {
-      return res.status(401).json({ error: 'Invalid user' });
+      throw new AppError('Invalid user', 401);
     }
 
     let dashboard = await Dashboard.query().findOne({
