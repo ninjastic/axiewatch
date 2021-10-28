@@ -68,9 +68,10 @@ const GetAxieBriefListQuery = gql`
 
 interface LoadScholarAxiesProps {
   address: string;
+  size?: number;
 }
 
-export const LoadScholarAxies = ({ address }: LoadScholarAxiesProps): JSX.Element => {
+export const LoadScholarAxies = ({ address, size = 24 }: LoadScholarAxiesProps): JSX.Element => {
   const setAxies = useSetRecoilState(scholarAxies(address));
   const scholar = useRecoilValue(scholarSelector(address));
 
@@ -84,7 +85,7 @@ export const LoadScholarAxies = ({ address }: LoadScholarAxiesProps): JSX.Elemen
         },
         from: 0,
         owner: address,
-        size: 24,
+        size,
         sort: 'IdDesc',
       });
 
@@ -92,6 +93,7 @@ export const LoadScholarAxies = ({ address }: LoadScholarAxiesProps): JSX.Elemen
     },
     {
       staleTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
       retry: false,
     }
   );

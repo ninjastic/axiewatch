@@ -69,7 +69,7 @@ export const ScholarAxies = ({ address, shouldLoad = true }: ScholarAxiesProps):
           )}
       </HStack>
 
-      {shouldLoad && <LoadScholarAxies address={address} />}
+      {shouldLoad && <LoadScholarAxies address={address} size={3} />}
     </>
   );
 };

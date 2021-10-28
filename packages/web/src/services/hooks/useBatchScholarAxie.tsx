@@ -1,5 +1,6 @@
 import { gql } from 'graphql-request';
 import { useQuery } from 'react-query';
+import { MD5 } from 'crypto-js';
 
 import { axieInfinityGraphQl } from '../api';
 import { Axie } from '../../recoil/scholars';
@@ -17,7 +18,14 @@ interface UseBatchScholarAxieData {
   isLoading: boolean;
 }
 
-export const useBatchScholarAxie = (addresses: string[]): UseBatchScholarAxieData => {
+interface UseBatchScholarAxieProps {
+  addresses: string[];
+  size?: number;
+}
+
+export const useBatchScholarAxie = ({ addresses, size = 200 }: UseBatchScholarAxieProps): UseBatchScholarAxieData => {
+  const hashedKey = MD5(`${JSON.stringify(addresses)}${size}`).toString();
+
   async function load() {
     const chunksLength = 20;
 
@@ -36,7 +44,7 @@ export const useBatchScholarAxie = (addresses: string[]): UseBatchScholarAxieDat
     
           r${index}: axies(
             criteria: { stages: [4] }
-            size: 200,
+            size: ${size},
             owner: "${address}"
           ) {
             total
@@ -64,12 +72,10 @@ export const useBatchScholarAxie = (addresses: string[]): UseBatchScholarAxieDat
           genes
           battleInfo {
             banned
-            __typename
           }
           auction {
             currentPrice
             currentPriceUSD
-            __typename
           }
           parts {
             id
@@ -77,9 +83,7 @@ export const useBatchScholarAxie = (addresses: string[]): UseBatchScholarAxieDat
             class
             type
             specialGenes
-            __typename
           }
-          __typename
         }
       `;
 
@@ -98,8 +102,9 @@ export const useBatchScholarAxie = (addresses: string[]): UseBatchScholarAxieDat
     return promises.flat(1);
   }
 
-  const { data, isLoading } = useQuery('axies', async () => load(), {
+  const { data, isLoading } = useQuery(['axies', hashedKey], async () => load(), {
     staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
   });
 
   return { scholarAxies: data ?? [], isLoading };

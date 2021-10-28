@@ -1,7 +1,7 @@
 import { Box, Stack, HStack, Text, Image, Flex, Tooltip, SimpleGrid, SkeletonText, Icon } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 import { RiSwordLine } from 'react-icons/ri';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import dayjs from '../../../../services/dayjs';
 import { formatter } from '../../../../services/formatter';
@@ -54,7 +54,7 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
     [price.locale, price.values.slp, slpDay]
   );
 
-  const getSlpDayColor = useCallback(() => {
+  const getSlpDayColor = useMemo(() => {
     if (slpDay >= 120) return 'green.200';
     if (slpDay >= 90 && slpDay < 120) return 'red.200';
     if (slpDay < 90) return 'red.300';

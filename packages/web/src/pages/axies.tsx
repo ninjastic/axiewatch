@@ -36,11 +36,9 @@ const filterAxies = (scholarAxies: Axie[][], filters: ScholarAxiesFilter) =>
       if (filters.breed.under && axie.breedCount > filters.breed.under) return false;
 
       if (filters.quality.above && Math.ceil(axie.quality * 100) < filters.quality.above) return false;
-
       if (filters.quality.under && Math.ceil(axie.quality * 100) > filters.quality.under) return false;
 
       if (filters.owner && axie.owner !== filters.owner) return false;
-
       if (filters.class && axie.class !== filters.class) return false;
 
       if (filters.parts.length) {
@@ -61,7 +59,7 @@ export const Axies = (): JSX.Element => {
   const [preferences, setPreferences] = useRecoilState(preferencesAtom);
 
   const addresses = useMemo(() => scholars.map(scholar => scholar.address), [scholars]);
-  const { scholarAxies, isLoading } = useBatchScholarAxie(addresses);
+  const { scholarAxies, isLoading } = useBatchScholarAxie({ addresses, size: 200 });
 
   const axiesCount = useMemo(() => scholarAxies.reduce((count, axies) => count + axies.length, 0), [scholarAxies]);
 
