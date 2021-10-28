@@ -1,6 +1,5 @@
 import { Box, Text, HStack, Spinner } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
-import { AxiosError } from 'axios';
 import Image from 'next/image';
 
 import { serverApi } from '../../../../services/api';
@@ -24,10 +23,7 @@ export const PveStats = ({ address, shouldLoad = true }: PveStatsProps): JSX.Ele
     {
       staleTime: 1000 * 60 * 15,
       enabled: shouldLoad,
-      retry: (count: number, error: AxiosError) => {
-        if (error?.response?.status === 500 || count >= 3) return false;
-        return true;
-      },
+      retry: false,
     }
   );
 

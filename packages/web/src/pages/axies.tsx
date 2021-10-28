@@ -8,7 +8,6 @@ import {
   SkeletonCircle,
   Link,
   SimpleGrid,
-  useBreakpointValue,
   Stat,
   StatLabel,
   StatNumber,

@@ -3,7 +3,6 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGri
 import { RiExternalLinkFill } from 'react-icons/ri';
 import { BsArrowRepeat } from 'react-icons/bs';
 import { useQuery } from 'react-query';
-import { AxiosError } from 'axios';
 import { useMemo, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import Link from 'next/link';

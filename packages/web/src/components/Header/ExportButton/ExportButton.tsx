@@ -17,7 +17,7 @@ import { useCreateModal } from '../../../services/hooks/useCreateModal';
 import { ExportFileModal } from './ExportFileModal';
 import { ExportDashboardModal } from './ExportDashboardModal';
 
-export function ExportButton() {
+export const ExportButton = (): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
 
   const containerRef = useRef(null);
@@ -83,4 +83,4 @@ export function ExportButton() {
       </Box>
     </Flex>
   );
-}
+};

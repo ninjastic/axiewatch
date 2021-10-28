@@ -8,7 +8,7 @@ interface BattlesButtonProps {
   address: string;
 }
 
-export function BattlesButton({ address }: BattlesButtonProps) {
+export const BattlesButton = ({ address }: BattlesButtonProps): JSX.Element => {
   const battlesModal = useCreateModal({
     id: 'battlesModal',
     title: () => 'Matches',
@@ -21,4 +21,4 @@ export function BattlesButton({ address }: BattlesButtonProps) {
       Battles
     </Button>
   );
-}
+};

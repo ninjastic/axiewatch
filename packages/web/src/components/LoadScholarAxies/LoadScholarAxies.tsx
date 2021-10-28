@@ -70,7 +70,7 @@ interface LoadScholarAxiesProps {
   address: string;
 }
 
-export function LoadScholarAxies({ address }: LoadScholarAxiesProps) {
+export const LoadScholarAxies = ({ address }: LoadScholarAxiesProps): JSX.Element => {
   const setAxies = useSetRecoilState(scholarAxies(address));
   const scholar = useRecoilValue(scholarSelector(address));
 
@@ -108,7 +108,7 @@ export function LoadScholarAxies({ address }: LoadScholarAxiesProps) {
         errored: false,
       });
     }
-  }, [data]);
+  }, [address, data, scholar.name, setAxies]);
 
   return null;
-}
+};

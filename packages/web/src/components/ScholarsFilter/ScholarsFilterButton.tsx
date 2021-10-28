@@ -6,7 +6,7 @@ import { useCreateModal } from '../../services/hooks/useCreateModal';
 import { allScholarsSelector, scholarFilter } from '../../recoil/scholars';
 import { ScholarsFilterModal } from './ScholarsFilterModal';
 
-export function ScholarsFilterButton() {
+export const ScholarsFilterButton = (): JSX.Element => {
   const scholars = useRecoilValue(allScholarsSelector);
   const filter = useRecoilValue(scholarFilter);
 
@@ -36,4 +36,4 @@ export function ScholarsFilterButton() {
       Filters {getNumberOfFilters ? `(${getNumberOfFilters})` : null}
     </Button>
   );
-}
+};

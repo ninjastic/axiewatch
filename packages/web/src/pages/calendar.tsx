@@ -22,7 +22,7 @@ import { useMemo } from 'react';
 
 import dayjs from '../services/dayjs';
 import { formatter } from '../services/formatter';
-import { allScholarsSelector, ScholarSelector, scholarsMap } from '../recoil/scholars';
+import { ScholarSelector, scholarsMap } from '../recoil/scholars';
 import { usePrice } from '../services/hooks/usePrice';
 import { useBatchScholar } from '../services/hooks/useBatchScholar';
 import { BallScaleLoading } from '../components/BallScaleLoading';

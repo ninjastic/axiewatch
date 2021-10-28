@@ -27,7 +27,7 @@ export const NavbarContent = (): JSX.Element => {
         ...old,
         hasExperimentalFeatures: true,
       }));
-  }, []);
+  }, [setPreferences]);
 
   const isLocal = process.browser && window.location.hostname === 'localhost';
 

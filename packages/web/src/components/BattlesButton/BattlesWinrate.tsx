@@ -1,4 +1,4 @@
-import { HStack, Stack, Text } from '@chakra-ui/react';
+import { HStack, Text } from '@chakra-ui/react';
 
 import { APIBattlesResponse } from '@src/types/api';
 
