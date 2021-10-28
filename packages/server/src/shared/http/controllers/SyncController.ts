@@ -38,7 +38,9 @@ export class SyncController {
       return res.status(401).json({ error: 'Invalid user' });
     }
 
-    if (!scholars) return res.status(400).json({ error: 'Missing scholars data' });
+    if (!scholars) {
+      return res.status(400).json({ error: 'Missing scholars data' });
+    }
 
     let sync = await Sync.query().findOne({
       user_id: auth.user.id,

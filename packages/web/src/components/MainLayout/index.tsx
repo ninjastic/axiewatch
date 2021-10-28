@@ -1,16 +1,15 @@
 import { Flex, chakra } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
-import { toast } from 'react-toastify';
 
-import dayjs from '../../services/dayjs';
 import { useCreateModal } from '../../services/hooks/useCreateModal';
 import { useGameStatus } from '@src/services/hooks/useGameStatus';
 import { LoadingScreen } from './LoadingScreen';
 import { ResetPasswordModal } from './ResetPasswordModal';
 import { Sidebar } from './Sidebar';
 import Header from './Navbar';
+import { MaintenanceScreen } from '../MaintenanceScreen';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -60,22 +59,6 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
     }
   }, [isLoading]);
 
-  useEffect(() => {
-    const now = dayjs().unix();
-    const maintenanceEnd = dayjs.unix(gameStatus.data?.to).format('HH:mm');
-    const maintenanceEndRelative = dayjs.unix(gameStatus.data?.to).fromNow();
-
-    if (!gameStatus.isLoading && now > gameStatus.data?.from && gameStatus.data?.to > now) {
-      toast(
-        `Looks like the game is under maintenance. It's scheduled to end ${maintenanceEndRelative} (${maintenanceEnd}).`,
-        {
-          type: 'error',
-          autoClose: 30000,
-        }
-      );
-    }
-  }, [gameStatus.isLoading, gameStatus.data?.from, gameStatus.data?.to]);
-
   const pageTitles = {
     scholars: 'Scholars',
     axies: 'Axies',
@@ -97,6 +80,12 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
     return title || defaultTitle;
   };
 
+  const shouldShowMaintenance = useMemo(() => {
+    const maintenanceAffectedPages = ['', 'scholars', 'calendar'];
+
+    return gameStatus.isMaintenance && maintenanceAffectedPages.includes(router.route.replace('/', ''));
+  }, [gameStatus.isMaintenance, router.route]);
+
   return (
     <>
       <NextSeo title={getSeoTitle()} />
@@ -107,9 +96,13 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
       <Flex pt="65px" h="full">
         <Sidebar />
 
-        <chakra.div w="full" h="full">
-          {children}
-        </chakra.div>
+        {shouldShowMaintenance && <MaintenanceScreen />}
+
+        {!shouldShowMaintenance && (
+          <chakra.div w="full" h="full">
+            {children}
+          </chakra.div>
+        )}
       </Flex>
     </>
   );

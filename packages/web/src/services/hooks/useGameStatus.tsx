@@ -1,9 +1,14 @@
+import dayjs from 'dayjs';
 import { useQuery, UseQueryResult } from 'react-query';
 
 import { APIGameStatusResponse } from '../../types/api';
 import { serverApi } from '../api';
 
-export const useGameStatus = (): UseQueryResult<APIGameStatusResponse> => {
+type UseGameStatusData = UseQueryResult<APIGameStatusResponse, unknown> & {
+  isMaintenance: boolean;
+};
+
+export const useGameStatus = (): UseGameStatusData => {
   const result = useQuery(
     'status',
     async () => {
@@ -16,5 +21,8 @@ export const useGameStatus = (): UseQueryResult<APIGameStatusResponse> => {
     }
   );
 
-  return result;
+  const now = dayjs().unix();
+  const isMaintenance = !result.isLoading && now > result.data?.from && result.data?.to > now;
+
+  return { ...result, isMaintenance };
 };
