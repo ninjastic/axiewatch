@@ -13,24 +13,20 @@ export class ScholarController {
       return res.status(400).json({ error: 'Missing address' });
     }
 
-    try {
-      const scholar = await getScholar(address);
+    const scholar = await getScholar(address);
 
-      const pvp = await getScholarPvp(address).catch(() => null);
-      const pve = await getScholarAdventure(address).catch(() => null);
-      const historical = await getScholarHistoricalSlp(address).catch(() => null);
+    const pvp = await getScholarPvp(address).catch(() => null);
+    const pve = await getScholarAdventure(address).catch(() => null);
+    const historical = await getScholarHistoricalSlp(address).catch(() => null);
 
-      const data = {
-        address,
-        scholar,
-        pvp,
-        pve,
-        historical,
-      };
+    const data = {
+      address,
+      scholar,
+      pvp,
+      pve,
+      historical,
+    };
 
-      return res.json(data);
-    } catch (error) {
-      return res.status(500);
-    }
+    return res.json(data);
   }
 }

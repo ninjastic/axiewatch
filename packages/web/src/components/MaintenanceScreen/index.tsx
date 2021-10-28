@@ -23,8 +23,6 @@ const MaintenanceScreenComponent = (): JSX.Element => {
     return () => clearInterval(interval);
   }, [data.to]);
 
-  console.log(timer);
-
   return (
     <Flex align="center" direction="column" w="100%" px={{ base: 1, lg: 0 }}>
       <Image

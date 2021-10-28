@@ -17,7 +17,7 @@ export interface ScholarData {
 }
 
 export const getGameStatus = async (): Promise<ScholarData> => {
-  const cacheKey = 'v1:gameStatus';
+  const cacheKey = 'v1:status';
   const cacheTime = 1000 * 60 * 1; // 1 minute
   const apiUrl =
     'https://storage.googleapis.com/axie-game-assets/dlc-central/axie-battle/remote-config/appversion-prod.json';
