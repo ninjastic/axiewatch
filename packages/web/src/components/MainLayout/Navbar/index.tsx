@@ -84,7 +84,15 @@ const NavItem = ({ icon, children, link, isActive, target }: NavItemProps) => (
 
 const NavButton = ({ icon, link, name, currentTool }: NavButtonProps) => (
   <Link href={link} style={{ textDecoration: 'none' }}>
-    <Button isActive={name === currentTool} variant="ghost" leftIcon={<Icon as={icon} />} mr={2}>
+    <Button
+      isActive={name === currentTool}
+      variant="ghost"
+      leftIcon={<Icon as={icon} />}
+      mr={2}
+      fontFamily={
+        '-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";'
+      }
+    >
       {name}
     </Button>
   </Link>
