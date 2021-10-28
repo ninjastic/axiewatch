@@ -91,7 +91,7 @@ export const LoadScholarAxies = ({ address }: LoadScholarAxiesProps): JSX.Elemen
       return response.axies;
     },
     {
-      staleTime: 1000 * 60 * 15,
+      staleTime: 1000 * 60 * 5,
       retry: false,
     }
   );

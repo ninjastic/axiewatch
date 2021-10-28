@@ -76,7 +76,7 @@ function DashboardPage() {
 
       {isError && (
         <Flex align="center" direction="column" w="100%" px={{ base: 1, lg: 0 }} mt={24}>
-          <Image src="/images/axies/dead.png" alt="Dead Axie" opacity={0.8} height={{ base: 'xsm' }} />
+          <Image src="/images/axies/dead.png" alt="Dead Axie" opacity={0.8} height={{ base: 'xs' }} />
 
           <Stack align="center" spacing={0} mt={5}>
             <Text fontWeight="bold" fontSize="lg" textAlign="center">

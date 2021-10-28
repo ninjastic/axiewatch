@@ -36,6 +36,7 @@ export const useBatchScholarAxie = (addresses: string[]): UseBatchScholarAxieDat
     
           r${index}: axies(
             criteria: { stages: [4] }
+            size: 200,
             owner: "${address}"
           ) {
             total
@@ -98,7 +99,7 @@ export const useBatchScholarAxie = (addresses: string[]): UseBatchScholarAxieDat
   }
 
   const { data, isLoading } = useQuery('axies', async () => load(), {
-    staleTime: 1000 * 60 * 15,
+    staleTime: 1000 * 60 * 5,
   });
 
   return { scholarAxies: data ?? [], isLoading };
