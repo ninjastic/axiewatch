@@ -55,6 +55,12 @@ export const requestScholarData = async (address: string): Promise<ApiResponse> 
 export const insertData = async (data: ApiResponse): Promise<Tracking> => {
   const { client_id, total, blockchain_related } = data;
 
+  if (!data.client_id) {
+    throw new Error('No client id');
+  }
+
+  // return {} as Tracking;
+
   return Tracking.query().insert({
     address: client_id,
     slpAmount: blockchain_related.checkpoint + total - blockchain_related.balance,

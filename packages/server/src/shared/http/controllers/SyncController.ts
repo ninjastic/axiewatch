@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { supabase } from '../../services/supabase';
+import { supabase } from '../../../services/supabase';
 import Sync from '@models/Sync';
 
 export class SyncController {

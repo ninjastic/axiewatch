@@ -5,12 +5,12 @@ module.exports = {
   apps: [
     {
       name: 'server',
-      script: 'packages/server/dist/server.js',
+      script: 'packages/server/dist/shared/http/server.js',
       exec_mode: 'cluster',
     },
     {
       name: 'queue',
-      script: 'packages/server/dist/queue.js',
+      script: 'packages/server/dist/shared/queue/index.js',
     },
   ],
 };

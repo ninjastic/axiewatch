@@ -1,17 +1,17 @@
 {
   "name": "@axiewatch/server",
   "version": "1.0.0",
-  "main": "src/index.ts",
+  "main": "src/shared/http/server.ts",
   "private": true,
   "license": "MIT",
   "scripts": {
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
-    "start:queue": "node ./dist/queue.js",
-    "start:server": "node ./dist/server.js",
-    "dev:queue": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register ./src/queue.ts",
-    "dev:server": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register ./src/server.ts",
-    "prod:db:migrate": "dotenv -e .env.production.local node-pg-migrate",
-    "dev:db:migrate": "dotenv -e .env.development.local node-pg-migrate"
+    "start:queue": "node ./dist/shared/queue/index.js",
+    "start:workers": "node ./dist/shared/http/workers.js",
+    "start:server": "node ./dist/shared/http/server.js",
+    "dev:queue": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register ./src/shared/queue/index.ts",
+    "dev:workers": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register ./src/shared/queue/workers.ts",
+    "dev:server": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register ./src/shared/http/server.ts"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.7",

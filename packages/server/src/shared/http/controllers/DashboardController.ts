@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { randomBytes } from 'crypto';
 
-import { supabase } from '../../services/supabase';
+import { supabase } from '../../../services/supabase';
 import Dashboard from '@models/Dashboard';
 import Sync from '@models/Sync';
 
