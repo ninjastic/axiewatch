@@ -65,74 +65,72 @@ const TableComponent = ({ label, data, isLoading }: TableComponentProps): JSX.El
   const scholars = useRecoilValue(scholarsMap);
 
   return (
-    <Card p={3}>
-      <GridItem colSpan={1} minH={48}>
-        <Text px={3} py={2} fontWeight="bold">
-          {label}
-        </Text>
+    <Box>
+      <Text px={3} py={2} fontWeight="bold">
+        {label}
+      </Text>
 
-        {isLoading && (
-          <Flex align="center" justify="center" mt={5}>
-            <SkeletonCircle />
-          </Flex>
-        )}
+      {isLoading && (
+        <Flex align="center" justify="center" mt={5}>
+          <SkeletonCircle />
+        </Flex>
+      )}
 
-        {!isLoading && !data.length && (
-          <Flex align="center" justify="center" mt={5}>
-            <Text variant="faded">No data...</Text>
-          </Flex>
-        )}
+      {!isLoading && !data.length && (
+        <Flex align="center" justify="center" mt={5}>
+          <Text variant="faded">No data...</Text>
+        </Flex>
+      )}
 
-        {!isLoading && !!data.length && (
-          <Box maxH="300px" overflow="auto">
-            <Table size="sm" variant="unstyled" maxH="200px">
-              <Thead fontWeight="bold">
-                <Tr>
-                  <Td>Name</Td>
-                  <Td>per Day</Td>
-                  <Td>Yesterday</Td>
-                  <Td>Elo</Td>
-                  <Td>SLP</Td>
-                  <Td>History</Td>
-                </Tr>
-              </Thead>
+      {!isLoading && !!data.length && (
+        <Box maxH="300px" overflow="auto">
+          <Table size="sm" variant="unstyled" maxH="200px">
+            <Thead fontWeight="bold">
+              <Tr>
+                <Td>Name</Td>
+                <Td>per Day</Td>
+                <Td>Yesterday</Td>
+                <Td>Elo</Td>
+                <Td>SLP</Td>
+                <Td>History</Td>
+              </Tr>
+            </Thead>
 
-              <Tbody>
-                {data.map(result => {
-                  const { address } = result.data;
-                  const state = scholars.find(scholar => scholar.address === address);
-                  const { yesterdaySlp, slpDay, slp, pvpElo } = parseScholarData({ data: result.data });
+            <Tbody>
+              {data.map(result => {
+                const { address } = result.data;
+                const state = scholars.find(scholar => scholar.address === address);
+                const { yesterdaySlp, slpDay, slp, pvpElo } = parseScholarData({ data: result.data });
 
-                  return (
-                    <Tr key={address}>
-                      <Td>{state.name}</Td>
-                      <Td fontWeight="bold">{slpDay}</Td>
-                      <Td>{yesterdaySlp ?? '-'}</Td>
-                      <Td>
-                        <HStack spacing={1}>
-                          <Icon as={RiSwordLine} />
+                return (
+                  <Tr key={address}>
+                    <Td>{state.name}</Td>
+                    <Td fontWeight="bold">{slpDay}</Td>
+                    <Td>{yesterdaySlp ?? '-'}</Td>
+                    <Td>
+                      <HStack spacing={1}>
+                        <Icon as={RiSwordLine} />
 
-                          <Text>{pvpElo}</Text>
-                        </HStack>
-                      </Td>
-                      <Td>
-                        <HStack spacing={1}>
-                          <Image src="/images/axies/slp.png" height="14px" alt="slp" />
-                          <Text>{slp}</Text>
-                        </HStack>
-                      </Td>
-                      <Td>
-                        <SlpTrackingButton address={address} onlyIcon />
-                      </Td>
-                    </Tr>
-                  );
-                })}
-              </Tbody>
-            </Table>
-          </Box>
-        )}
-      </GridItem>
-    </Card>
+                        <Text>{pvpElo}</Text>
+                      </HStack>
+                    </Td>
+                    <Td>
+                      <HStack spacing={1}>
+                        <Image src="/images/axies/slp.png" height="14px" alt="slp" />
+                        <Text>{slp}</Text>
+                      </HStack>
+                    </Td>
+                    <Td>
+                      <SlpTrackingButton address={address} onlyIcon />
+                    </Td>
+                  </Tr>
+                );
+              })}
+            </Tbody>
+          </Table>
+        </Box>
+      )}
+    </Box>
   );
 };
 
@@ -189,8 +187,17 @@ export const NotablePerformersTable = (): JSX.Element => {
       </Flex>
 
       <SimpleGrid columns={{ base: 1, lg: 2 }} gap={3}>
-        <TableComponent label="Top Performers" data={topScholars} isLoading={isLoading} />
-        <TableComponent label="Bottom Performers" data={bottomScholars} isLoading={isLoading} />
+        <GridItem colSpan={1} minH={64}>
+          <Card p={3} h="100%">
+            <TableComponent label="Top Performers" data={topScholars} isLoading={isLoading} />
+          </Card>
+        </GridItem>
+
+        <GridItem colSpan={1} minH={64}>
+          <Card p={3} h="100%">
+            <TableComponent label="Bottom Performers" data={bottomScholars} isLoading={isLoading} />
+          </Card>
+        </GridItem>
       </SimpleGrid>
     </Stack>
   );

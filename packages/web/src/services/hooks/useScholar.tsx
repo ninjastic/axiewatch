@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from 'react-query';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { APIScholarResponse } from '../../types/api';
 import { serverApi } from '../api';
@@ -15,6 +15,7 @@ interface UseScholarProps {
 
 export const useScholar = ({ address }: UseScholarProps): UseQueryResult<APIScholarResponse> => {
   const scholarParseOptions = useRecoilValue(scholarParseOptionsAtom);
+  const [errored, setErrored] = useState(false);
 
   const setScholarState = useRecoilCallback(({ set, snapshot }) => (scholar: ScholarSetter) => {
     const prevState = snapshot.getLoadable(scholarState(scholar.address)).getValue();
@@ -31,14 +32,10 @@ export const useScholar = ({ address }: UseScholarProps): UseQueryResult<APIScho
       return response.data;
     },
     {
+      enabled: !errored,
+      onError: () => setErrored(true),
       staleTime: 1000 * 60 * 15,
-      retry: (count: number) => {
-        if (count >= 3) {
-          setScholarState({ address, errored: true });
-          return false;
-        }
-        return true;
-      },
+      retry: false,
     }
   );
 

@@ -1,4 +1,4 @@
-import { Stack, Text, SimpleGrid } from '@chakra-ui/react';
+import { Stack, Text, SimpleGrid, Button } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 import { useMemo } from 'react';
 
@@ -8,12 +8,13 @@ import { AccumulatedSlpCard } from './AccumulatedSlpCard';
 import { TotalScholarsCard } from './TotalScholarsCard';
 import { NextClaimCard } from './NextClaimCard';
 import { SlpAmountCard } from './SlpAmountCard';
+import { Card } from '../Card';
 
 export const SummaryCards = (): JSX.Element => {
   const scholars = useRecoilValue(scholarsMap);
   const addresses = scholars.filter(scholar => !scholar.inactive).map(scholar => scholar.address);
 
-  const { results, isLoading } = useBatchScholar({ addresses });
+  const { results, isLoading, isError, refetchAll } = useBatchScholar({ addresses });
   const resultsWithSuccess = results.filter(result => result.isSuccess);
 
   const farmedYesterday = useMemo(
@@ -49,24 +50,35 @@ export const SummaryCards = (): JSX.Element => {
   );
 
   return (
-    <Stack>
+    <Stack h="100%">
       <Text fontWeight="bold" fontSize="lg">
         Summary
       </Text>
 
-      <SimpleGrid columns={1} gap={2}>
-        <TotalScholarsCard data={results} isLoading={isLoading} />
+      {!isError && (
+        <SimpleGrid columns={1} gap={2}>
+          <TotalScholarsCard data={results} isLoading={isLoading} />
 
-        <SimpleGrid columns={{ base: 1, lg: 2 }} gap={2}>
-          <AccumulatedSlpCard data={results} isLoading={isLoading} />
-          <NextClaimCard data={results} isLoading={isLoading} />
-        </SimpleGrid>
+          <SimpleGrid columns={{ base: 1, lg: 2 }} gap={2}>
+            <AccumulatedSlpCard data={results} isLoading={isLoading} />
+            <NextClaimCard data={results} isLoading={isLoading} />
+          </SimpleGrid>
 
-        <SimpleGrid columns={{ base: 1, lg: 2 }} gap={2}>
-          <SlpAmountCard label="Yesterday" amount={farmedYesterday} isLoading={isLoading} />
-          <SlpAmountCard label="Today" amount={farmedToday} isLoading={isLoading} />
+          <SimpleGrid columns={{ base: 1, lg: 2 }} gap={2}>
+            <SlpAmountCard label="Yesterday" amount={farmedYesterday} isLoading={isLoading} />
+            <SlpAmountCard label="Today" amount={farmedToday} isLoading={isLoading} />
+          </SimpleGrid>
         </SimpleGrid>
-      </SimpleGrid>
+      )}
+
+      {isError && (
+        <Card p={3} h="100%">
+          <Stack align="center" justify="center" h="100%">
+            <Text fontWeight="bold">Something went wrong...</Text>
+            <Button onClick={() => refetchAll()}>Retry</Button>
+          </Stack>
+        </Card>
+      )}
     </Stack>
   );
 };

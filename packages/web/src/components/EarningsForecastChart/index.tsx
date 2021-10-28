@@ -1,4 +1,4 @@
-import { Flex, SkeletonCircle, Text, Divider, Stack, useTheme, useColorModeValue } from '@chakra-ui/react';
+import { Flex, SkeletonCircle, Text, Divider, Stack, Button, useTheme, useColorModeValue } from '@chakra-ui/react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
 import { useRecoilValue } from 'recoil';
 
@@ -46,7 +46,7 @@ export const EarningsForecastChart = (): JSX.Element => {
   const addresses = scholars.map(scholar => scholar.address);
   const { colors } = useTheme();
 
-  const { results, isLoading } = useBatchScholar({ addresses });
+  const { results, isLoading, isError, refetchAll } = useBatchScholar({ addresses });
   const resultsWithSuccess = results.filter(result => result.isSuccess);
 
   const accumulated = resultsWithSuccess.reduce((prev, currResult) => {
@@ -78,6 +78,15 @@ export const EarningsForecastChart = (): JSX.Element => {
       <Flex align="center" justify="center" h="290px">
         <SkeletonCircle alignSelf="center" />
       </Flex>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Stack align="center" justify="center" h="290px">
+        <Text fontWeight="bold">Something went wrong...</Text>
+        <Button onClick={() => refetchAll()}>Retry</Button>
+      </Stack>
     );
   }
 

@@ -78,10 +78,7 @@ export const SlpTrackingChart = ({ address }: DailyChartProps): JSX.Element => {
     {
       staleTime: 1000 * 60 * 60 * 2, // 2 hours
       enabled: !isUserLoading,
-      retry: (count: number, error: AxiosError) => {
-        if (error?.response?.status === 500 || count >= 3) return false;
-        return true;
-      },
+      retry: false,
     }
   );
 

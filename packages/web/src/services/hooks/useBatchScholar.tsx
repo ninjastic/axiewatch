@@ -1,5 +1,6 @@
 import { useQueries, UseQueryOptions, UseQueryResult } from 'react-query';
-import { useRecoilCallback } from 'recoil';
+import { atom, useRecoilCallback, useRecoilState } from 'recoil';
+import { useCallback, useMemo } from 'react';
 
 import { APIScholarResponse } from '../../types/api';
 import { serverApi } from '../api';
@@ -15,10 +16,19 @@ interface UseBatchScholarProps {
 
 interface UseBatchScholarData {
   isLoading: boolean;
+  isError: boolean;
+  refetchAll: () => void;
   results: UseQueryResult<APIScholarResponse>[];
 }
 
+const erroredAtom = atom<string[]>({
+  key: 'erroredAtom',
+  default: [],
+});
+
 export const useBatchScholar = ({ addresses, enabled = true }: UseBatchScholarProps): UseBatchScholarData => {
+  const [errored, setErrored] = useRecoilState(erroredAtom);
+
   const setScholarState = useRecoilCallback(({ set, snapshot }) => (scholar: ScholarSetter) => {
     const prevState = snapshot.getLoadable(scholarState(scholar.address)).getValue();
     set(scholarState(scholar.address), { ...prevState, ...scholar });
@@ -36,20 +46,19 @@ export const useBatchScholar = ({ addresses, enabled = true }: UseBatchScholarPr
 
       return data;
     },
-    enabled,
+    enabled: enabled && !errored.includes(address),
+    onError: () => setErrored(prev => [...prev, address]),
     staleTime: 1000 * 60 * 15,
-    retry: (count: number) => {
-      if (count >= 3) {
-        setScholarState({ address, errored: true });
-        return false;
-      }
-
-      return true;
-    },
+    retry: false,
   }));
 
   const results = useQueries(queries) as UseQueryResult<APIScholarResponse>[];
-  const isLoading = results.some(r => r.isLoading);
+  const isLoading = useMemo(() => results.some(r => r.isLoading), [results]);
+  const isError = useMemo(() => results.every(r => r.isError), [results]);
 
-  return { isLoading, results };
+  const refetchAll = useCallback(() => {
+    results.forEach(result => result.refetch());
+  }, [results]);
+
+  return { isLoading, isError, refetchAll, results };
 };

@@ -32,13 +32,7 @@ export const useBatchScholarDaily = ({ addresses }: useBatchScholarDailyProps): 
       return { ...data, address };
     },
     staleTime: 1000 * 60 * 15,
-    retry: (count: number) => {
-      if (count >= 3) {
-        return false;
-      }
-
-      return true;
-    },
+    retry: false,
   }));
 
   const results = useQueries(queries) as UseQueryResult<ScholarDailyResult>[];

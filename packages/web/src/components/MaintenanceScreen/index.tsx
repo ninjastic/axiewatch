@@ -25,12 +25,7 @@ const MaintenanceScreenComponent = (): JSX.Element => {
 
   return (
     <Flex align="center" direction="column" w="100%" px={{ base: 1, lg: 0 }}>
-      <Image
-        src="https://lh3.googleusercontent.com/5JAB2gVEtstrHg-tA55FXdPM1P8onQe6JZV-AVU04eJoeoX7Ghh-ein9s35acs4qPdhuonXuG9Pzp1HdEBIV8Uhz87goXcbzS66hyQ=w600"
-        alt="Confused Axie"
-        opacity={0.8}
-        height={{ base: 'xsm', lg: 'sm' }}
-      />
+      <Image src="/images/axies/confused.png" alt="Confused Axie" opacity={0.8} height={{ base: 'xsm', lg: 'sm' }} />
 
       <Stack align="center" spacing={0} mt={3}>
         <Text fontWeight="bold" fontSize="lg" textAlign="center">

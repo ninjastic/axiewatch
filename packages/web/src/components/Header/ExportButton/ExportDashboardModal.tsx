@@ -17,7 +17,6 @@ import { useState, useEffect } from 'react';
 import { MdContentCopy } from 'react-icons/md';
 import { Formik, Form } from 'formik';
 import { useQuery } from 'react-query';
-import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { Select } from 'chakra-react-select';
@@ -57,11 +56,8 @@ export const ExportDashboardModal = (): JSX.Element => {
       enabled: !!auth.user,
       staleTime: Infinity,
       refetchOnMount: 'always',
-      retry: (count: number, error: AxiosError) => {
-        if (error.response?.status === 404) return false;
-        if (count > 2) return false;
-        return true;
-      },
+      retry: false,
+      onError: () => toast('The request failed', { type: 'error' }),
     }
   );
 

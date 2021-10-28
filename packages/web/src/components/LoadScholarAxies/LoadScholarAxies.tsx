@@ -92,13 +92,7 @@ export function LoadScholarAxies({ address }: LoadScholarAxiesProps) {
     },
     {
       staleTime: 1000 * 60 * 15,
-      retry: (count: number) => {
-        if (count >= 3) {
-          return false;
-        }
-
-        return true;
-      },
+      retry: false,
     }
   );
 
