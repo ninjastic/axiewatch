@@ -1,4 +1,4 @@
-import { Box, Spinner, Text, Flex, HStack } from '@chakra-ui/react';
+import { Box, Spinner, Text, Flex, HStack, Alert, AlertDescription, AlertIcon } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { useState } from 'react';
 
@@ -51,7 +51,15 @@ export const BattlesModal = ({ address }: BattlesModalProps): JSX.Element => {
 
   return (
     <Box minH="240px">
-      <Flex align="center" justify="space-between" mb={3}>
+      <Alert status="warning">
+        <AlertIcon />
+        <AlertDescription>
+          The recent update broke this feature. Since 28th October, you can&apos;t watch matches and the list won&apos;t
+          be updated anymore.
+        </AlertDescription>
+      </Alert>
+
+      <Flex align="center" justify="space-between" my={3}>
         <Text fontSize="lg">Total of {data.items.length} battles</Text>
 
         <HStack>

@@ -26,7 +26,7 @@ export const ScholarAxies = ({ address, shouldLoad = true }: ScholarAxiesProps):
               alignItems="center"
               justifyContent="center"
               w="96px"
-              h="72px"
+              h={{ lg: '72px' }}
             >
               <SkeletonCircle />
             </Box>
@@ -52,11 +52,11 @@ export const ScholarAxies = ({ address, shouldLoad = true }: ScholarAxiesProps):
                   <Image
                     src={axie.image}
                     w="96px"
-                    h="72px"
+                    h={{ lg: '72px' }}
                     cursor="pointer"
                     alt={`Axie ${axie.id}`}
                     fallback={
-                      <Box d="flex" alignItems="center" justifyContent="center" w="96px" h="72px">
+                      <Box d="flex" alignItems="center" justifyContent="center" w="96px" h={{ lg: '72px' }}>
                         <SkeletonCircle />
                       </Box>
                     }

@@ -49,7 +49,7 @@ export const useScholar = ({ address }: UseScholarProps): UseQueryResult<APIScho
       });
       setScholarState({ address, ...scholarData });
     }
-  }, [result.data, scholarParseOptions.includeTodayOnAverageSlp]);
+  }, [address, result.data, scholarParseOptions.includeTodayOnAverageSlp, setScholarState]);
 
   return result;
 };
