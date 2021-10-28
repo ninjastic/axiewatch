@@ -17,6 +17,11 @@ const MaintenanceScreenComponent = (): JSX.Element => {
       const minutes = String(Math.floor((secondsLeft / 60) % 60)).padStart(2, '0');
       const seconds = String(secondsLeft % 60).padStart(2, '0');
 
+      if (secondsLeft <= 0) {
+        setTimer('00h 00m 00s');
+        return;
+      }
+
       setTimer(`${hours}h ${minutes}m ${seconds}s`);
     }, 1000);
 
