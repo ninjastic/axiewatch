@@ -1,4 +1,4 @@
-import { Flex, Image, Stack, Text } from '@chakra-ui/react';
+import { Flex, Image, Stack, Text, useColorModeValue } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
@@ -26,26 +26,26 @@ const MaintenanceScreenComponent = (): JSX.Element => {
   console.log(timer);
 
   return (
-    <Flex align="center" direction="column" w="100%">
+    <Flex align="center" direction="column" w="100%" px={{ base: 1, lg: 0 }}>
       <Image
         src="https://lh3.googleusercontent.com/5JAB2gVEtstrHg-tA55FXdPM1P8onQe6JZV-AVU04eJoeoX7Ghh-ein9s35acs4qPdhuonXuG9Pzp1HdEBIV8Uhz87goXcbzS66hyQ=w600"
         alt="Confused Axie"
         opacity={0.8}
-        height="sm"
+        height={{ base: 'xsm', lg: 'sm' }}
       />
 
       <Stack align="center" spacing={0} mt={3}>
-        <Text fontWeight="bold" fontSize="lg">
+        <Text fontWeight="bold" fontSize="lg" textAlign="center">
           Looks like the game is under maintenance
         </Text>
-        <Text fontSize="sm" variant="faded">
+        <Text fontSize="sm" variant="faded" textAlign="center">
           This page requires the game API to work properly.
         </Text>
       </Stack>
 
       <Stack align="center" spacing={0} mt={10}>
         <Text fontWeight="bold">Time Left:</Text>
-        <Text fontSize="2xl" color="yellow.400" fontWeight="bold">
+        <Text fontSize="2xl" color={useColorModeValue('orange.400', 'yellow.400')} fontWeight="bold">
           {timer}
         </Text>
         <Text variant="faded" fontSize="sm">
