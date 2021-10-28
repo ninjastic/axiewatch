@@ -81,9 +81,10 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
   };
 
   const shouldShowMaintenance = useMemo(() => {
-    const maintenanceAffectedPages = ['', 'scholars', 'calendar'];
+    const maintenanceAffectedPages = ['', 'scholars', 'calendar', 'dashboard/[slug]'];
+    const pageMatches = maintenanceAffectedPages.includes(router.route.replace('/', ''));
 
-    return gameStatus.isMaintenance && maintenanceAffectedPages.includes(router.route.replace('/', ''));
+    return gameStatus.isMaintenance && pageMatches;
   }, [gameStatus.isMaintenance, router.route]);
 
   return (
