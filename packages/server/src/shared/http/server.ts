@@ -15,9 +15,9 @@ const isProd = process.env.NODE_ENV === 'production';
 const app = express();
 
 const speedLimiter = slowDown({
-  windowMs: 1000 * 60 * 10, // 10 minutes
+  windowMs: 1000 * 60 * 15, // 15 minutes
   delayAfter: 10000,
-  delayMs: 100,
+  delayMs: 1000,
 });
 
 app.use(cors());
