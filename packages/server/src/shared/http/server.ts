@@ -3,7 +3,6 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
-import slowDown from 'express-slow-down';
 import 'express-async-errors';
 
 import '../database';
@@ -14,15 +13,8 @@ const isProd = process.env.NODE_ENV === 'production';
 
 const app = express();
 
-const speedLimiter = slowDown({
-  windowMs: 1000 * 60 * 15, // 15 minutes
-  delayAfter: 10000,
-  delayMs: 1000,
-});
-
 app.use(cors());
 app.use(helmet());
-app.use(speedLimiter);
 app.use(morgan(isProd ? 'tiny' : 'dev'));
 app.use(express.json());
 app.use('/v1', router);
