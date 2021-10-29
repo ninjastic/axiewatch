@@ -17,7 +17,7 @@ export const ErroredItem = ({ address, refetch }: ErroredItemProps): JSX.Element
 
   return (
     <Card w="100%" rounded="md">
-      <Box minH="90px" d="flex" justifyContent="space-between" alignItems="center" px="5">
+      <Box minH="75px" d="flex" justifyContent="space-between" alignItems="center" px="5">
         <Box>
           <Text
             fontSize="md"

@@ -147,7 +147,7 @@ export const SelectPaymentsPage = (): JSX.Element => {
                 <Tooltip label={preferences.managerAddress} width="56">
                   <div>
                     <Text fontWeight="bold">Manager Address</Text>
-                    <Text opacity={0.8}>
+                    <Text opacity={0.9}>
                       {preferences.managerAddress.substr(0, 12)}...
                       {preferences.managerAddress.substr(preferences.managerAddress.length - 6)}
                     </Text>

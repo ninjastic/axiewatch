@@ -30,7 +30,7 @@ const MaintenanceScreenComponent = (): JSX.Element => {
 
   return (
     <Flex align="center" direction="column" w="100%" px={{ base: 1, lg: 0 }}>
-      <Image src="/images/axies/confused.png" alt="Confused Axie" opacity={0.8} height={{ base: 'xs', lg: 'sm' }} />
+      <Image src="/images/axies/confused.png" alt="Confused Axie" opacity={0.9} height={{ base: 'xs', lg: 'sm' }} />
 
       <Stack align="center" spacing={0} mt={3}>
         <Text fontWeight="bold" fontSize="lg" textAlign="center">

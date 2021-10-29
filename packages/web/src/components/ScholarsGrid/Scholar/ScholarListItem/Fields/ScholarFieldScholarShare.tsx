@@ -1,4 +1,5 @@
-import { Text, GridItem, SkeletonText, HStack } from '@chakra-ui/react';
+import { Text, SkeletonText, Stack, HStack, Tooltip } from '@chakra-ui/react';
+import { IoSchoolOutline } from 'react-icons/io5';
 import { useRecoilValue } from 'recoil';
 import { useMemo } from 'react';
 
@@ -6,6 +7,32 @@ import { formatter } from '../../../../../services/formatter';
 import { priceAtom } from '../../../../../recoil/price';
 import { scholarSelector } from '../../../../../recoil/scholars';
 import { preferencesAtom } from '../../../../../recoil/preferences';
+
+interface TooltipComponentProps {
+  percentage: number;
+  slp: number;
+}
+
+const TooltipComponent = ({ percentage, slp }: TooltipComponentProps): JSX.Element => {
+  const price = useRecoilValue(priceAtom);
+
+  const fiatValue = useMemo(
+    () => formatter((slp * price.values.slp * percentage) / 100, price.locale),
+    [percentage, price.locale, price.values.slp, slp]
+  );
+
+  return (
+    <Stack spacing={0} align="center">
+      <Text>{fiatValue}</Text>
+
+      <HStack>
+        <Text opacity={0.9} fontSize="sm">
+          {percentage}% share
+        </Text>
+      </HStack>
+    </Stack>
+  );
+};
 
 interface ScholarFieldScholarShareProps {
   address: string;
@@ -15,7 +42,6 @@ interface ScholarFieldScholarShareProps {
 export const ScholarFieldScholarShare = ({ address, isLoading }: ScholarFieldScholarShareProps): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
   const preferences = useRecoilValue(preferencesAtom);
-  const price = useRecoilValue(priceAtom);
 
   const slp = useMemo(
     () => (preferences.includeRoninBalance ? scholar.slp + scholar.roninSlp : scholar.slp),
@@ -24,30 +50,20 @@ export const ScholarFieldScholarShare = ({ address, isLoading }: ScholarFieldSch
 
   const slpValue = useMemo(() => Math.floor((slp * scholar.shares.scholar) / 100), [scholar.shares.scholar, slp]);
 
-  const fiatValue = useMemo(
-    () => formatter((slp * price.values.slp * scholar.shares.scholar) / 100, price.locale),
-    [price.locale, price.values.slp, scholar.shares.scholar, slp]
-  );
-
   return (
-    <GridItem colSpan={4}>
-      <SkeletonText isLoaded={!isLoading} noOfLines={2}>
-        <HStack spacing={0}>
-          <Text fontWeight="bold" mr={1}>
+    <SkeletonText isLoaded={!isLoading} noOfLines={2}>
+      <Tooltip label={<TooltipComponent percentage={scholar.shares.scholar} slp={slp} />}>
+        <Stack spacing={0}>
+          <Text opacity={0.9} fontSize="xs">
             Scholar
           </Text>
-          <Text opacity={0.8} fontSize="sm">
-            ({scholar.shares.scholar}%)
-          </Text>
-        </HStack>
 
-        <HStack>
-          <Text>{slpValue}</Text>
-          <Text opacity={0.8} fontSize="sm">
-            ({fiatValue})
-          </Text>
-        </HStack>
-      </SkeletonText>
-    </GridItem>
+          <HStack>
+            <IoSchoolOutline />
+            <Text>{slpValue}</Text>
+          </HStack>
+        </Stack>
+      </Tooltip>
+    </SkeletonText>
   );
 };

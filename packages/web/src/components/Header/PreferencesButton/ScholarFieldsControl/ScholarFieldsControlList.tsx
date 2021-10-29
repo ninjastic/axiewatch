@@ -25,6 +25,7 @@ export const ScholarFieldsControlList = ({ fields, onChange }: ScholarFieldsCont
     'adventureSlp',
     'lastClaim',
     'nextClaim',
+    'divider',
   ] as ScholarFields[];
 
   const [activeFields, setActiveFields] = useState(fieldsList.filter(field => fields.includes(field)));

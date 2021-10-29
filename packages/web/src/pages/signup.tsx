@@ -78,7 +78,7 @@ export const SignUpPage = (): JSX.Element => {
         </Formik>
 
         <Box textAlign="center" mt={5}>
-          <Text opacity={0.8}>
+          <Text opacity={0.9}>
             Already have an account?{' '}
             <Text fontWeight="bold" as="span">
               <Link href="/signin">Sign in.</Link>

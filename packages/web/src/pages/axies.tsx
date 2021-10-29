@@ -122,7 +122,7 @@ export const Axies = (): JSX.Element => {
     <Box h="full" maxW="1450px" margin="auto" p={3}>
       <Box>
         <Heading as="h2">Axies</Heading>
-        <Text opacity={0.8}>See all your scholar axies.</Text>
+        <Text opacity={0.9}>See all your scholar axies.</Text>
       </Box>
 
       {isLoading && scholars.length && (

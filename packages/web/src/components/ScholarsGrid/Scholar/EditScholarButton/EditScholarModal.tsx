@@ -97,7 +97,7 @@ export const EditScholarModal = ({ name, address }: EditScholarModalParams): JSX
           <FormControl id="address">
             <FormLabel>Address (Ronin)</FormLabel>
 
-            <Text opacity={0.8}>{values.address}</Text>
+            <Text opacity={0.9}>{values.address}</Text>
           </FormControl>
 
           <FormControl id="name" isRequired>

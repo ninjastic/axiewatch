@@ -1,1 +1,0 @@
-export { ScholarFieldsSelector } from './ScholarFieldsSelector';

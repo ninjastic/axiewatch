@@ -130,7 +130,7 @@ export const ListForm = (): JSX.Element => {
               </Text>
             </HStack>
 
-            <Text opacity={0.8} fontSize="sm">
+            <Text opacity={0.9} fontSize="sm">
               [scholar/manager/investor]
             </Text>
           </Stack>

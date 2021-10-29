@@ -1,7 +1,7 @@
 import { SimpleGrid, Icon, GridItem } from '@chakra-ui/react';
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
 import { useRecoilValue } from 'recoil';
-import { useState, Fragment, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 
 import { scholarFieldsAtom, scholarSelector, ScholarFields } from '../../../../recoil/scholars';
 import { Card } from '../../../Card';
@@ -45,19 +45,19 @@ export const ScholarListItem = ({ address, isLoading, isError, refetch }: ItemPa
         },
         slp: {
           element: <ScholarFieldSlp address={address} isLoading={isLoading} />,
-          size: 4,
+          size: 3,
         },
         scholarShare: {
           element: <ScholarFieldScholarShare address={address} isLoading={isLoading} />,
-          size: 4,
+          size: 3,
         },
         managerShare: {
           element: <ScholarFieldManagerShare address={address} isLoading={isLoading} />,
-          size: 4,
+          size: 3,
         },
         investorShare: {
           element: <ScholarFieldInvestorShare address={address} isLoading={isLoading} />,
-          size: 4,
+          size: 3,
         },
         arenaElo: {
           element: <ScholarFieldArenaElo address={address} isLoading={isLoading} refetch={refetch} />,
@@ -69,11 +69,11 @@ export const ScholarListItem = ({ address, isLoading, isError, refetch }: ItemPa
         },
         yesterdaySlp: {
           element: <ScholarFieldYesterdaySlp address={address} isLoading={isLoading} />,
-          size: 4,
+          size: 3,
         },
         slpDay: {
           element: <ScholarFieldSlpDay address={address} isLoading={isLoading} />,
-          size: 4,
+          size: 3,
         },
         adventureSlp: {
           element: <ScholarFieldAdventureSlp address={address} isLoading={isLoading} />,
@@ -110,22 +110,27 @@ export const ScholarListItem = ({ address, isLoading, isError, refetch }: ItemPa
   }
 
   return (
-    <Card w="100%" minH="90px" opacity={scholar.inactive ? 0.4 : 1}>
+    <Card w="100%" minH="75px" opacity={scholar.inactive ? 0.4 : 1}>
       <SimpleGrid
         alignItems="center"
-        minH="90px"
+        minH="75px"
         w="100%"
         cursor="pointer"
         onClick={handleToggle}
         columns={columns + 1}
-        gap={8}
+        gap={5}
         px={5}
       >
-        {scholarFields.map(field => (fields[field] ? <Fragment key={field}>{fields[field].element}</Fragment> : null))}
+        {scholarFields.map(field =>
+          fields[field] ? (
+            <GridItem key={field} colSpan={fields[field].size}>
+              {fields[field].element}
+            </GridItem>
+          ) : null
+        )}
 
         <GridItem ml={-5} colSpan={1}>
           {show && <Icon fontSize="2xl" as={BsChevronUp} opacity={!isLoading ? 0.5 : 1} />}
-
           {!show && <Icon fontSize="2xl" as={BsChevronDown} opacity={!isLoading ? 0.5 : 1} />}
         </GridItem>
       </SimpleGrid>

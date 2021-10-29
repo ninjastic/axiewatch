@@ -28,7 +28,7 @@ const FilterInputTotalSLP = ({ value, setFilter, formValues }: FilterInputProps)
     <Box>
       <FormLabel>Total SLP</FormLabel>
 
-      <HStack spacing={5} opacity={0.8}>
+      <HStack spacing={5} opacity={0.9}>
         <Text fontSize="lg">from</Text>
         <Code d="flex" minH={7} minW={14} justifyContent="center" alignItems="center">
           <Input

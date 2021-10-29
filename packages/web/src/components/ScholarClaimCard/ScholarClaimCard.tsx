@@ -70,7 +70,7 @@ export const ScholarClaimCard = ({ scholarData, isSelected, toggleSelect }: Scho
               <Image src="/images/axies/slp.png" width="16px" height="16px" alt="slp" />
               <Text>{slp}</Text>
 
-              <Text fontSize="sm" opacity={0.8}>
+              <Text fontSize="sm" opacity={0.9}>
                 {managerAmount} (M) / {scholarAmount} (S)
               </Text>
             </HStack>
@@ -85,7 +85,7 @@ export const ScholarClaimCard = ({ scholarData, isSelected, toggleSelect }: Scho
           {paymentAddress && (
             <Box>
               <Text>Payment address configured!</Text>
-              <Text fontSize={12} opacity={0.8}>
+              <Text fontSize={12} opacity={0.9}>
                 {paymentAddress}
               </Text>
             </Box>

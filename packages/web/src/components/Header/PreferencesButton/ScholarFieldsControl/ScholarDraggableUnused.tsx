@@ -14,10 +14,10 @@ export const ScholarDraggableUnused = ({ fields }: ScholarDraggableUnusedProps):
       {provided => (
         <Box
           p={3}
-          borderWidth={1}
+          borderWidth={2}
           borderStyle="dotted"
           borderRadius="md"
-          h="50px"
+          h="90px"
           w="100%"
           ref={provided.innerRef}
           {...provided.droppableProps}

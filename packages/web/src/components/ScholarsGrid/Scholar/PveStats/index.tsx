@@ -1,6 +1,5 @@
-import { Box, Text, HStack, Spinner } from '@chakra-ui/react';
+import { Box, Text, Spinner } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
-import Image from 'next/image';
 
 import { serverApi } from '../../../../services/api';
 import { APIScholarResponse } from '@src/types/api';
@@ -38,18 +37,14 @@ export const PveStats = ({ address, shouldLoad = true }: PveStatsProps): JSX.Ele
   if (isError) {
     return (
       <Box>
-        <Text opacity={0.8}>Error</Text>
+        <Text opacity={0.9}>Error</Text>
       </Box>
     );
   }
 
   return (
-    <HStack align="flex-start">
-      <Image src="/images/axies/slp.png" width="18px" height="18px" alt="slp" />
-
-      <Text>
-        {data?.pve.slp} / {data?.pve.maxSlp}
-      </Text>
-    </HStack>
+    <Text>
+      {data?.pve.slp} / {data?.pve.maxSlp}
+    </Text>
   );
 };

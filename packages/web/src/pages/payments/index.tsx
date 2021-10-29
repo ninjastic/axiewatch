@@ -47,7 +47,7 @@ export const PaymentsPage = (): JSX.Element => {
                       {payment.name}
                     </Text>
 
-                    <Text opacity={0.8}>{payment.address}</Text>
+                    <Text opacity={0.9}>{payment.address}</Text>
                   </HStack>
 
                   {payment.claim && (
@@ -115,7 +115,7 @@ export const PaymentsPage = (): JSX.Element => {
                 Previous page
               </Button>
 
-              <Text opacity={0.8}>
+              <Text opacity={0.9}>
                 Page {page + 1} of {Math.ceil(paymentsHistory.length / limit)}
               </Text>
 

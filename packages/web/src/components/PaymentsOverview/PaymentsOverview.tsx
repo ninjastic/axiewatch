@@ -79,11 +79,11 @@ export const PaymentsOverview = ({ status }: PaymentsOverviewProps): JSX.Element
 
       <Text fontSize="lg" mt={3}>
         - You claimed a total of{' '}
-        <Text opacity={0.8} as="span" fontWeight="bold">
+        <Text opacity={0.9} as="span" fontWeight="bold">
           {statusInfo.claimed} SLP
         </Text>{' '}
         from{' '}
-        <Text opacity={0.8} as="span" fontWeight="bold">
+        <Text opacity={0.9} as="span" fontWeight="bold">
           {status.length}
         </Text>{' '}
         scholars.
@@ -91,7 +91,7 @@ export const PaymentsOverview = ({ status }: PaymentsOverviewProps): JSX.Element
 
       <Text fontSize="lg">
         - You transfered{' '}
-        <Text opacity={0.8} as="span" fontWeight="bold">
+        <Text opacity={0.9} as="span" fontWeight="bold">
           {statusInfo.transferedManager} SLP
         </Text>{' '}
         to the manager address.
@@ -99,7 +99,7 @@ export const PaymentsOverview = ({ status }: PaymentsOverviewProps): JSX.Element
 
       <Text fontSize="lg">
         - You transfered{' '}
-        <Text opacity={0.8} as="span" fontWeight="bold">
+        <Text opacity={0.9} as="span" fontWeight="bold">
           {statusInfo.transferedScholar} SLP
         </Text>{' '}
         to your scholars.
@@ -107,7 +107,7 @@ export const PaymentsOverview = ({ status }: PaymentsOverviewProps): JSX.Element
 
       <Text fontSize="lg">
         - You saved approximately{' '}
-        <Text opacity={0.8} as="span" fontWeight="bold">
+        <Text opacity={0.9} as="span" fontWeight="bold">
           {minutesSaved} minutes
         </Text>{' '}
         by using our automatic payment tool.

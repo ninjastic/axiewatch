@@ -40,7 +40,7 @@ export const ExportButton = (): JSX.Element => {
     title: () => (
       <Box>
         <Text>Export Dashboard</Text>
-        <Text fontSize="sm" fontWeight="normal" opacity={0.8}>
+        <Text fontSize="sm" fontWeight="normal" opacity={0.9}>
           Create your shareable dashboard.
         </Text>
       </Box>

@@ -1,20 +1,10 @@
-import { useQuery } from 'react-query';
+import { useQuery, UseQueryResult } from 'react-query';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { gql } from 'graphql-request';
-import { useEffect } from 'react';
 
-import { axieInfinityGraphQl } from '../../services/api';
+import { axieInfinityGraphQl } from '../api';
 import { scholarAxies, scholarSelector, Axie } from '../../recoil/scholars';
-import { parseAxieData } from '../../services/utils/parseAxieData';
-
-interface ResponseData {
-  total: number;
-  results: Axie[];
-}
-
-interface Response {
-  axies: ResponseData;
-}
+import { parseAxieData } from '../utils/parseAxieData';
 
 const GetAxieBriefListQuery = gql`
   query GetAxieBriefList(
@@ -66,17 +56,31 @@ const GetAxieBriefListQuery = gql`
   }
 `;
 
-interface LoadScholarAxiesProps {
-  address: string;
-  size?: number;
+interface ResponseData {
+  total: number;
+  results: Axie[];
 }
 
-export const LoadScholarAxies = ({ address, size = 24 }: LoadScholarAxiesProps): JSX.Element => {
+interface Response {
+  axies: ResponseData;
+}
+
+interface UseScholarAxieProps {
+  address: string;
+  size?: number;
+  enabled?: boolean;
+}
+
+export const useScholarAxie = ({
+  address,
+  size = 24,
+  enabled = true,
+}: UseScholarAxieProps): UseQueryResult<ResponseData> => {
   const setAxies = useSetRecoilState(scholarAxies(address));
   const scholar = useRecoilValue(scholarSelector(address));
 
-  const { data } = useQuery(
-    ['axies', address],
+  const result = useQuery(
+    ['axies', address, size],
     async () => {
       const response = await axieInfinityGraphQl.request<Response>(GetAxieBriefListQuery, {
         auctionType: 'All',
@@ -89,18 +93,9 @@ export const LoadScholarAxies = ({ address, size = 24 }: LoadScholarAxiesProps):
         sort: 'IdDesc',
       });
 
-      return response.axies;
-    },
-    {
-      staleTime: 1000 * 60 * 5,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+      console.log(response);
 
-  useEffect(() => {
-    if (data) {
-      const axies = data.results.map(axie => parseAxieData(axie));
+      const axies = response.axies.results.map(axie => parseAxieData(axie));
 
       setAxies({
         address,
@@ -109,8 +104,16 @@ export const LoadScholarAxies = ({ address, size = 24 }: LoadScholarAxiesProps):
         loaded: true,
         errored: false,
       });
-    }
-  }, [address, data, scholar.name, setAxies]);
 
-  return null;
+      return response.axies;
+    },
+    {
+      enabled,
+      staleTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
+      retry: false,
+    }
+  );
+
+  return result;
 };

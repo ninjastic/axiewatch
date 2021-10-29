@@ -28,7 +28,9 @@ export const Collapsed = ({ address, show }: CollapsedProps): JSX.Element => {
             <HStack spacing={10}>
               {!scholarFields.includes('adventureSlp') && (
                 <Stack>
-                  <Text fontWeight="bold">Daily Adventure</Text>
+                  <Text fontWeight="bold" fontSize="sm">
+                    Daily Adventure
+                  </Text>
                   <PveStats address={address} shouldLoad={show} />
                 </Stack>
               )}

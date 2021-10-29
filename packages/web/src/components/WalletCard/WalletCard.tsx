@@ -85,7 +85,7 @@ export const WalletCard = ({ address, data }: WalletCardProps): JSX.Element => {
         <GridItem colSpan={{ base: 4, lg: 1 }}>
           <Stack spacing={0}>
             <Text fontWeight="bold">Worth</Text>
-            <Text opacity={0.8}>~{totalWorth}</Text>
+            <Text opacity={0.9}>~{totalWorth}</Text>
           </Stack>
         </GridItem>
 
@@ -97,7 +97,7 @@ export const WalletCard = ({ address, data }: WalletCardProps): JSX.Element => {
                 <Text>{amounts.slp}</Text>
               </HStack>
 
-              <Text opacity={0.8} fontSize="sm">
+              <Text opacity={0.9} fontSize="sm">
                 ({values.slp})
               </Text>
             </Stack>
@@ -108,7 +108,7 @@ export const WalletCard = ({ address, data }: WalletCardProps): JSX.Element => {
                 <Text>{amounts.axs}</Text>
               </HStack>
 
-              <Text opacity={0.8} fontSize="sm">
+              <Text opacity={0.9} fontSize="sm">
                 ({values.axs})
               </Text>
             </Stack>
@@ -119,7 +119,7 @@ export const WalletCard = ({ address, data }: WalletCardProps): JSX.Element => {
                 <Text>{amounts.eth}</Text>
               </HStack>
 
-              <Text opacity={0.8} fontSize="sm">
+              <Text opacity={0.9} fontSize="sm">
                 ({values.eth})
               </Text>
             </Stack>

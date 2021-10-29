@@ -37,7 +37,7 @@ function ResetPasswordPage() {
         </Formik>
 
         <Box textAlign="center" mt={5}>
-          <Text opacity={0.8}>
+          <Text opacity={0.9}>
             Go back to{' '}
             <Text fontWeight="bold" as="span">
               <Link href="/signin">Sign In</Link>

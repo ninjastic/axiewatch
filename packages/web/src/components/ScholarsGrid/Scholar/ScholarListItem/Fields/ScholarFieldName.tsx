@@ -1,4 +1,4 @@
-import { Text, GridItem } from '@chakra-ui/react';
+import { HStack, Text, Tooltip } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 
 import { ScholarAddress } from '../../ScholarAddress';
@@ -12,12 +12,21 @@ export const ScholarFieldName = ({ address }: ScholarFieldNameProps): JSX.Elemen
   const scholar = useRecoilValue(scholarSelector(address));
 
   return (
-    <GridItem colSpan={5}>
-      <Text fontSize="md" fontWeight="bold" whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden" maxW="200px">
-        {scholar.name}
-      </Text>
+    <HStack spacing={1}>
+      <Tooltip label={address?.replace('0x', 'ronin:')}>
+        <Text
+          fontSize="md"
+          fontWeight="bold"
+          whiteSpace="nowrap"
+          textOverflow="ellipsis"
+          overflow="hidden"
+          maxW="200px"
+        >
+          {scholar.name}
+        </Text>
+      </Tooltip>
 
-      <ScholarAddress address={address} />
-    </GridItem>
+      <ScholarAddress address={address} hideAddress />
+    </HStack>
   );
 };

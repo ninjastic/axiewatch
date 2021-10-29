@@ -19,7 +19,9 @@ export const ScholarDetails = ({ address }: ScholarDetailsProps): JSX.Element =>
   return (
     <Stack p={5} spacing={5}>
       <Stack align="flex-start">
-        <Text fontWeight="bold">Daily Adventure</Text>
+        <Text fontWeight="bold" fontSize="sm">
+          Daily Adventure
+        </Text>
         <PveStats address={address} />
       </Stack>
 

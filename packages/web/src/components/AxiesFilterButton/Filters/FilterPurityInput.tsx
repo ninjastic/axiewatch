@@ -26,7 +26,7 @@ export const FilterPurityInput = ({ setFilter, formValues }: FilterProps): JSX.E
       <FormLabel>Purity</FormLabel>
 
       <HStack spacing={5}>
-        <Text fontSize="lg" opacity={0.8}>
+        <Text fontSize="lg" opacity={0.9}>
           from
         </Text>
 
@@ -43,7 +43,7 @@ export const FilterPurityInput = ({ setFilter, formValues }: FilterProps): JSX.E
           />
         </Code>
 
-        <Text fontSize="lg" opacity={0.8}>
+        <Text fontSize="lg" opacity={0.9}>
           to
         </Text>
         <Code d="flex" minH={7} minW={14} justifyContent="center" alignItems="center">

@@ -156,7 +156,7 @@ export const SlpTrackingChart = ({ address }: DailyChartProps): JSX.Element => {
     return (
       <Flex justify="center" h="50px">
         <HStack>
-          <Text opacity={0.8}>Please, sign in and upload your scholars to the cloud to track.</Text>
+          <Text opacity={0.9}>Please, sign in and upload your scholars to the cloud to track.</Text>
 
           <Link href="/signin" passHref>
             <Box cursor="pointer">
@@ -172,7 +172,7 @@ export const SlpTrackingChart = ({ address }: DailyChartProps): JSX.Element => {
     return (
       <Flex justify="center" h="50px">
         <HStack>
-          <Text opacity={0.8}>Not tracked, please upload to the cloud on your profile</Text>
+          <Text opacity={0.9}>Not tracked, please upload to the cloud on your profile</Text>
 
           <Link href="/profile" passHref>
             <Box cursor="pointer">
@@ -187,7 +187,7 @@ export const SlpTrackingChart = ({ address }: DailyChartProps): JSX.Element => {
   if (!dates.length) {
     return (
       <Flex justify="center" h="50px">
-        <Text opacity={0.8}>No data yet, check back in 1-2 days.</Text>
+        <Text opacity={0.9}>No data yet, check back in 1-2 days.</Text>
       </Flex>
     );
   }

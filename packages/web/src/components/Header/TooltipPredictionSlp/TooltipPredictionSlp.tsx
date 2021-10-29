@@ -29,7 +29,7 @@ export const TooltipPredictionSlp = ({ type }: TooltipPredictionSlpProps): JSX.E
         {slpDay * 30} SLP / month ({formatter(slpDay * price.values.slp * 30, price.locale)})
       </Text>
 
-      <Text fontSize="smaller" opacity={0.8} mt={2}>
+      <Text fontSize="smaller" opacity={0.9} mt={2}>
         Note: Approximated with the SLP/day
       </Text>
     </div>

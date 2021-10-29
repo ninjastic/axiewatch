@@ -25,7 +25,7 @@ export const ScholarCard = ({ address, isLoading, isError, refetch }: ScholarCar
   });
 
   return (
-    <Card rounded="lg" h="280px" cursor={isError ? 'auto' : 'pointer'} opacity={scholar.inactive ? 0.4 : 1}>
+    <Card rounded="lg" h="270px" cursor={isError ? 'auto' : 'pointer'} opacity={scholar.inactive ? 0.4 : 1}>
       {isError && <ErroredCard address={address} refetch={refetch} />}
 
       {!isError && (

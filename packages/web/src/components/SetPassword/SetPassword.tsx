@@ -111,7 +111,7 @@ export const SetPassword = (): JSX.Element => {
               </Button>
 
               {hasPassword.value && (
-                <Button onClick={confirmResetModal.onOpen} opacity={0.8} textAlign="center" variant="link">
+                <Button onClick={confirmResetModal.onOpen} opacity={0.9} textAlign="center" variant="link">
                   Or reset password and private-keys
                 </Button>
               )}

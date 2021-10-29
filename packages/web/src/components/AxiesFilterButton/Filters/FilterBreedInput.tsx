@@ -26,7 +26,7 @@ export const FilterBreedInput = ({ setFilter, formValues }: FilterProps): JSX.El
       <FormLabel>Breed count</FormLabel>
 
       <HStack spacing={5}>
-        <Text fontSize="lg" opacity={0.8}>
+        <Text fontSize="lg" opacity={0.9}>
           from
         </Text>
 
@@ -43,7 +43,7 @@ export const FilterBreedInput = ({ setFilter, formValues }: FilterProps): JSX.El
           />
         </Code>
 
-        <Text fontSize="lg" opacity={0.8}>
+        <Text fontSize="lg" opacity={0.9}>
           to
         </Text>
         <Code d="flex" minH={7} minW={14} justifyContent="center" alignItems="center">

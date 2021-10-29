@@ -100,7 +100,7 @@ export const Calendar = (): JSX.Element => {
         <Box>
           <Heading as="h2">Calendar</Heading>
 
-          <Text opacity={0.8}>See when you (manager) will be able to claim your SLP share!</Text>
+          <Text opacity={0.9}>See when you (manager) will be able to claim your SLP share!</Text>
         </Box>
 
         <HStack spacing={5}>
@@ -164,7 +164,7 @@ export const Calendar = (): JSX.Element => {
                           <Text fontWeight="bold">Manager</Text>
                           <Text>{totalMonth.manager} SLP</Text>
 
-                          <Text opacity={0.8} fontSize="sm">
+                          <Text opacity={0.9} fontSize="sm">
                             (≈{valueMonth.manager})
                           </Text>
                         </Stack>
@@ -174,7 +174,7 @@ export const Calendar = (): JSX.Element => {
 
                           <Text>{totalMonth.scholar} SLP</Text>
 
-                          <Text opacity={0.8} fontSize="sm">
+                          <Text opacity={0.9} fontSize="sm">
                             (≈{valueMonth.scholar})
                           </Text>
                         </Stack>
@@ -201,14 +201,14 @@ export const Calendar = (): JSX.Element => {
                           <Box my={5}>
                             <HStack>
                               <Text fontSize={32}>{day.day}</Text>
-                              <Text opacity={0.8}>{monthString}</Text>
+                              <Text opacity={0.9}>{monthString}</Text>
 
                               <Text>|</Text>
 
                               <HStack>
                                 <Text fontWeight="bold">{totalDay.total} SLP</Text>
 
-                                <Text fontSize="sm" opacity={0.8}>
+                                <Text fontSize="sm" opacity={0.9}>
                                   {totalDay.manager} (M) / {totalDay.scholar} (S)
                                 </Text>
                               </HStack>
@@ -224,11 +224,11 @@ export const Calendar = (): JSX.Element => {
                                 return (
                                   <ListItem key={scholar.address} ml={6}>
                                     <Wrap align="center">
-                                      <Text opacity={0.8}>{dayjs.unix(scholar.nextClaim).format('HH:mm:ss')}</Text>
+                                      <Text opacity={0.9}>{dayjs.unix(scholar.nextClaim).format('HH:mm:ss')}</Text>
 
                                       <Text fontWeight="bold">{scholar.slp} SLP</Text>
 
-                                      <Text fontSize="sm" opacity={0.8}>
+                                      <Text fontSize="sm" opacity={0.9}>
                                         {slpScholar.manager} (M){' / '}
                                         {slpScholar.scholar} (S)
                                       </Text>

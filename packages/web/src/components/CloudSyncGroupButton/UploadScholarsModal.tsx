@@ -41,7 +41,7 @@ export const UploadScholarsModal = ({ uploadedScholars }: UploadScholarsModalPro
     <Stack spacing={5} p={3}>
       <Text>
         Are you sure you want to{' '}
-        <Text as="span" fontWeight="bold" opacity={0.8}>
+        <Text as="span" fontWeight="bold" opacity={0.9}>
           upload
         </Text>{' '}
         and override your current scholars state on the cloud?
@@ -56,11 +56,11 @@ export const UploadScholarsModal = ({ uploadedScholars }: UploadScholarsModalPro
           <Box mt={3}>
             {scholars.map(scholar => (
               <Stack spacing={0} key={scholar.address}>
-                <Text key={scholar.address} opacity={0.8} fontWeight="bold">
+                <Text key={scholar.address} opacity={0.9} fontWeight="bold">
                   {scholar.name}
                 </Text>
 
-                <Text opacity={0.8} fontSize="sm">
+                <Text opacity={0.9} fontSize="sm">
                   {scholar.address.substr(0, 5)}...
                   {scholar.address.substr(scholar.address.length - 5)}
                 </Text>
@@ -77,11 +77,11 @@ export const UploadScholarsModal = ({ uploadedScholars }: UploadScholarsModalPro
           <Box mt={3}>
             {uploadedScholars.map(scholar => (
               <Stack spacing={0} key={scholar.address}>
-                <Text key={scholar.address} opacity={0.8} fontWeight="bold">
+                <Text key={scholar.address} opacity={0.9} fontWeight="bold">
                   {scholar.name}
                 </Text>
 
-                <Text opacity={0.8} fontSize="sm">
+                <Text opacity={0.9} fontSize="sm">
                   {scholar.address.substr(0, 5)}...
                   {scholar.address.substr(scholar.address.length - 5)}
                 </Text>

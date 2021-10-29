@@ -7,6 +7,7 @@ import {
   useClipboard,
   Tooltip,
   Flex,
+  HStack,
   Portal,
   useOutsideClick,
   Box,
@@ -19,10 +20,15 @@ import { scholarSelector } from '../../../../recoil/scholars';
 
 interface ScholarAddressProps {
   address: string;
+  hideAddress?: boolean;
   showButton?: boolean;
 }
 
-export const ScholarAddress = ({ address, showButton = true }: ScholarAddressProps): JSX.Element => {
+export const ScholarAddress = ({
+  address,
+  hideAddress = false,
+  showButton = true,
+}: ScholarAddressProps): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
 
   const [isOpen, setIsOpen] = useState(false);
@@ -48,24 +54,29 @@ export const ScholarAddress = ({ address, showButton = true }: ScholarAddressPro
 
   return (
     <Flex align="center" ref={containerRef}>
-      <Tooltip label={<Text maxW="200px">{address}</Text>}>
-        <Text minW="100px" opacity={0.8}>
-          {shortAddress}
-        </Text>
-      </Tooltip>
+      <HStack spacing={0}>
+        {!hideAddress && (
+          <Tooltip label={<Text maxW="200px">{address}</Text>}>
+            <Text opacity={0.9} fontSize="xs">
+              {shortAddress}
+            </Text>
+          </Tooltip>
+        )}
 
-      {showButton && (
-        <IconButton
-          aria-label="Open copy address menu"
-          minW="25px"
-          icon={<MdContentCopy />}
-          variant="link"
-          onClick={e => {
-            e.stopPropagation();
-            setIsOpen(prev => !prev);
-          }}
-        />
-      )}
+        {showButton && (
+          <IconButton
+            aria-label="Open copy address menu"
+            minW="25px"
+            size="sm"
+            icon={<MdContentCopy />}
+            variant="link"
+            onClick={e => {
+              e.stopPropagation();
+              setIsOpen(prev => !prev);
+            }}
+          />
+        )}
+      </HStack>
 
       <Menu isLazy isOpen={isOpen}>
         <Portal containerRef={menuRef}>

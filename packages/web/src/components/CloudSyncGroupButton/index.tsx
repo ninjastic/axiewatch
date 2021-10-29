@@ -53,7 +53,7 @@ export const CloudSyncGroupButton = (): JSX.Element => {
     <Stack spacing={3}>
       <Box>
         <Text fontWeight="bold">CloudSync Scholars</Text>
-        <Text fontSize="sm" opacity={0.8}>
+        <Text fontSize="sm" opacity={0.9}>
           Keep your scholars synced on our servers so we can track them daily for you. Remember to re-sync every time
           you make a change.
         </Text>

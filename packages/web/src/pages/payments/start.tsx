@@ -405,7 +405,7 @@ const StartPaymentsPage = (): JSX.Element => {
                           <HStack spacing={3}>
                             <Text>{name}</Text>
 
-                            <Text opacity={0.8}>
+                            <Text opacity={0.9}>
                               {address.substr(0, 5)}...
                               {address.substr(address.length - 5)}
                             </Text>
@@ -417,11 +417,11 @@ const StartPaymentsPage = (): JSX.Element => {
                             <Text>{scholar.slp}</Text>
 
                             <HStack fontSize="sm">
-                              <Text opacity={0.8}>{shares.manager}% manager</Text>
+                              <Text opacity={0.9}>{shares.manager}% manager</Text>
 
-                              <Text opacity={0.8}>/</Text>
+                              <Text opacity={0.9}>/</Text>
 
-                              <Text opacity={0.8}>{shares.scholar}% scholar</Text>
+                              <Text opacity={0.9}>{shares.scholar}% scholar</Text>
                             </HStack>
                           </HStack>
                         </Stack>

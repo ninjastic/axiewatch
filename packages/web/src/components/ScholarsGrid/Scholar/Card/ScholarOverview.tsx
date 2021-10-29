@@ -74,7 +74,7 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
       <Flex justify="space-between" align="center">
         <Stack spacing={0}>
           <Text
-            fontSize="lg"
+            fontSize="sm"
             fontWeight="bold"
             whiteSpace="nowrap"
             textOverflow="ellipsis"
@@ -84,13 +84,15 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
             {name}
           </Text>
 
-          <Text opacity={0.8} fontSize="sm">
+          <Text opacity={0.9} fontSize="xs">
             {address.substr(0, 5)}...{address.substr(address.length - 5)}
           </Text>
         </Stack>
 
         <SkeletonText isLoaded={!isLoading} noOfLines={2}>
-          <Text fontWeight="bold">Arena</Text>
+          <Text opacity={0.9} fontSize="xs">
+            Arena
+          </Text>
 
           <HStack>
             <Icon as={RiSwordLine} />
@@ -116,11 +118,11 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
 
         <HStack>
           <SkeletonText isLoaded={!isLoading} noOfLines={2}>
-            <Text color={getSlpDayColor as any} fontWeight="bold">
+            <Text color={getSlpDayColor as any} fontWeight="bold" fontSize="sm">
               {slpDay} / day
             </Text>
 
-            <Text opacity={0.8} fontSize="sm">
+            <Text opacity={0.9} fontSize="xs">
               (≈{slpDayValueText})
             </Text>
           </SkeletonText>
@@ -133,12 +135,14 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
             <Image src="/images/axies/slp.png" width="18px" height="18px" alt="slp" />
             <Text>{slp}</Text>
 
-            <Text opacity={0.8} fontSize="sm">
+            <Text opacity={0.9} fontSize="xs">
               (≈{fiatValues.total})
             </Text>
           </HStack>
 
-          <Text>{todaySlp ?? '-'} @ today</Text>
+          <Text opacity={0.9} fontSize="xs">
+            {todaySlp ?? '-'} @ today
+          </Text>
         </Flex>
       </SkeletonText>
 
@@ -146,17 +150,17 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
         <SkeletonText isLoaded={!isLoading} noOfLines={2} w={32}>
           <Box>
             <HStack spacing={0}>
-              <Text fontWeight="bold" mr={1}>
+              <Text opacity={0.9} fontSize="xs" mr={1}>
                 Scholar
               </Text>
-              <Text opacity={0.8} fontSize="sm">
+              <Text opacity={0.9} fontSize="xs">
                 ({shares.scholar}%)
               </Text>
             </HStack>
 
             <HStack>
               <Text>{slpValues.scholar}</Text>
-              <Text opacity={0.8} fontSize="sm">
+              <Text opacity={0.9} fontSize="xs">
                 (≈{fiatValues.scholar})
               </Text>
             </HStack>
@@ -166,17 +170,17 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
         <SkeletonText isLoaded={!isLoading} noOfLines={2} w={32}>
           <Box>
             <HStack spacing={0}>
-              <Text fontWeight="bold" mr={1}>
+              <Text opacity={0.9} fontSize="xs" mr={1}>
                 Manager
               </Text>
-              <Text opacity={0.8} fontSize="sm">
+              <Text opacity={0.9} fontSize="xs">
                 ({scholar.shares.manager}%)
               </Text>
             </HStack>
 
             <HStack>
               <Text>{slpValues.manager}</Text>
-              <Text opacity={0.8} fontSize="sm">
+              <Text opacity={0.9} fontSize="xs">
                 (≈{fiatValues.manager})
               </Text>
             </HStack>
@@ -187,8 +191,10 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
           <Box>
             <Tooltip label={datesFormatted.lastClaim} isDisabled={lastClaim === 0}>
               <Flex direction="column" align="flex-start">
-                <Text fontWeight="bold">Last claim</Text>
-                <Text>{lastClaimText}</Text>
+                <Text opacity={0.9} fontSize="xs">
+                  Last claim
+                </Text>
+                <Text fontSize="sm">{lastClaimText}</Text>
               </Flex>
             </Tooltip>
           </Box>
@@ -198,8 +204,10 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
           <Box>
             <Tooltip label={datesFormatted.nextClaim} isDisabled={lastClaim === 0}>
               <Flex direction="column" align="flex-start">
-                <Text fontWeight="bold">Next claim</Text>
-                <Text>{nextClaimText}</Text>
+                <Text opacity={0.9} fontSize="xs">
+                  Next claim
+                </Text>
+                <Text fontSize="sm">{nextClaimText}</Text>
               </Flex>
             </Tooltip>
           </Box>

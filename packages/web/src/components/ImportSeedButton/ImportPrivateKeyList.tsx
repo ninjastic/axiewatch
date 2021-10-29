@@ -64,7 +64,7 @@ export const ImportPrivateKeyList = ({ data, onClose }: ImportPrivateKeyListProp
           {data.length}
         </Text>{' '}
         matching {pluralize('private-key', data.length)} from your wallet seed.{' '}
-        <Text opacity={0.8} as="span">
+        <Text opacity={0.9} as="span">
           Please select the ones you would like to import:
         </Text>
       </Text>

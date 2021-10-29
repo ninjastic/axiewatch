@@ -1,4 +1,4 @@
-import { Text, GridItem, SkeletonText, HStack, Image } from '@chakra-ui/react';
+import { Text, SkeletonText, HStack, Image } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 import { useMemo } from 'react';
 
@@ -28,18 +28,15 @@ export const ScholarFieldSlp = ({ address, isLoading }: ScholarFieldSlpProps): J
   );
 
   return (
-    <GridItem colSpan={4}>
-      <SkeletonText isLoaded={!isLoading} noOfLines={2}>
-        <HStack>
-          <Image src="/images/axies/slp.png" width="18px" alt="slp" />
+    <SkeletonText isLoaded={!isLoading} noOfLines={2}>
+      <Text opacity={0.9} fontSize="xs">
+        {fiatValue}
+      </Text>
 
-          <Text>{slp}</Text>
-        </HStack>
-
-        <Text opacity={0.8} fontSize="sm">
-          (≈{fiatValue})
-        </Text>
-      </SkeletonText>
-    </GridItem>
+      <HStack>
+        <Image src="/images/axies/slp.png" width="16px" alt="slp" />
+        <Text>{slp}</Text>
+      </HStack>
+    </SkeletonText>
   );
 };

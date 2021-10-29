@@ -58,7 +58,7 @@ const SignInPage = (): JSX.Element => {
         </Formik>
 
         <Box textAlign="center" mt={5}>
-          <Text opacity={0.8}>
+          <Text opacity={0.9}>
             <Text fontWeight="bold" as="span">
               <Link href="/reset">Reset your password</Link>
             </Text>{' '}

@@ -1,6 +1,6 @@
-import { Text, GridItem, SkeletonText, SimpleGrid, Tooltip } from '@chakra-ui/react';
+import { Text, SkeletonText, SimpleGrid, Tooltip, Stack } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 
 import { formatter } from '../../../../../services/formatter';
 import { scholarSelector } from '../../../../../recoil/scholars';
@@ -29,7 +29,7 @@ const TooltipScholarSLP = ({ address }: { address: string }): JSX.Element => {
         {scholar.slpDay * 30} SLP / month ({formatter(scholar.slpDay * price.values.slp * 30, price.locale)})
       </Text>
 
-      <Text fontSize="smaller" opacity={0.8} mt={2}>
+      <Text fontSize="smaller" opacity={0.9} mt={2}>
         Note: Approximated with the SLP/day
       </Text>
     </SimpleGrid>
@@ -38,12 +38,6 @@ const TooltipScholarSLP = ({ address }: { address: string }): JSX.Element => {
 
 export const ScholarFieldSlpDay = ({ address, isLoading }: ScholarFieldSlpDayProps): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
-  const price = useRecoilValue(priceAtom);
-
-  const slpDayText = useMemo(
-    () => formatter(scholar.slpDay * price.values.slp, price.locale),
-    [price.locale, price.values.slp, scholar.slpDay]
-  );
 
   const getSlpDayColor = useCallback(() => {
     if (scholar.slpDay >= 120) return 'green.200';
@@ -53,20 +47,18 @@ export const ScholarFieldSlpDay = ({ address, isLoading }: ScholarFieldSlpDayPro
   }, [scholar.slpDay]);
 
   return (
-    <GridItem colSpan={4}>
-      <SkeletonText isLoaded={!isLoading} noOfLines={2}>
-        <Tooltip label={<TooltipScholarSLP address={scholar.address} />} isDisabled={isLoading}>
-          <div>
-            <Text color={getSlpDayColor as any} fontWeight="bold">
-              {scholar.slpDay} / day
-            </Text>
+    <SkeletonText isLoaded={!isLoading} noOfLines={2}>
+      <Tooltip label={<TooltipScholarSLP address={scholar.address} />} isDisabled={isLoading}>
+        <Stack spacing={0}>
+          <Text opacity={0.9} fontSize="xs">
+            Average
+          </Text>
 
-            <Text opacity={0.8} fontSize="sm">
-              (≈{slpDayText})
-            </Text>
-          </div>
-        </Tooltip>
-      </SkeletonText>
-    </GridItem>
+          <Text color={getSlpDayColor as any} fontWeight="bold" fontSize="sm">
+            {scholar.slpDay} / day
+          </Text>
+        </Stack>
+      </Tooltip>
+    </SkeletonText>
   );
 };

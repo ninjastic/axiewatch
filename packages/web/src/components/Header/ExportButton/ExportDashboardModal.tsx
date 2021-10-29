@@ -137,7 +137,7 @@ export const ExportDashboardModal = (): JSX.Element => {
       {({ values, handleChange }) => (
         <Form>
           <Stack pb={5} px={2} spacing={5}>
-            <Text opacity={0.8}>
+            <Text opacity={0.9}>
               P.S: The dashboard will use the data on our servers through CloudSync. Make sure to keep them up to date
               whenever you make a change (Sync {'->'} Upload)
             </Text>

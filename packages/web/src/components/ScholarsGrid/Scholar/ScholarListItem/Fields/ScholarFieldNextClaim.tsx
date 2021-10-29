@@ -1,4 +1,5 @@
-import { Text, GridItem, SkeletonText, Tooltip } from '@chakra-ui/react';
+import { Text, SkeletonText, Tooltip, Stack, HStack } from '@chakra-ui/react';
+import { AiOutlineClockCircle } from 'react-icons/ai';
 import { useRecoilValue } from 'recoil';
 import { useMemo } from 'react';
 
@@ -23,15 +24,19 @@ export const ScholarFieldNextClaim = ({ address, isLoading }: ScholarFieldNextCl
   const formatted = useMemo(() => dayjs.unix(nextClaim).format('DD MMM YYYY, HH:mm:ss'), [nextClaim]);
 
   return (
-    <GridItem colSpan={4}>
-      <SkeletonText isLoaded={!isLoading} noOfLines={2}>
-        <Tooltip label={formatted} isDisabled={lastClaim === 0}>
-          <div>
-            <Text fontWeight="bold">Next claim</Text>
-            <Text>{nextClaimText}</Text>
-          </div>
-        </Tooltip>
-      </SkeletonText>
-    </GridItem>
+    <SkeletonText isLoaded={!isLoading} noOfLines={2}>
+      <Tooltip label={formatted} isDisabled={lastClaim === 0}>
+        <Stack spacing={0}>
+          <Text opacity={0.9} fontSize="xs">
+            Next Claim
+          </Text>
+
+          <HStack>
+            <AiOutlineClockCircle />
+            <Text fontSize="sm">{nextClaimText}</Text>
+          </HStack>
+        </Stack>
+      </Tooltip>
+    </SkeletonText>
   );
 };
