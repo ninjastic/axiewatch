@@ -103,8 +103,7 @@ export const useBatchScholarAxie = ({ addresses, size = 200 }: UseBatchScholarAx
   }
 
   const { data, isLoading } = useQuery(['axies', hashedKey], async () => load(), {
-    staleTime: 1000 * 60 * 5,
-    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 15,
   });
 
   return { scholarAxies: data ?? [], isLoading };

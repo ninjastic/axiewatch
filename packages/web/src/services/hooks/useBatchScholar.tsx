@@ -1,5 +1,5 @@
 import { useQueries, UseQueryOptions, UseQueryResult } from 'react-query';
-import { atom, useRecoilCallback, useRecoilState } from 'recoil';
+import { useRecoilCallback } from 'recoil';
 import { useCallback, useMemo } from 'react';
 
 import { APIScholarResponse } from '../../types/api';
@@ -21,14 +21,7 @@ interface UseBatchScholarData {
   results: UseQueryResult<APIScholarResponse>[];
 }
 
-const erroredAtom = atom<string[]>({
-  key: 'erroredAtom',
-  default: [],
-});
-
 export const useBatchScholar = ({ addresses, enabled = true }: UseBatchScholarProps): UseBatchScholarData => {
-  const [errored, setErrored] = useRecoilState(erroredAtom);
-
   const setScholarState = useRecoilCallback(({ set, snapshot }) => (scholar: ScholarSetter) => {
     const prevState = snapshot.getLoadable(scholarState(scholar.address)).getValue();
     set(scholarState(scholar.address), { ...prevState, ...scholar });
@@ -46,10 +39,8 @@ export const useBatchScholar = ({ addresses, enabled = true }: UseBatchScholarPr
 
       return data;
     },
-    enabled: enabled && !errored.includes(address),
-    onError: () => setErrored(prev => [...prev, address]),
+    enabled,
     staleTime: 1000 * 60 * 15,
-    retry: false,
   }));
 
   const results = useQueries(queries) as UseQueryResult<APIScholarResponse>[];

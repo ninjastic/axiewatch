@@ -1,6 +1,6 @@
-import { HStack, Text, Stack, Icon, Tooltip, Flex, chakra } from '@chakra-ui/react';
+import { HStack, Text, Stack, Icon, Tooltip, Flex, chakra, Image } from '@chakra-ui/react';
 import { Draggable } from 'react-beautiful-dnd';
-import { GiSpiralBottle, GiReceiveMoney } from 'react-icons/gi';
+import { GiReceiveMoney } from 'react-icons/gi';
 import { IoSchoolOutline } from 'react-icons/io5';
 import { MdBusinessCenter } from 'react-icons/md';
 import { AiOutlineClockCircle } from 'react-icons/ai';
@@ -12,13 +12,9 @@ import { ScholarFields } from '../../../../recoil/scholars';
 
 const NameFieldPlaceholder = (): JSX.Element => {
   return (
-    <Card w="115px" p={2} borderWidth={1}>
-      <Text fontSize="md" fontWeight="bold">
-        Scholar
-      </Text>
-
-      <Text minW="100px" opacity={0.9} fontSize="sm">
-        0x589...6abef
+    <Card w="115px" h="100%" p={2} borderWidth={1}>
+      <Text fontSize="md" fontWeight="bold" textAlign="center" pt={2}>
+        Scholar 1
       </Text>
     </Card>
   );
@@ -26,13 +22,13 @@ const NameFieldPlaceholder = (): JSX.Element => {
 
 const SlpFieldPlaceholder = (): JSX.Element => {
   return (
-    <Card p={2} borderWidth={1}>
+    <Card p={2} h="100%" borderWidth={1}>
       <Text opacity={0.9} fontSize="xs">
         $42.69
       </Text>
 
       <HStack>
-        <GiSpiralBottle />
+        <Image src="/images/axies/slp.png" width="16px" alt="slp" />
         <Text>1050</Text>
       </HStack>
     </Card>
@@ -41,7 +37,7 @@ const SlpFieldPlaceholder = (): JSX.Element => {
 
 const ScholarSharePlaceholder = (): JSX.Element => {
   return (
-    <Card p={2} borderWidth={1}>
+    <Card p={2} h="100%" borderWidth={1}>
       <Stack spacing={0}>
         <Text opacity={0.9} fontSize="xs">
           Scholar
@@ -58,7 +54,7 @@ const ScholarSharePlaceholder = (): JSX.Element => {
 
 const ManagerSharePlaceholder = (): JSX.Element => {
   return (
-    <Card p={2} borderWidth={1}>
+    <Card p={2} h="100%" borderWidth={1}>
       <Stack spacing={0}>
         <Text opacity={0.9} fontSize="xs">
           Manager
@@ -75,7 +71,7 @@ const ManagerSharePlaceholder = (): JSX.Element => {
 
 const InvestorSharePlaceholder = (): JSX.Element => {
   return (
-    <Card p={2} borderWidth={1}>
+    <Card p={2} h="100%" borderWidth={1}>
       <Stack spacing={0}>
         <Text opacity={0.9} fontSize="xs">
           Investor
@@ -92,7 +88,7 @@ const InvestorSharePlaceholder = (): JSX.Element => {
 
 const ArenaEloPlaceholder = (): JSX.Element => {
   return (
-    <Card maxW="80px" p={2} borderWidth={1}>
+    <Card maxW="80px" p={2} h="100%" borderWidth={1}>
       <Stack spacing={0}>
         <Text opacity={0.9} fontSize="xs">
           Arena
@@ -110,7 +106,7 @@ const ArenaEloPlaceholder = (): JSX.Element => {
 
 const YesterdaySlpPlaceholder = (): JSX.Element => {
   return (
-    <Card maxW="80px" p={2} borderWidth={1}>
+    <Card maxW="80px" p={2} h="100%" borderWidth={1}>
       <Stack spacing={0}>
         <Text opacity={0.9} fontSize="xs">
           Yesterday
@@ -124,7 +120,7 @@ const YesterdaySlpPlaceholder = (): JSX.Element => {
 
 const TodaySlpPlaceholder = (): JSX.Element => {
   return (
-    <Card maxW="80px" p={2} borderWidth={1}>
+    <Card maxW="80px" p={2} h="100%" borderWidth={1}>
       <Stack spacing={0}>
         <Text opacity={0.9} fontSize="xs">
           Today
@@ -138,7 +134,7 @@ const TodaySlpPlaceholder = (): JSX.Element => {
 
 const SlpDayPlaceholder = (): JSX.Element => {
   return (
-    <Card maxW="80px" p={2} borderWidth={1}>
+    <Card maxW="80px" p={2} h="100%" borderWidth={1}>
       <Stack spacing={0}>
         <Text opacity={0.9} fontSize="xs">
           Average
@@ -154,7 +150,7 @@ const SlpDayPlaceholder = (): JSX.Element => {
 
 const AdventureSlpPlaceholder = (): JSX.Element => {
   return (
-    <Card maxW="80px" p={2} borderWidth={1}>
+    <Card maxW="80px" p={2} h="100%" borderWidth={1}>
       <Stack spacing={0}>
         <Text opacity={0.9} fontSize="xs">
           Adventure
@@ -168,7 +164,7 @@ const AdventureSlpPlaceholder = (): JSX.Element => {
 
 const LastClaimPlaceholder = (): JSX.Element => {
   return (
-    <Card maxW="90px" p={2} borderWidth={1}>
+    <Card maxW="90px" p={2} h="100%" borderWidth={1}>
       <Stack spacing={0}>
         <Text opacity={0.9} fontSize="xs">
           Last Claim
@@ -185,7 +181,7 @@ const LastClaimPlaceholder = (): JSX.Element => {
 
 const NextClaimPlaceholder = (): JSX.Element => {
   return (
-    <Card maxW="110px" p={2} borderWidth={1}>
+    <Card maxW="110px" p={2} h="100%" borderWidth={1}>
       <Stack spacing={0}>
         <Text opacity={0.9} fontSize="xs">
           Next Claim

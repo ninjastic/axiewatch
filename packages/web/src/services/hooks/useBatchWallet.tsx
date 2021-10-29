@@ -48,8 +48,7 @@ export const useBatchWallet = (addresses: string[]): UseBatchWalletData => {
         eth: Number(ethers.utils.formatEther(eth)),
       };
     },
-    retry: false,
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 60 * 15,
   }));
 
   const results: UseQueryResult<any, any>[] = useQueries(queries);
