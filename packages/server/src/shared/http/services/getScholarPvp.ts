@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { cache } from '@src/services/cache';
+import dayjs from '@src/services/dayjs';
 
 interface APIScholarPvpResponse {
   items: Array<{
@@ -18,7 +19,8 @@ export interface ScholarPvpData {
 }
 
 export const getScholarPvp = async (address: string): Promise<ScholarPvpData> => {
-  const cacheKey = `v1:scholarPvp:${address}`;
+  const day = dayjs().day();
+  const cacheKey = `v1:scholarPvp:${address}:${day}`;
   const cacheTime = 1000 * 60 * 15; // 15 minutes
   const apiUrl = 'https://game-api.skymavis.com/game-api/leaderboard';
   const apiParams = {

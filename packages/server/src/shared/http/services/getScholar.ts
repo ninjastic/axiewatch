@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { cache } from '@src/services/cache';
+import dayjs from '@src/services/dayjs';
 
 interface APIScholarResponse {
   client_id: string;
@@ -21,7 +22,8 @@ export interface ScholarData {
 }
 
 export const getScholar = async (address: string): Promise<ScholarData> => {
-  const cacheKey = `v1:scholar:${address}`;
+  const day = dayjs().day();
+  const cacheKey = `v1:scholar:${address}:${day}`;
   const cacheTime = 1000 * 60 * 15; // 15 minutes
   const apiUrl = `https://game-api.skymavis.com/game-api/clients/${address}/items/1`;
 

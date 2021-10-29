@@ -14,8 +14,9 @@ export interface ScholarHistoricalSlpData {
 }
 
 export const getScholarHistoricalSlp = async (address: string): Promise<ScholarHistoricalSlpData> => {
-  const cacheKey = `v1:scholarHistoricalSlp:${address}`;
-  const cacheTime = 1000 * 60 * 2; // 2 minutes
+  const day = dayjs().day();
+  const cacheKey = `v1:scholarHistoricalSlp:${address}:${day}`;
+  const cacheTime = 1000 * 60 * 15; // 15 minutes
 
   const cached = await cache.get(cacheKey);
   if (cached) return JSON.parse(cached);
@@ -23,6 +24,7 @@ export const getScholarHistoricalSlp = async (address: string): Promise<ScholarH
   const dates = await Tracking.query()
     .select('*')
     .where('address', address)
+    .andWhere('createdAt', '>', dayjs.utc().subtract(14, 'days').startOf('day').toISOString())
     .orderBy('createdAt', 'desc')
     .limit(14)
     .then(data =>
