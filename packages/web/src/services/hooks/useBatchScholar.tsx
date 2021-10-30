@@ -44,8 +44,8 @@ export const useBatchScholar = ({ addresses, enabled = true }: UseBatchScholarPr
   }));
 
   const results = useQueries(queries) as UseQueryResult<APIScholarResponse>[];
-  const isLoading = useMemo(() => results.length && results.some(r => !!r.isLoading), [results]);
-  const isError = useMemo(() => results.length && results.every(r => r.isError), [results]);
+  const isLoading = useMemo(() => !!results.length && results.some(r => !!r.isLoading), [results]);
+  const isError = useMemo(() => !!results.length && results.every(r => r.isError), [results]);
 
   const refetchAll = useCallback(() => {
     results.forEach(result => result.refetch());
