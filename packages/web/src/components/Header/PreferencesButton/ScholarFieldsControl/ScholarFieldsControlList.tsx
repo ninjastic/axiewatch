@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Stack } from '@chakra-ui/react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
@@ -25,33 +25,35 @@ export const ScholarFieldsControlList = ({ fields, onChange }: ScholarFieldsCont
     'adventureSlp',
     'lastClaim',
     'nextClaim',
-    'divider',
   ] as ScholarFields[];
 
-  const [activeFields, setActiveFields] = useState(fieldsList.filter(field => fields.includes(field)));
+  const [activeFields, setActiveFields] = useState(fields);
   const [unusedFields, setUnusedFields] = useState(fieldsList.filter(field => !fields.includes(field)));
 
   const fixedFields = ['name', 'slp'] as ScholarFields[];
 
-  const onDragEnd = (result: DropResult) => {
-    const { source, destination, draggableId } = result;
+  const onDragEnd = useCallback(
+    (result: DropResult) => {
+      const { source, destination, draggableId } = result;
 
-    if (!destination) return;
-    if (destination.droppableId === source.droppableId && destination.index === source.index) return;
+      if (!destination) return;
+      if (destination.droppableId === source.droppableId && destination.index === source.index) return;
 
-    const columns = {
-      active: Array.from(activeFields),
-      unused: Array.from(unusedFields),
-    } as { [key: string]: ScholarFields[] };
+      const columns = {
+        active: Array.from(activeFields),
+        unused: Array.from(unusedFields),
+      } as { [key: string]: ScholarFields[] };
 
-    columns[source.droppableId].splice(source.index, 1);
-    columns[destination.droppableId].splice(destination.index, 0, draggableId as ScholarFields);
+      columns[source.droppableId].splice(source.index, 1);
+      columns[destination.droppableId].splice(destination.index, 0, draggableId as ScholarFields);
 
-    setActiveFields(columns.active);
-    setUnusedFields(columns.unused);
+      setActiveFields(columns.active);
+      setUnusedFields(columns.unused);
 
-    onChange(columns.active);
-  };
+      onChange(columns.active);
+    },
+    [activeFields, onChange, unusedFields]
+  );
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
