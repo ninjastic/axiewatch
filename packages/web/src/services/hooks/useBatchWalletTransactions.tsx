@@ -1,5 +1,4 @@
 import { useQueries, UseQueryOptions, UseQueryResult } from 'react-query';
-import { atom, useRecoilState } from 'recoil';
 
 import { serverApi } from '../api';
 
@@ -9,13 +8,6 @@ interface UseBatchWalletTransactionsData {
 }
 
 export const useBatchWalletTransactions = (addresses: string[]): UseBatchWalletTransactionsData => {
-  const erroredAtom = atom<string[]>({
-    key: 'useBatchWalletTransactions',
-    default: [],
-  });
-
-  const [errored, setErrored] = useRecoilState(erroredAtom);
-
   const queries: UseQueryOptions[] = addresses.map(address => ({
     queryKey: ['walletTransactions', address],
     queryFn: async () => {
@@ -33,9 +25,8 @@ export const useBatchWalletTransactions = (addresses: string[]): UseBatchWalletT
 
       return { address, transactions: dataWithContext };
     },
-    enabled: !errored.includes(address),
-    onError: () => setErrored(prev => [...prev, address]),
     staleTime: 1000 * 60 * 15,
+    retry: false,
   }));
 
   const results: UseQueryResult<any, any>[] = useQueries(queries);
