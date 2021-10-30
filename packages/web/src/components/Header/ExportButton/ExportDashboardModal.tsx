@@ -37,27 +37,26 @@ export const ExportDashboardModal = (): JSX.Element => {
 
   const { onCopy } = useClipboard(dashboardUrl ?? '');
 
-  const {
-    data,
-    isLoading: dashboardIsLoading,
-    isFetching: dashboardIsFetching,
-  } = useQuery(
+  const { data, isLoading: dashboardIsLoading } = useQuery(
     'dashboard',
     async () => {
-      const response = await serverApi.get('/dashboard', {
-        params: {
-          user_id: auth?.user?.id,
-        },
-      });
-
-      return response.data;
+      return serverApi
+        .get('/dashboard', {
+          params: {
+            user_id: auth?.user?.id,
+          },
+        })
+        .then(response => response.data)
+        .catch(err => {
+          if (err.response.status) return {};
+          throw new Error('Something went wrong');
+        });
     },
     {
       enabled: !!auth.user,
       staleTime: Infinity,
       refetchOnMount: 'always',
-      retry: false,
-      onError: () => toast('The request failed', { type: 'error' }),
+      onError: error => toast(error, { type: 'error' }),
     }
   );
 
@@ -114,7 +113,7 @@ export const ExportDashboardModal = (): JSX.Element => {
     );
   }
 
-  if (dashboardIsLoading || dashboardIsFetching) {
+  if (dashboardIsLoading) {
     return (
       <Box>
         <Spinner />
