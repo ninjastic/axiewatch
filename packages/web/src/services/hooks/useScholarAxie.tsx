@@ -93,8 +93,6 @@ export const useScholarAxie = ({
         sort: 'IdDesc',
       });
 
-      console.log(response);
-
       const axies = response.axies.results.map(axie => parseAxieData(axie));
 
       setAxies({

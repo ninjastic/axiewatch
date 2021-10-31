@@ -6,6 +6,7 @@ import { Select } from 'chakra-react-select';
 
 import dayjs from '../../../services/dayjs';
 import { allScholarsSelector } from '../../../recoil/scholars';
+import { preferencesAtom } from '@src/recoil/preferences';
 
 interface SelectedType {
   [field: string]: boolean;
@@ -15,6 +16,7 @@ type ExportType = 'json' | 'csv';
 
 export const ExportFileModal = (): JSX.Element => {
   const scholars = useRecoilValue(allScholarsSelector);
+  const preferences = useRecoilValue(preferencesAtom);
 
   const [selected, setSelected] = useState<SelectedType>({
     address: false,
@@ -48,14 +50,19 @@ export const ExportFileModal = (): JSX.Element => {
 
   const handleExport = () => {
     const dataToExport = scholars.map(scholar => {
-      const data = {} as any;
+      const data = {};
 
       Object.keys(selected).forEach(field => {
         if (!selected[field]) return;
         if (data[field] === null) return;
 
+        if (field === 'slp') {
+          data[field] = preferences.includeRoninBalance ? scholar.slp + scholar.roninSlp : scholar.slp;
+          return;
+        }
+
         if (field === 'lastClaim' || field === 'nextClaim') {
-          data[field] = dayjs.unix((scholar as any)[field]);
+          data[field] = dayjs.unix(scholar[field]);
           return;
         }
 
@@ -79,7 +86,7 @@ export const ExportFileModal = (): JSX.Element => {
           return;
         }
 
-        data[field] = (scholar as any)[field];
+        data[field] = scholar[field];
       });
 
       return data;
