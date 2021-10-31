@@ -62,7 +62,7 @@ export const BattlesModal = ({ address }: BattlesModalProps): JSX.Element => {
       <Flex align="center" justify="space-between" my={3}>
         <Text fontSize="lg">Total of {data.items.length} battles</Text>
 
-        <HStack>
+        <HStack spacing={3}>
           <BattlesWinrate address={address} data={data} />
 
           <BattleRowsPerPageSelector value={perPage} onChange={setPerPage} />

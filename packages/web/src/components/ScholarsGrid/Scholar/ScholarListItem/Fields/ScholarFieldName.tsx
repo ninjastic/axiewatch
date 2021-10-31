@@ -13,7 +13,7 @@ export const ScholarFieldName = ({ address }: ScholarFieldNameProps): JSX.Elemen
 
   return (
     <HStack spacing={1}>
-      <Tooltip label={address?.replace('0x', 'ronin:')}>
+      <Tooltip label={<Text maxW="200px">{address?.replace('0x', 'ronin:')}</Text>}>
         <Text
           fontSize="md"
           fontWeight="bold"

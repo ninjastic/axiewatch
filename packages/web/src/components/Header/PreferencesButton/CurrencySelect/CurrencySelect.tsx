@@ -43,7 +43,7 @@ export const CurrencySelect = ({ setFieldValue }: CurrencySelectProps): JSX.Elem
   return (
     <Select
       options={options}
-      onChange={selected => setFieldValue('currency', selected?.value ?? 'usd')}
+      onChange={(selected: any) => setFieldValue('currency', selected?.value ?? 'usd')}
       name="currency"
       closeMenuOnSelect
       defaultValue={{

@@ -35,7 +35,7 @@ export const FilterClassSelect = ({ setFilter, formValues }: FilterProps): JSX.E
       <FormLabel>Class</FormLabel>
 
       <Select
-        onChange={selected => handleChange(selected?.value ?? '')}
+        onChange={(selected: any) => handleChange(selected?.value ?? '')}
         options={classes}
         name="class"
         closeMenuOnSelect

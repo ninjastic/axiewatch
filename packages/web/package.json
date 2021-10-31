@@ -60,7 +60,7 @@
     "@types/pluralize": "^0.0.29",
     "@types/react": "17.0.9",
     "@types/react-beautiful-dnd": "^13.1.2",
-    "@types/react-select": "^4.0.17",
+    "@types/react-select": "^5.0.1",
     "@types/react-table": "^7.7.2",
     "dotenv-flow": "^3.2.0",
     "eslint-config-next": "11.1.2",

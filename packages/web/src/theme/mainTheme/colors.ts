@@ -2,19 +2,11 @@ export const colors = {
   light: {
     background: '#FAF9FA',
     card: '#FFFFFF',
-    chart: {
-      first: '#3a5879',
-      second: '#3a5879',
-    },
     faded: '#3C3C3C',
   },
   dark: {
     background: '#1A202C',
     card: '#282B39',
-    chart: {
-      first: '#8c8c8c',
-      second: '#737373',
-    },
     faded: '#67697a',
   },
   darkGray: {
@@ -29,4 +21,23 @@ export const colors = {
     800: '#22232a',
     900: '#080c13',
   },
+  aquatic: ' #00b8ce',
+  beast: ' #ffb812',
+  bug: ' #ff5341',
+  bird: ' #ff8bbd',
+  plant: ' #6cc000',
+  reptile: ' #dc8be4',
+  'hidden-1': ' #c6bdd4',
+  'hidden-2': ' #beceff',
+  'hidden-3': ' #129092',
+  axie: ' #8d65ff',
+  savannah: ' #f99e2e',
+  forest: ' #6cc000',
+  arctic: ' #dbf0ef',
+  mystic: ' #6fccd4',
+  genesis: ' #3e7292',
+  'rarity-rare': ' #09b99b',
+  'rariry-epic': ' #ffa22a',
+  'rarity-mystic': ' #ae2aff',
+  'text-arctic': ' #55586a',
 };

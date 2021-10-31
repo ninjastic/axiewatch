@@ -9,7 +9,7 @@ interface BattleRowsPerPageSelectorProps {
 export const BattleRowsPerPageSelector = ({ value, onChange }: BattleRowsPerPageSelectorProps): JSX.Element => {
   return (
     <Menu isLazy>
-      <MenuButton as={Button} rightIcon={<FiChevronDown />} w="145px" variant="ghost">
+      <MenuButton as={Button} rightIcon={<FiChevronDown />} w="145px" variant="outline" textAlign="left">
         {!value ? 'Rows per page...' : `${value} rows`}
       </MenuButton>
 

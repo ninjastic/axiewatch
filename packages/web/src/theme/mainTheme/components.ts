@@ -10,6 +10,7 @@ import { SelectStyles as Select } from './components/Select';
 import { TooltipStyles as Tooltip } from './components/Tooltip';
 import { LoadingScreenStyles as LoadingScreen } from './components/LoadingScreen';
 import { TextStyles as Text } from './components/Text';
+import { PopoverStyles as Popover } from './components/Popover';
 
 export const components = {
   Card,
@@ -24,4 +25,5 @@ export const components = {
   Select,
   LoadingScreen,
   Text,
+  Popover,
 };

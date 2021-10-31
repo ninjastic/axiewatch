@@ -214,7 +214,7 @@ export const ExportFileModal = (): JSX.Element => {
                 value: 'csv',
               },
             ]}
-            onChange={sel => setType((sel?.value ?? 'csv') as ExportType)}
+            onChange={(sel: any) => setType((sel?.value ?? 'csv') as ExportType)}
             name="exportType"
             closeMenuOnSelect
             defaultValue={{

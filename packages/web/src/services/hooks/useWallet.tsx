@@ -1,15 +1,21 @@
-import { useQueries, UseQueryOptions, UseQueryResult } from 'react-query';
+import { UseQueryResult, useQuery } from 'react-query';
 import { ethers } from 'ethers';
 
 import { rpc } from '@src/services/rpc';
 import slpAbi from '../../constants/abi/SLP.json';
 
-interface UseBatchWalletData {
-  isLoading: boolean;
-  results: UseQueryResult<any, any>[];
+interface UseWalletData {
+  address: string;
+  slp: number;
+  axs: number;
+  eth: number;
 }
 
-export const useBatchWallet = (addresses: string[]): UseBatchWalletData => {
+interface UseWalletProps {
+  address: string;
+}
+
+export const useWallet = ({ address }: UseWalletProps): UseQueryResult<UseWalletData> => {
   const slpContract = new ethers.Contract(
     '0xa8754b9fa15fc18bb59458815510e40a12cd2014', // axie SLP contract (ronin)
     slpAbi,
@@ -28,9 +34,9 @@ export const useBatchWallet = (addresses: string[]): UseBatchWalletData => {
     rpc
   );
 
-  const queries: UseQueryOptions[] = addresses.map(address => ({
-    queryKey: ['wallet', address],
-    queryFn: async () => {
+  const result = useQuery(
+    ['wallet', address],
+    async () => {
       const slp = await slpContract.balanceOf(address);
       const axs = await axsContract.balanceOf(address);
       const eth = await ethContract.balanceOf(address);
@@ -42,11 +48,10 @@ export const useBatchWallet = (addresses: string[]): UseBatchWalletData => {
         eth: Number(ethers.utils.formatEther(eth)),
       };
     },
-    staleTime: 1000 * 60 * 15,
-  }));
+    {
+      staleTime: 1000 * 60 * 15,
+    }
+  );
 
-  const results: UseQueryResult<any, any>[] = useQueries(queries);
-  const isLoading = results.some(r => r.isLoading);
-
-  return { isLoading, results };
+  return result;
 };

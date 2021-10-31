@@ -20,12 +20,7 @@ export class RpcController {
     }
 
     return axios
-      .post(endpoint, req.body, {
-        headers: {
-          origin: 'moz-extension://a0904227-ee63-4d3d-aacc-82d592d1b746',
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0',
-        },
-      })
+      .post(endpoint, req.body)
       .then(response => res.setHeader('endpoint', endpoint).json(response.data))
       .catch(err => {
         throw new AppError(err.message, err.statusCode ?? 500);

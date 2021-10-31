@@ -9,7 +9,7 @@ interface BattleTypeSelectorProps {
 export const BattleTypeSelector = ({ value, onChange }: BattleTypeSelectorProps): JSX.Element => {
   return (
     <Menu isLazy>
-      <MenuButton as={Button} rightIcon={<FiChevronDown />} w="145px" variant="ghost">
+      <MenuButton as={Button} rightIcon={<FiChevronDown />} w="145px" variant="outline" textAlign="left">
         {!value ? 'Only show...' : value}
       </MenuButton>
 

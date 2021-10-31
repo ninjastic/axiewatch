@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useQueries, UseQueryOptions, UseQueryResult } from 'react-query';
 
 import { serverApi } from '../api';
@@ -5,6 +6,7 @@ import { serverApi } from '../api';
 interface UseBatchWalletTransactionsData {
   isLoading: boolean;
   results: UseQueryResult<any, any>[];
+  totalTransactions: number;
 }
 
 export const useBatchWalletTransactions = (addresses: string[]): UseBatchWalletTransactionsData => {
@@ -14,8 +16,9 @@ export const useBatchWalletTransactions = (addresses: string[]): UseBatchWalletT
       const { data } = await serverApi.get(`/explorer/txs/${address}`, {
         params: {
           from: 0,
-          size: 5,
+          size: 50,
         },
+        timeout: 1000 * 60 * 1,
       });
 
       const dataWithContext = {
@@ -25,12 +28,17 @@ export const useBatchWalletTransactions = (addresses: string[]): UseBatchWalletT
 
       return { address, transactions: dataWithContext };
     },
-    staleTime: 1000 * 60 * 15,
-    retry: false,
+    staleTime: Infinity,
+    refetchOnMount: 'always',
   }));
 
   const results: UseQueryResult<any, any>[] = useQueries(queries);
-  const isLoading = results.some(r => r.isLoading);
+  const isLoading = useMemo(() => results.some(r => r.isLoading), [results]);
 
-  return { isLoading, results };
+  const totalTransactions = useMemo(
+    () => results.filter(r => r.isSuccess).reduce((total, curr) => total + curr.data.transactions.total, 0),
+    [results]
+  );
+
+  return { isLoading, results, totalTransactions };
 };

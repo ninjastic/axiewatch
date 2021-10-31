@@ -35,7 +35,7 @@ export const FiltersPartsSelector = ({ setFilter, formValues }: FilterProps): JS
       <FormLabel>Parts</FormLabel>
 
       <Select
-        onChange={selectedValues => handleChange(selectedValues.map(selected => selected.value))}
+        onChange={(selectedValues: any[]) => handleChange(selectedValues.map(selected => selected.value))}
         options={options}
         name="parts"
         closeMenuOnSelect

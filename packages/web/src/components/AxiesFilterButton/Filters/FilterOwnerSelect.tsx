@@ -38,7 +38,7 @@ export const FilterOwnerSelect = ({ setFilter, formValues }: FilterProps): JSX.E
       <FormLabel>Scholar</FormLabel>
 
       <Select
-        onChange={selected => handleChange(selected?.value ?? '')}
+        onChange={(selected: any) => handleChange(selected?.value ?? '')}
         options={options}
         name="owner"
         closeMenuOnSelect

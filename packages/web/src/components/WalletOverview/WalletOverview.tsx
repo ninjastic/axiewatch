@@ -1,4 +1,4 @@
-import { Stat, StatLabel, StatNumber, StatHelpText, Spinner, Grid, HStack, GridItem } from '@chakra-ui/react';
+import { Stat, StatLabel, StatNumber, StatHelpText, Skeleton, SimpleGrid, HStack, GridItem } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 import { useMemo } from 'react';
 import Image from 'next/image';
@@ -7,82 +7,114 @@ import { formatter } from '../../services/formatter';
 import { scholarsMap } from '../../recoil/scholars';
 import { usePrice } from '../../services/hooks/usePrice';
 import { useBatchWallet } from '../../services/hooks/useBatchWallet';
+import { preferencesAtom } from '@src/recoil/preferences';
 
 export const WalletOverview = (): JSX.Element => {
-  const scholars = useRecoilValue(scholarsMap);
   const price = usePrice();
 
+  const scholars = useRecoilValue(scholarsMap);
+  const preferences = useRecoilValue(preferencesAtom);
+
+  const managerAddress = preferences.managerAddress.replace('ronin:', '0x');
+
   const addresses = scholars.map(scholar => scholar.address);
-  const { isLoading, results } = useBatchWallet(addresses);
+  const addressesWithManager = preferences.managerAddress ? [managerAddress, ...addresses] : addresses;
+  const { results, isLoading } = useBatchWallet(addressesWithManager);
 
   const amount = useMemo(
-    () => ({
-      slp: Math.round(results.reduce((t, curr) => t + curr.data.slp, 0)),
-      axs: Math.round(results.reduce((t, curr) => t + curr.data.axs, 0) * 1000) / 1000,
-      eth: Math.round(results.reduce((t, curr) => t + curr.data.eth, 0) * 1000) / 1000,
-    }),
-    [results]
+    () =>
+      !isLoading
+        ? {
+            slp: Math.round(results.reduce((t, curr) => t + curr.data.slp, 0)),
+            axs: Math.round(results.reduce((t, curr) => t + curr.data.axs, 0) * 1000) / 1000,
+            eth: Math.round(results.reduce((t, curr) => t + curr.data.eth, 0) * 1000) / 1000,
+          }
+        : {},
+    [results, isLoading]
   );
 
   const prices = useMemo(
-    () => ({
-      slp: formatter(price.values.slp * amount.slp, price.locale),
-      axs: formatter(price.values.axs * amount.axs, price.locale),
-      eth: formatter(price.values.eth * amount.eth, price.locale),
-    }),
-    [amount.axs, amount.eth, amount.slp, price.locale, price.values.axs, price.values.eth, price.values.slp]
+    () =>
+      !isLoading
+        ? {
+            slp: formatter(price.values.slp * amount.slp, price.locale),
+            axs: formatter(price.values.axs * amount.axs, price.locale),
+            eth: formatter(price.values.eth * amount.eth, price.locale),
+          }
+        : {},
+    [amount, price, isLoading]
   );
 
-  const totalWorth = formatter(
-    price.values.slp * amount.slp + price.values.axs * amount.axs + price.values.eth * amount.eth,
-    price.locale
+  const totalWorth = useMemo(
+    () =>
+      !isLoading
+        ? formatter(
+            price.values.slp * amount.slp + price.values.axs * amount.axs + price.values.eth * amount.eth,
+            price.locale
+          )
+        : null,
+    [amount, price, isLoading]
   );
-
-  if (isLoading) {
-    return <Spinner />;
-  }
 
   return (
-    <Grid templateColumns="repeat(5, 1fr)" alignItems="center" gap={3}>
-      <GridItem colSpan={{ base: 5, lg: 2 }} mb={{ base: 5, lg: 0 }}>
+    <SimpleGrid columns={{ base: 2, lg: 4 }} alignItems="center" gap={5}>
+      <GridItem colSpan={1} mb={{ base: 5, lg: 0 }}>
         <Stat>
           <StatLabel>Total Worth</StatLabel>
-          <StatNumber>~{totalWorth}</StatNumber>
+
+          <Skeleton maxW="200px" h="30px" isLoaded={!isLoading}>
+            <StatNumber>~{totalWorth}</StatNumber>
+          </Skeleton>
         </Stat>
       </GridItem>
 
       <Stat w="120px">
         <StatLabel>SLP</StatLabel>
 
-        <HStack>
-          <Image src="/images/axies/slp.png" width="18px" height="18px" alt="slp" />
-          <StatNumber>{amount.slp}</StatNumber>
-        </HStack>
+        <Skeleton maxW="150px" h="30px" isLoaded={!isLoading}>
+          <HStack>
+            <Image src="/images/axies/slp.png" width="18px" height="18px" alt="slp" />
 
-        <StatHelpText>{prices.slp}</StatHelpText>
+            <StatNumber>{amount.slp ?? '0000'}</StatNumber>
+          </HStack>
+        </Skeleton>
+
+        <Skeleton maxW="7 0px" h="20px" isLoaded={!isLoading}>
+          <StatHelpText>{prices.slp}</StatHelpText>
+        </Skeleton>
       </Stat>
 
       <Stat w="120px">
         <StatLabel>AXS</StatLabel>
 
-        <HStack>
-          <Image src="/images/axies/axs.png" width="18px" height="18px" alt="axs" />
-          <StatNumber>{amount.axs}</StatNumber>
-        </HStack>
+        <Skeleton maxW="150px" h="30px" isLoaded={!isLoading}>
+          <HStack>
+            <Image src="/images/axies/axs.png" width="18px" height="18px" alt="axs" />
 
-        <StatHelpText>{prices.axs}</StatHelpText>
+            <StatNumber>{amount.axs ?? '0000'}</StatNumber>
+          </HStack>
+        </Skeleton>
+
+        <Skeleton maxW="70px" h="20px" isLoaded={!isLoading}>
+          <StatHelpText>{prices.axs}</StatHelpText>
+        </Skeleton>
       </Stat>
 
       <Stat w="120px">
         <StatLabel>ETH</StatLabel>
 
-        <HStack>
-          <Image src="/images/axies/eth.png" width="20px" height="20px" alt="eth" />
-          <StatNumber>{amount.eth}</StatNumber>
-        </HStack>
+        <Skeleton maxW="150px" h="30px" isLoaded={!isLoading}>
+          <HStack>
+            <Image src="/images/axies/eth.png" width="20px" height="20px" alt="eth" />
 
-        <StatHelpText>{prices.eth}</StatHelpText>
+            <StatNumber>{amount.eth}</StatNumber>
+          </HStack>
+        </Skeleton>
+
+        <Skeleton maxW="70px" h="20px" isLoaded={!isLoading}>
+          <StatHelpText>{prices.eth}</StatHelpText>
+        </Skeleton>
       </Stat>
-    </Grid>
+    </SimpleGrid>
   );
 };

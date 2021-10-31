@@ -22,6 +22,7 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
+import { FiChevronDown } from 'react-icons/fi';
 import { RiSwordLine } from 'react-icons/ri';
 import { useRecoilValue } from 'recoil';
 import { useMemo, useState } from 'react';
@@ -43,7 +44,7 @@ interface NumberMenuProps {
 const NumberMenu = ({ number, setNumber }: NumberMenuProps): JSX.Element => {
   return (
     <Menu>
-      <MenuButton as={Button} size="sm" variant="outline">
+      <MenuButton as={Button} size="sm" variant="outline" rightIcon={<FiChevronDown />}>
         Show {number} scholars
       </MenuButton>
       <MenuList>

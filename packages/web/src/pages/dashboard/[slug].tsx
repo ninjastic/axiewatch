@@ -16,6 +16,7 @@ import {
   Button,
   Stack,
   Flex,
+  Tag,
 } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { AiOutlineTrophy } from 'react-icons/ai';
@@ -191,7 +192,9 @@ export const DashboardSlug = (): JSX.Element => {
                   <Stack>
                     <Text fontWeight="bold">Loading scholars...</Text>
                     <Text>
-                      {results.filter(result => result.isSuccess).length}/{results.length}
+                      <Tag>
+                        {results.filter(result => result.isSuccess).length}/{results.length}
+                      </Tag>
                     </Text>
                   </Stack>
                 </Stack>
