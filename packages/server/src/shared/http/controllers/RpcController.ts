@@ -10,13 +10,13 @@ export class RpcController {
     const writeMethods = ['eth_sendRawTransaction'];
 
     if (req.body?.params[0]?.data?.startsWith('0x70a08231')) {
-      endpoint = 'https://api.roninchain.com/rpc';
+      endpoint = 'http://ec2-52-204-44-51.compute-1.amazonaws.com:8545';
     }
 
     if (req.body && writeMethods.includes(req.body.method)) {
       endpoint = 'https://proxy.roninchain.com/free-gas-rpc';
     } else {
-      endpoint = 'https://api.roninchain.com/rpc';
+      endpoint = 'http://ec2-52-204-44-51.compute-1.amazonaws.com:8545';
     }
 
     return axios
