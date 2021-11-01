@@ -441,7 +441,8 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
       }
 
       if (actionType === 'Claim AXS') {
-        const { data } = transaction.logs[0];
+        console.log(transaction);
+        const { data } = transaction.logs[transaction.logs.length - 3];
         const value = Math.round((parseInt(data, 16) / 10 ** 18) * 1000) / 1000;
         return (
           <HStack spacing={1}>
