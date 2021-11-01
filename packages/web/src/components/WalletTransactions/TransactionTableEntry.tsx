@@ -402,13 +402,6 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
       );
     }
 
-    if (actionType === 'Cancel Axie Sale' && transaction.status) {
-      const [hexId] = ethers.utils.defaultAbiCoder.decode(['uint256'], ethers.utils.hexDataSlice(transaction.input, 4));
-      const id = parseInt(hexId, 10);
-
-      return <AxieTag id={id} />;
-    }
-
     try {
       if (actionType === 'Claim SLP') {
         const { data } = transaction.logs[0];
