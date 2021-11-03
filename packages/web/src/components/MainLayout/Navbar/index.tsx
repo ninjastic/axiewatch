@@ -1,6 +1,7 @@
 import { ReactText, useState } from 'react';
 import Router from 'next/router';
 import { Icon, InfoOutlineIcon, HamburgerIcon } from '@chakra-ui/icons';
+import { IoLogoYoutube } from 'react-icons/io';
 import {
   Grid,
   Text,
@@ -221,6 +222,22 @@ const Header = ({ currentTool }: HeaderProps): JSX.Element => {
           }}
           sx={{
             display: { base: 'none', '2xl': 'block' },
+            mr: 1,
+          }}
+        />
+
+        <IconButton
+          aria-label="Youtube"
+          icon={<IoLogoYoutube />}
+          variant="ghost"
+          onClick={() => window.open('https://www.youtube.com/watch?v=EecgUWIX-8k', '_blank')}
+          color="white"
+          _hover={{
+            bg: 'whiteAlpha.200',
+          }}
+          sx={{
+            display: { base: 'none', '2xl': 'flex' },
+            pt: 0,
             mr: 1,
           }}
         />
