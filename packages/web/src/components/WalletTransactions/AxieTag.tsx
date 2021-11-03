@@ -1,4 +1,4 @@
-import { Tooltip, Link, Tag, Text, Stack, Image, Box, SkeletonCircle, HStack, Icon } from '@chakra-ui/react';
+import { Tooltip, Link, Tag, Text, Stack, Image, Box, SkeletonCircle, HStack, Icon, Flex } from '@chakra-ui/react';
 import { gql } from 'graphql-request';
 import { useQuery } from 'react-query';
 import { useMemo } from 'react';
@@ -16,6 +16,9 @@ import {
   PlantIcon,
   ReptileIcon,
 } from '../Icons/AxieIcons';
+import { AxieTraits } from '../AxieTraits';
+import { parseAxieData } from '@src/services/utils/parseAxieData';
+import { AxieInfo } from '../AxieInfo';
 
 const query = gql`
   query GetAxieDetail($axieId: ID!) {
@@ -136,29 +139,30 @@ interface GraphQLResponse {
 }
 
 interface AxieCardProps {
-  id: number;
+  data: Axie;
 }
 
-const AxieCard = ({ id }: AxieCardProps): JSX.Element => {
-  const imageUrl = `https://storage.googleapis.com/assets.axieinfinity.com/axies/${id}/axie/axie-full-transparent.png`;
-
+const AxieCard = ({ data }: AxieCardProps): JSX.Element => {
   return (
     <Stack>
-      <Image
-        src={imageUrl}
-        w="96px"
-        h={{ lg: '72px' }}
-        alt={`Axie ${id}`}
-        fallback={
-          <Box d="flex" alignItems="center" justifyContent="center" w="96px" h={{ lg: '72px' }}>
-            <SkeletonCircle />
-          </Box>
-        }
-        transition="all .2s ease-out"
-        _hover={{ transform: 'translateY(-4px)', opacity: 0.9 }}
-      />
+      <Flex align="center" justify="center" direction="column">
+        <Image
+          src={data.image}
+          w="96px"
+          h={{ lg: '72px' }}
+          alt={`Axie ${data.id}`}
+          fallback={
+            <Box d="flex" alignItems="center" justifyContent="center" w="96px" h={{ lg: '72px' }}>
+              <SkeletonCircle />
+            </Box>
+          }
+          transition="all .2s ease-out"
+          _hover={{ transform: 'translateY(-4px)', opacity: 0.9 }}
+        />
+      </Flex>
 
-      <Text>Axie {id}</Text>
+      <AxieInfo axieData={data} />
+      <AxieTraits axieData={data} />
     </Stack>
   );
 };
@@ -186,7 +190,8 @@ export const AxieTag = ({ id }: AxieTagProps): JSX.Element => {
     ['axie', id],
     async () => {
       const { axie } = await axieInfinityGraphQl.request<GraphQLResponse>(query, { axieId: id });
-      return axie;
+
+      return parseAxieData(axie);
     },
     {
       staleTime: 1000 * 60 * 60 * 24,
@@ -194,7 +199,7 @@ export const AxieTag = ({ id }: AxieTagProps): JSX.Element => {
   );
 
   return (
-    <Tooltip label={<AxieCard id={id} />} isDisabled={isLoading}>
+    <Tooltip label={<AxieCard data={data} />} isDisabled={isLoading}>
       <Link href={axieUrl} target="_blank">
         <Tag>
           <Box>

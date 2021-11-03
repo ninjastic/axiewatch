@@ -145,7 +145,8 @@ export const Axies = (): JSX.Element => {
               <Stat w="200px">
                 <StatLabel>Favorite class</StatLabel>
                 <StatNumber>
-                  {axiesClasses[axiesFavoriteClass]} {pluralize(axiesFavoriteClass, axiesClasses[axiesFavoriteClass])}
+                  {axiesClasses[axiesFavoriteClass] ?? '?'}{' '}
+                  {pluralize(axiesFavoriteClass, axiesClasses[axiesFavoriteClass])}
                 </StatNumber>
               </Stat>
             </HStack>
@@ -207,7 +208,9 @@ export const Axies = (): JSX.Element => {
       {!isLoading && !!scholars.length && !filteredAxiesCount && (
         <Box h="70%">
           <Flex flexDir="column" justifyContent="center" alignItems="center" h="100%">
-            <Text fontSize="lg">No sign of axie life here.</Text>
+            <Text fontSize="lg" variant="faded">
+              No sign of axie life here.
+            </Text>
           </Flex>
         </Box>
       )}
@@ -215,7 +218,9 @@ export const Axies = (): JSX.Element => {
       {!isLoading && !scholars.length && (
         <Box h="80%">
           <Flex flexDir="column" justifyContent="center" alignItems="center" h="100%">
-            <Text fontSize="lg">No scholars were found.</Text>
+            <Text fontSize="lg" variant="faded">
+              No scholars were found.
+            </Text>
           </Flex>
         </Box>
       )}

@@ -41,6 +41,7 @@ interface Transaction {
     topics: Array<string>;
     transaction_hash: string;
   }>;
+  axie?: any;
 }
 
 interface TransactionTableEntryProps {
@@ -49,7 +50,7 @@ interface TransactionTableEntryProps {
 
 const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryProps): JSX.Element => {
   const scholars = useRecoilValue(scholarsMap);
-  const scholar = scholars.find(s => s.address === transaction.context);
+  const scholar = scholars.find(s => s.address?.toLowerCase() === transaction.context?.toLowerCase());
 
   const eth = '0xc99a6a985ed2cac1ef41640596c5a5f9f4e19ef5';
   const slp = '0xa8754b9fa15fc18bb59458815510e40a12cd2014';
@@ -62,6 +63,8 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
   const explorerBaseUrl = 'https://explorer.roninchain.com';
 
   const actionType = useMemo(() => {
+    if (transaction.axie) return 'Sold Axie';
+
     if (transaction.input.startsWith('0xa9059cbb') && transaction.to === eth) return 'Transfer ETH';
     if (transaction.input.startsWith('0xa9059cbb') && transaction.to === slp) return 'Transfer SLP';
     if (transaction.input.startsWith('0xa9059cbb') && transaction.to === axs) return 'Transfer AXS';
@@ -99,7 +102,7 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
   }, [transaction.status]);
 
   const fromAddress = useMemo(() => {
-    const from = scholars.find(s => s.address === transaction.from);
+    const from = scholars.find(s => s.address.toLowerCase() === transaction.from.toLowerCase());
     const shortAddress = `${transaction.from.substr(0, 5)}...${transaction.from.substr(transaction.from.length - 5)}`;
 
     return from?.name ?? shortAddress;
@@ -231,7 +234,16 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
       );
     }
 
-    return '';
+    const { to } = transaction;
+
+    const toScholar = scholars.find(s => to.toLowerCase() === s.address.toLowerCase());
+    const shortAddress = `${to.substr(0, 5)}...${to.substr(to.length - 5)}`;
+
+    return (
+      <Link href={`${explorerBaseUrl}/address/${to}`} target="_blank">
+        {toScholar?.name ?? shortAddress}
+      </Link>
+    );
   }, [actionType, explorerBaseUrl, scholars, transaction]);
 
   const txValue = useMemo(() => {
@@ -376,6 +388,19 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
       );
     }
 
+    if (actionType === 'Sold Axie') {
+      return (
+        <Stack direction={{ base: 'column', lg: 'row' }}>
+          <HStack spacing={1}>
+            <Image src="/images/axies/eth.png" width="16px" alt="slp" />
+            <Text>{transaction.value}</Text>
+          </HStack>
+
+          <AxieTag id={transaction.axie.id} />
+        </Stack>
+      );
+    }
+
     if (actionType === 'Create Axie Sale' && transaction.status) {
       const [, , hexId, starting, ending] = ethers.utils.defaultAbiCoder.decode(
         ['uint8[]', 'address[]', 'uint256[]', 'uint256[]', 'uint256[]', 'address[]', 'uint256[]'],
@@ -441,7 +466,6 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
       }
 
       if (actionType === 'Claim AXS') {
-        console.log(transaction);
         const { data } = transaction.logs[transaction.logs.length - 3];
         const value = Math.round((parseInt(data, 16) / 10 ** 18) * 1000) / 1000;
         return (

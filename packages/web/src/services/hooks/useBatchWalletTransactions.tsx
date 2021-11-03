@@ -21,8 +21,27 @@ export const useBatchWalletTransactions = (addresses: string[]): UseBatchWalletT
         timeout: 1000 * 60 * 1,
       });
 
+      const { data: salesData } = await serverApi.get('/sales', {
+        params: {
+          address,
+          limit: 20,
+          skip: 0,
+        },
+        timeout: 1000 * 60 * 1,
+      });
+
       const dataWithContext = {
         ...data,
+        sales: salesData.map(sale => ({
+          hash: sale.txHash,
+          timestamp: sale.txTimestamp,
+          from: sale.sellerId,
+          to: sale.buyerId,
+          value: sale.price,
+          axie: sale.axie,
+          input: '',
+          context: address,
+        })),
         results: data.results.map((tx: any) => ({ ...tx, context: address })),
       };
 

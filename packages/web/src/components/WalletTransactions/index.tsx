@@ -25,6 +25,8 @@ const slp = '0xa8754b9fa15fc18bb59458815510e40a12cd2014';
 const axs = '0x97a9107c1793bc407d6f527b77e7fff4d812bece';
 
 const getActionType = (to: string, input: string) => {
+  if (!input && to) return 'Sold Axie';
+
   if (input.startsWith('0xa9059cbb') && to === eth) return 'Transfer ETH';
   if (input.startsWith('0xa9059cbb') && to === slp) return 'Transfer SLP';
   if (input.startsWith('0xa9059cbb') && to === axs) return 'Transfer AXS';
@@ -59,8 +61,9 @@ const TransactionsTypeSelector = ({ typeFilter, setTypeFilter }: TransactionsTyp
     'Transfer SLP',
     'Transfer AXS',
     'Claim SLP',
-    'Buy Axie',
     'Transfer Axie',
+    'Buy Axie',
+    'Sold Axie',
     'Create Axie Sale',
     'Cancel Axie Sale',
     'Withdraw ETH',
@@ -128,10 +131,17 @@ export const WalletTransactions = (): JSX.Element => {
   const addresses = scholars.map(scholar => scholar.address);
   const { isLoading, results } = useBatchWalletTransactions(addresses);
 
-  const transactions = useMemo(
+  const explorer = useMemo(
     () => results.reduce((prev, curr) => [...prev, ...(curr.data?.transactions?.results ?? [])], [] as any[]),
     [results]
   );
+
+  const sales = useMemo(
+    () => results.reduce((prev, curr) => [...prev, ...(curr.data?.transactions.sales ?? [])], [] as any[]),
+    [results]
+  );
+
+  const transactions = useMemo(() => [...explorer, ...sales], [explorer, sales]);
 
   const filteredTransactions = useMemo(
     () =>

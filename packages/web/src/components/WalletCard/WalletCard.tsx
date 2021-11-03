@@ -121,7 +121,9 @@ export const WalletCard = ({ address }: WalletCardProps): JSX.Element => {
           <SkeletonText isLoaded={!isLoading} noOfLines={2} w="75px">
             <Stack spacing={0}>
               <Text fontWeight="bold">Worth</Text>
-              <Text opacity={0.9}>~{totalWorth}</Text>
+              <Text opacity={0.9} fontSize="sm">
+                ~{totalWorth}
+              </Text>
             </Stack>
           </SkeletonText>
         </GridItem>

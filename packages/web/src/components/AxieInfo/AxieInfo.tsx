@@ -17,14 +17,16 @@ export const AxieInfo = ({ axieData }: AxieInfoProps): JSX.Element => {
   return (
     <Stack fontSize="sm" align="center">
       <Text opacity={0.9}>#{data?.id}</Text>
-      <Text fontWeight="bold">{scholar?.name}</Text>
+      <Text fontWeight="bold">{data?.name}</Text>
 
       <HStack align="flex-start">
-        <Tag>
-          <Text textOverflow="ellipsis" overflowX="hidden" whiteSpace="nowrap" maxW="100px">
-            {data?.name}
-          </Text>
-        </Tag>
+        {scholar?.name && (
+          <Tag>
+            <Text textOverflow="ellipsis" overflowX="hidden" whiteSpace="nowrap" maxW="100px">
+              {scholar?.name}
+            </Text>
+          </Tag>
+        )}
         <Tag>Breed: {data?.breedCount} / 7</Tag>
         <Tag>{Math.round(data?.quality * 100)}%</Tag>
       </HStack>
