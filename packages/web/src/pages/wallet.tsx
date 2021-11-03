@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, Grid } from '@chakra-ui/react';
+import { Box, Flex, HStack, Grid, Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 import dynamic from 'next/dynamic';
 
@@ -32,20 +32,33 @@ export const WalletPage = (): JSX.Element => {
         </Box>
       </Flex>
 
-      <Grid
-        pt={{ base: 3, xl: 10 }}
-        pb={10}
-        templateColumns={{ base: '1fr', lg: 'repeat(2, 1fr)', xl: 'repeat(3, 1fr)' }}
-        gap={3}
-      >
-        {addressesWithManager.map(address => (
-          <WalletCard key={address} address={address} />
-        ))}
-      </Grid>
+      <Tabs mt={5} isLazy>
+        <TabList>
+          <Tab>Wallets</Tab>
+          <Tab>Transactions</Tab>
+        </TabList>
 
-      <Box pb={5}>
-        <WalletTransactions />
-      </Box>
+        <TabPanels>
+          <TabPanel>
+            <Grid
+              pt={{ base: 3, xl: 10 }}
+              pb={10}
+              templateColumns={{ base: '1fr', lg: 'repeat(2, 1fr)', xl: 'repeat(3, 1fr)' }}
+              gap={3}
+            >
+              {addressesWithManager.map(address => (
+                <WalletCard key={address} address={address} />
+              ))}
+            </Grid>
+          </TabPanel>
+
+          <TabPanel>
+            <Box pb={5}>
+              <WalletTransactions />
+            </Box>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Box>
   );
 };

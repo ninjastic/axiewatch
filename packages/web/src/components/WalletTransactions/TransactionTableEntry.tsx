@@ -531,20 +531,18 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
   return (
     <Tr>
       <Td>
-        <Text fontWeight="bold">
-          <Link href={`${explorerBaseUrl}/address/${transaction.from}`} target="_blank">
-            {scholar?.name}
-          </Link>
-        </Text>
+        <Link href={`${explorerBaseUrl}/address/${transaction.from}`} target="_blank">
+          <Text fontWeight="bold">{scholar?.name}</Text>
+        </Link>
       </Td>
 
       <Td>
-        <Text>
-          <Link href={`${explorerBaseUrl}/tx/${transaction.hash}`} target="_blank">
+        <Link href={`${explorerBaseUrl}/tx/${transaction.hash}`} target="_blank">
+          <Text>
             {transaction.hash.substr(0, 8)}...
             {transaction.hash.substr(transaction.hash.length - 4)}
-          </Link>
-        </Text>
+          </Text>
+        </Link>
       </Td>
 
       <Td>
@@ -555,21 +553,17 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
 
       <Td>{actionComponent}</Td>
 
-      <Td>
-        <Text>{txValue}</Text>
-      </Td>
+      <Td>{txValue}</Td>
 
       <Td>
         <HStack spacing={5}>
-          <Text minW="100px">
-            <Link href={`${explorerBaseUrl}/address/${transaction.from}`} target="_blank">
-              {fromAddress}
-            </Link>
-          </Text>
+          <Link href={`${explorerBaseUrl}/address/${transaction.from}`} target="_blank">
+            <Text minW="100px">{fromAddress}</Text>
+          </Link>
 
           <BsArrowRight />
 
-          <Text>{toAddress}</Text>
+          {toAddress}
         </HStack>
       </Td>
 
