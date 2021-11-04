@@ -390,7 +390,7 @@ const StartPaymentsPage = (): JSX.Element => {
         <Stack spacing={3}>
           {status.length &&
             selectedScholars.map(scholar => {
-              const { name, address, shares } = scholar;
+              const { name, address, shares } = scholar || {};
 
               const scholarStatus = status.find(stt => stt.address === scholar.address);
 

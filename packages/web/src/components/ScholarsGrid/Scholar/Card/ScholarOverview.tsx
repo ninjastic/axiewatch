@@ -20,7 +20,7 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
   const preferences = useRecoilValue(preferencesAtom);
   const price = useRecoilValue(priceAtom);
 
-  const { name, slp, roninSlp, todaySlp, shares, slpDay, lastClaim, nextClaim } = scholar;
+  const { name, slp, roninSlp, todaySlp, shares, slpDay, lastClaim, nextClaim } = scholar || {};
 
   const slpAmount = preferences.includeRoninBalance ? slp + roninSlp : slp;
 

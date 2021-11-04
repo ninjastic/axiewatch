@@ -20,7 +20,7 @@ interface ScholarClaimCardProps {
 }
 
 export const ScholarClaimCard = ({ scholarData, isSelected, toggleSelect }: ScholarClaimCardProps): JSX.Element => {
-  const { name, address, slp, shares, paymentAddress, hasPrivateKey, isConfigured } = scholarData;
+  const { name, address, slp, shares, paymentAddress, hasPrivateKey, isConfigured } = scholarData || {};
 
   const setPrivateKeyModal = useCreateModal({
     id: 'setPrivateKeyModal',
