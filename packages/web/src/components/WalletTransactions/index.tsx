@@ -15,6 +15,7 @@ import { FiChevronDown } from 'react-icons/fi';
 import { useEffect, useMemo, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
+import lodash from 'lodash';
 
 import { scholarsMap } from '../../recoil/scholars';
 import { preferencesAtom } from '@src/recoil/preferences';
@@ -131,8 +132,11 @@ export const WalletTransactions = (): JSX.Element => {
   const [typeFilter, setTypeFilter] = useState('All');
 
   const managerAddress = preferences.managerAddress.replace('ronin:', '0x');
+
   const addresses = scholars.map(scholar => scholar.address);
-  const addressesWithManager = preferences.managerAddress ? [managerAddress, ...addresses] : addresses;
+  const addressesWithManager = preferences.managerAddress
+    ? lodash.uniqWith([managerAddress, ...addresses], (a, b) => a.toLowerCase() === b.toLowerCase())
+    : addresses;
 
   const { isLoading, results } = useBatchWalletTransactions(addressesWithManager);
 

@@ -13,7 +13,7 @@ interface GetAxieNameFromAddressProps {
   address: string;
 }
 
-export async function getAxieNameFromAddress({ address }: GetAxieNameFromAddressProps) {
+export const getAxieNameFromAddress = async ({ address }: GetAxieNameFromAddressProps): Promise<string | null> => {
   const getProfileSearchQuery = gql`
     query GetProfileSearch($searchString: String!) {
       profileSearch(searchString: $searchString) {
@@ -56,4 +56,4 @@ export async function getAxieNameFromAddress({ address }: GetAxieNameFromAddress
   } catch (error: any) {
     return null;
   }
-}
+};

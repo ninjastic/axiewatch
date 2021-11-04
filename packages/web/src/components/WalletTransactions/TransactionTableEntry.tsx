@@ -25,6 +25,7 @@ import dayjs from '../../services/dayjs';
 import abi from '../../constants/abi/SLP.json';
 import { scholarsMap } from '../../recoil/scholars';
 import { AxieTag } from './AxieTag';
+import { preferencesAtom } from '@src/recoil/preferences';
 
 interface Transaction {
   context: string;
@@ -51,6 +52,10 @@ interface TransactionTableEntryProps {
 const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryProps): JSX.Element => {
   const scholars = useRecoilValue(scholarsMap);
   const scholar = scholars.find(s => s.address?.toLowerCase() === transaction.context?.toLowerCase());
+  const preferences = useRecoilValue(preferencesAtom);
+
+  const managerWithoutRonin = preferences?.managerAddress.replace('ronin:', '0x');
+  const isManager = transaction.from.toLowerCase() === managerWithoutRonin.toLowerCase();
 
   const eth = '0xc99a6a985ed2cac1ef41640596c5a5f9f4e19ef5';
   const slp = '0xa8754b9fa15fc18bb59458815510e40a12cd2014';
@@ -102,11 +107,15 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
   }, [transaction.status]);
 
   const fromAddress = useMemo(() => {
+    if (isManager) {
+      return 'Manager';
+    }
+
     const from = scholars.find(s => s.address.toLowerCase() === transaction.from.toLowerCase());
     const shortAddress = `${transaction.from.substr(0, 5)}...${transaction.from.substr(transaction.from.length - 5)}`;
 
     return from?.name ?? shortAddress;
-  }, [scholars, transaction.from]);
+  }, [isManager, scholars, transaction.from]);
 
   const toAddress = useMemo(() => {
     if (transaction.to === bridge) {
@@ -532,7 +541,7 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
     <Tr>
       <Td>
         <Link href={`${explorerBaseUrl}/address/${transaction.from}`} target="_blank">
-          <Text fontWeight="bold">{scholar?.name}</Text>
+          <Text fontWeight="bold">{isManager ? 'Manager' : scholar?.name}</Text>
         </Link>
       </Td>
 

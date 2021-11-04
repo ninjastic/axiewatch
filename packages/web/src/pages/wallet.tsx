@@ -1,6 +1,7 @@
 import { Box, Flex, HStack, Grid, Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 import dynamic from 'next/dynamic';
+import lodash from 'lodash';
 
 import { scholarsMap } from '../recoil/scholars';
 import { WalletOverview } from '../components/WalletOverview';
@@ -16,7 +17,9 @@ export const WalletPage = (): JSX.Element => {
 
   const managerAddress = preferences.managerAddress.replace('ronin:', '0x');
   const addresses = scholars.map(scholar => scholar.address);
-  const addressesWithManager = preferences.managerAddress ? [managerAddress, ...addresses] : addresses;
+  const addressesWithManager = preferences.managerAddress
+    ? lodash.uniqWith([managerAddress, ...addresses], (a, b) => a.toLowerCase() === b.toLowerCase())
+    : addresses;
 
   return (
     <Box h="full" maxW="1450px" margin="auto" p={3}>

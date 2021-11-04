@@ -3,7 +3,7 @@ import { Tabs, Tab, TabList, TabPanels, TabPanel, Box } from '@chakra-ui/react';
 import { ManualForm } from './ManualForm';
 import { ListForm } from './ListForm';
 
-export function NewScholarModal() {
+export const NewScholarModal = (): JSX.Element => {
   return (
     <Box>
       <Tabs variant="soft-rounded">
@@ -24,4 +24,4 @@ export function NewScholarModal() {
       </Tabs>
     </Box>
   );
-}
+};

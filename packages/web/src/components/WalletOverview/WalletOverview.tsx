@@ -1,6 +1,7 @@
 import { Stat, StatLabel, StatNumber, StatHelpText, Skeleton, SimpleGrid, HStack, GridItem } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 import { useMemo } from 'react';
+import lodash from 'lodash';
 import Image from 'next/image';
 
 import { formatter } from '../../services/formatter';
@@ -18,7 +19,10 @@ export const WalletOverview = (): JSX.Element => {
   const managerAddress = preferences.managerAddress.replace('ronin:', '0x');
 
   const addresses = scholars.map(scholar => scholar.address);
-  const addressesWithManager = preferences.managerAddress ? [managerAddress, ...addresses] : addresses;
+  const addressesWithManager = preferences.managerAddress
+    ? lodash.uniqWith([managerAddress, ...addresses], (a, b) => a.toLowerCase() === b.toLowerCase())
+    : addresses;
+
   const { results, isLoading } = useBatchWallet(addressesWithManager);
 
   const amount = useMemo(
