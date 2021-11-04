@@ -1,19 +1,15 @@
 import {
   Box,
   Heading,
-  Image,
   Text,
   Stack,
   Flex,
-  SkeletonCircle,
-  Link,
   SimpleGrid,
   Stat,
   StatLabel,
   StatNumber,
   HStack,
   Checkbox,
-  Tooltip,
 } from '@chakra-ui/react';
 import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 import dynamic from 'next/dynamic';
@@ -24,10 +20,8 @@ import { scholarAxiesFilter, scholarsMap, ScholarAxiesFilter, Axie, axiePartsAto
 import { preferencesAtom } from '../recoil/preferences';
 import { useBatchScholarAxie } from '../services/hooks/useBatchScholarAxie';
 import { BallScaleLoading } from '../components/BallScaleLoading';
-import { AxieInfo } from '../components/AxieInfo';
-import { AxieTraits } from '../components/AxieTraits';
 import { AxiesFilterButton } from '../components/AxiesFilterButton';
-import { Card } from '../components/Card';
+import { AxieCard } from '@src/components/AxieCard';
 
 const filterAxies = (scholarAxies: Axie[][], filters: ScholarAxiesFilter) =>
   scholarAxies.map(axies =>
@@ -168,39 +162,7 @@ export const Axies = (): JSX.Element => {
           </Flex>
 
           <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} gap={3} pb={5}>
-            {filteredAxies.map(axies =>
-              axies.map(axie => (
-                <Card py={5} px={3} key={axie.id}>
-                  <Stack align="center" spacing={3}>
-                    <AxieInfo axieData={axie} />
-
-                    <Tooltip label={<AxieTraits axieData={axie} />} isDisabled={!preferences.hideAxieTraits} p={3}>
-                      <Link
-                        href={`https://marketplace.axieinfinity.com/axie/${axie.id}?referrer=axie.watch`}
-                        target="_blank"
-                      >
-                        <Image
-                          src={axie.image}
-                          w="144px"
-                          h="108px"
-                          cursor="pointer"
-                          alt={`Axie ${axie.id}`}
-                          fallback={
-                            <Box d="flex" w="144px" h="108px" alignItems="center" justifyContent="center">
-                              <SkeletonCircle />
-                            </Box>
-                          }
-                          transition="all .2s ease-out"
-                          _hover={{ transform: 'translateY(-5px)', opacity: 1 }}
-                        />
-                      </Link>
-                    </Tooltip>
-
-                    {!preferences.hideAxieTraits && <AxieTraits axieData={axie} />}
-                  </Stack>
-                </Card>
-              ))
-            )}
+            {filteredAxies.map(axies => axies.map(axie => <AxieCard key={axie.id} axie={axie} />))}
           </SimpleGrid>
         </Stack>
       )}

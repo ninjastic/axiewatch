@@ -24,8 +24,8 @@ const eth = '0xc99a6a985ed2cac1ef41640596c5a5f9f4e19ef5';
 const slp = '0xa8754b9fa15fc18bb59458815510e40a12cd2014';
 const axs = '0x97a9107c1793bc407d6f527b77e7fff4d812bece';
 
-const getActionType = (to: string, input: string) => {
-  if (!input && to) return 'Sold Axie';
+const getActionType = (to: string, input: string, axie: any) => {
+  if (!input && to && axie) return 'Sold Axie';
 
   if (input.startsWith('0xa9059cbb') && to === eth) return 'Transfer ETH';
   if (input.startsWith('0xa9059cbb') && to === slp) return 'Transfer SLP';
@@ -147,7 +147,7 @@ export const WalletTransactions = (): JSX.Element => {
     () =>
       typeFilter && typeFilter !== 'All'
         ? transactions.filter(transaction => {
-            const action = getActionType(transaction.to, transaction.input);
+            const action = getActionType(transaction.to, transaction.input, transaction.axie);
             if (action === typeFilter) return true;
             return false;
           })

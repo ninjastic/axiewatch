@@ -118,7 +118,7 @@ export const WalletCard = ({ address }: WalletCardProps): JSX.Element => {
 
       <SimpleGrid mt={{ base: 0, xl: 3 }} columns={4}>
         <GridItem colSpan={{ base: 4, lg: 1 }}>
-          <SkeletonText isLoaded={!isLoading} noOfLines={2} w="75px">
+          <SkeletonText isLoaded={!isLoading} noOfLines={2} w={isLoading ? '75px' : '100px'}>
             <Stack spacing={0}>
               <Text fontWeight="bold">Worth</Text>
               <Text opacity={0.9} fontSize="sm">
@@ -130,7 +130,7 @@ export const WalletCard = ({ address }: WalletCardProps): JSX.Element => {
 
         <GridItem colSpan={3}>
           <SimpleGrid mt={{ base: 5, xl: 0 }} columns={3} gap={2}>
-            <SkeletonText isLoaded={!isLoading} noOfLines={2} w="75px">
+            <SkeletonText isLoaded={!isLoading} noOfLines={2} w={isLoading ? '75px' : '100px'}>
               <Stack spacing={0}>
                 <HStack>
                   <Image src="/images/axies/slp.png" width="18px" height="18px" alt="slp" />
@@ -143,7 +143,7 @@ export const WalletCard = ({ address }: WalletCardProps): JSX.Element => {
               </Stack>
             </SkeletonText>
 
-            <SkeletonText isLoaded={!isLoading} noOfLines={2} w="75px">
+            <SkeletonText isLoaded={!isLoading} noOfLines={2} w={isLoading ? '75px' : '100px'}>
               <Stack spacing={0}>
                 <HStack>
                   <Image src="/images/axies/axs.png" width="18px" height="18px" alt="axs" />
@@ -156,7 +156,7 @@ export const WalletCard = ({ address }: WalletCardProps): JSX.Element => {
               </Stack>
             </SkeletonText>
 
-            <SkeletonText isLoaded={!isLoading} noOfLines={2} w="75px">
+            <SkeletonText isLoaded={!isLoading} noOfLines={2} w={isLoading ? '75px' : '100px'}>
               <Stack spacing={0}>
                 <HStack>
                   <Image src="/images/axies/eth.png" width="18px" height="18px" alt="eth" />
