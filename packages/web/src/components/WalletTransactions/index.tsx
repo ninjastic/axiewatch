@@ -17,6 +17,7 @@ import { useRecoilValue } from 'recoil';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 
 import { scholarsMap } from '../../recoil/scholars';
+import { preferencesAtom } from '@src/recoil/preferences';
 import { useBatchWalletTransactions } from '../../services/hooks/useBatchWalletTransactions';
 import { TransactionsTable } from './TransactionsTable';
 
@@ -123,13 +124,17 @@ const TransactionsPerPageSelector = ({ perPage, setPerPage }: TransactionsPerPag
 
 export const WalletTransactions = (): JSX.Element => {
   const scholars = useRecoilValue(scholarsMap);
+  const preferences = useRecoilValue(preferencesAtom);
 
   const [page, setPage] = useState(0);
   const [perPage, setPerPage] = useState(20);
   const [typeFilter, setTypeFilter] = useState('All');
 
+  const managerAddress = preferences.managerAddress.replace('ronin:', '0x');
   const addresses = scholars.map(scholar => scholar.address);
-  const { isLoading, results } = useBatchWalletTransactions(addresses);
+  const addressesWithManager = preferences.managerAddress ? [managerAddress, ...addresses] : addresses;
+
+  const { isLoading, results } = useBatchWalletTransactions(addressesWithManager);
 
   const explorer = useMemo(
     () => results.reduce((prev, curr) => [...prev, ...(curr.data?.transactions?.results ?? [])], [] as any[]),

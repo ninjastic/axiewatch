@@ -15,7 +15,6 @@ export const WalletPage = (): JSX.Element => {
   const preferences = useRecoilValue(preferencesAtom);
 
   const managerAddress = preferences.managerAddress.replace('ronin:', '0x');
-
   const addresses = scholars.map(scholar => scholar.address);
   const addressesWithManager = preferences.managerAddress ? [managerAddress, ...addresses] : addresses;
 
