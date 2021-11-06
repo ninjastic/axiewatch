@@ -21,7 +21,7 @@ import {
   DarkMode,
 } from '@chakra-ui/react';
 
-import { DiscordIcon, AnalysisIcon, BagIcon, TrackerIcon } from './icons';
+import { DiscordIcon, AnalysisIcon, BagIcon, TrackerIcon, AlertsIcon } from './icons';
 import { useCreateModal } from '../../../services/hooks/useCreateModal';
 import { EBCModal } from './EBCModal';
 import { NavbarContent } from './NavbarContent';
@@ -58,9 +58,10 @@ interface HeaderProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Marketplace', icon: BagIcon, link: 'https://axielegend.com' },
+  { name: 'Marketplace', icon: BagIcon, link: 'https://market.elitebreeders.club' },
   { name: 'Tracker', icon: TrackerIcon, link: 'https://axie.watch' },
-  { name: 'Analyzer', icon: AnalysisIcon, link: 'https://ebc-power-bi.herokuapp.com' },
+  { name: 'Analyzer', icon: AnalysisIcon, link: 'https://analyzer.elitebreeders.club' },
+  { name: 'Alerts', icon: AlertsIcon, link: 'https://alerts.elitebreeders.club' },
 ];
 
 const NavItem = ({ icon, children, link, isActive, target }: NavItemProps) => (
