@@ -26,6 +26,7 @@ import { useCreateModal } from '../../../services/hooks/useCreateModal';
 import { EBCModal } from './EBCModal';
 import { NavbarContent } from './NavbarContent';
 import { ColorSwitchIcon } from './ColorSwitchIcon';
+import AlertsIcon from './icons/AlertsIcon';
 
 interface LinkItemProps {
   name: string;
@@ -58,9 +59,10 @@ interface HeaderProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Marketplace', icon: BagIcon, link: 'https://axielegend.com' },
-  { name: 'Tracker', icon: TrackerIcon, link: 'https://axie.watch' },
-  { name: 'Analyzer', icon: AnalysisIcon, link: 'https://ebc-power-bi.herokuapp.com' },
+  { name: 'Marketplace V2', icon: BagIcon, link: 'https://market.elitebreeders.club' },
+  { name: 'Tracker', icon: TrackerIcon, link: 'https://tracker.elitebreeders.club' },
+  { name: 'Analyzer', icon: AnalysisIcon, link: 'https://analyzer.elitebreeders.club' },
+  { name: 'Alerts', icon: AlertsIcon, link: 'https://alerts.elitebreeders.club' },
 ];
 
 const NavItem = ({ icon, children, link, isActive, target }: NavItemProps) => (
