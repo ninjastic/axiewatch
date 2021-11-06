@@ -10,7 +10,7 @@ exports.up = pgm => {
       references: '"auth"."users"',
     },
     data: {
-      type: 'text',
+      type: 'jsonb',
     },
   });
 };
