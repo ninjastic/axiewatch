@@ -21,37 +21,37 @@ export const WalletCard = ({ address }: WalletCardProps): JSX.Element => {
 
   const amounts = useMemo(
     () =>
-      !isLoading
+      !isLoading && !isError
         ? {
             slp: Math.round(data.slp),
             axs: Math.round(data.axs * 1000) / 1000,
             eth: Math.round(data.eth * 1000) / 1000,
           }
         : {},
-    [data, isLoading]
+    [data, isLoading, isError]
   );
 
   const values = useMemo(
     () =>
-      !isLoading
+      !isLoading && !isError
         ? {
             slp: formatter(price.values.slp * data.slp, price.locale),
             axs: formatter(price.values.axs * data.axs, price.locale),
             eth: formatter(price.values.eth * data.eth, price.locale),
           }
         : {},
-    [data, price, isLoading]
+    [data, price, isLoading, isError]
   );
 
   const totalWorth = useMemo(
     () =>
-      !isLoading
+      !isLoading && !isError
         ? formatter(
             price.values.slp * data.slp + price.values.axs * data.axs + price.values.eth * data.eth,
             price.locale
           )
         : null,
-    [data, price, isLoading]
+    [data, price, isLoading, isError]
   );
 
   const profileUrl = `https://marketplace.axieinfinity.com/profile/${address.replace('0x', 'ronin:')}/axie`;

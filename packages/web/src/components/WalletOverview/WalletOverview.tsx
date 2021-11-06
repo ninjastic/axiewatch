@@ -29,9 +29,9 @@ export const WalletOverview = (): JSX.Element => {
     () =>
       !isLoading
         ? {
-            slp: Math.round(results.reduce((t, curr) => t + curr.data.slp, 0)),
-            axs: Math.round(results.reduce((t, curr) => t + curr.data.axs, 0) * 1000) / 1000,
-            eth: Math.round(results.reduce((t, curr) => t + curr.data.eth, 0) * 1000) / 1000,
+            slp: Math.round(results.filter(r => r.isSuccess).reduce((t, curr) => t + curr.data.slp, 0)),
+            axs: Math.round(results.filter(r => r.isSuccess).reduce((t, curr) => t + curr.data.axs, 0) * 1000) / 1000,
+            eth: Math.round(results.filter(r => r.isSuccess).reduce((t, curr) => t + curr.data.eth, 0) * 1000) / 1000,
           }
         : {},
     [results, isLoading]
