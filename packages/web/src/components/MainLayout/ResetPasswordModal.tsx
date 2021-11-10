@@ -41,8 +41,9 @@ export const ResetPasswordModal = (): JSX.Element => {
                 <FormLabel>Password</FormLabel>
 
                 <Input
-                  type="new-password"
+                  type="password"
                   name="password"
+                  autoComplete="new-password"
                   placeholder="Password"
                   value={values.password}
                   onChange={handleChange}
@@ -53,8 +54,9 @@ export const ResetPasswordModal = (): JSX.Element => {
                 <FormLabel>Repeat Password</FormLabel>
 
                 <Input
-                  type="new-password"
+                  type="password"
                   name="repeatPassword"
+                  autoComplete="new-password"
                   placeholder="Repeat Password"
                   value={values.repeatPassword}
                   onChange={handleChange}
