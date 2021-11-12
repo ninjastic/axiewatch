@@ -34,7 +34,7 @@ export const PveStats = ({ address, shouldLoad = true }: PveStatsProps): JSX.Ele
     );
   }
 
-  if (isError || !data.pve) {
+  if (isError || !data?.pve) {
     return (
       <Box>
         <Text opacity={0.9}>Error</Text>

@@ -15,10 +15,10 @@ export const Scholar = ({ address }: AxieCardParams): JSX.Element => {
   const isWideVersion = useBreakpointValue({ xl: true }, 'xl');
 
   useEffect(() => {
-    if (!data.address) {
+    if (!data?.address) {
       refetch();
     }
-  }, [data.address, refetch]);
+  }, [data, refetch]);
 
   if (isWideVersion) {
     return (
