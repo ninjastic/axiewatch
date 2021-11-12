@@ -1,4 +1,5 @@
 import { useBreakpointValue } from '@chakra-ui/react';
+import { useEffect } from 'react';
 
 import { useScholar } from '../../../services/hooks/useScholar';
 import { ScholarCard } from './Card';
@@ -9,14 +10,15 @@ interface AxieCardParams {
 }
 
 export const Scholar = ({ address }: AxieCardParams): JSX.Element => {
-  const { isLoading, isError, isRefetching, refetch } = useScholar({ address });
+  const { isLoading, isError, isRefetching, refetch, data } = useScholar({ address });
 
-  const isWideVersion = useBreakpointValue(
-    {
-      xl: true,
-    },
-    'xl'
-  );
+  const isWideVersion = useBreakpointValue({ xl: true }, 'xl');
+
+  useEffect(() => {
+    if (!data.address) {
+      refetch();
+    }
+  }, [data.address, refetch]);
 
   if (isWideVersion) {
     return (
