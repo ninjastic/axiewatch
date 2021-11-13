@@ -382,8 +382,13 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
 
     if (actionType === 'Buy Axie' && transaction.status) {
       const id = parseInt(transaction.logs[0]?.topics[3], 16);
-      const { data } = transaction.logs[2];
-      const value = Math.round((parseInt(data, 16) / 10 ** 18) * 1000) / 1000;
+      const { data: dataFee } = transaction.logs[1];
+      const { data: dataPay } = transaction.logs[2];
+
+      const pay = parseInt(dataPay, 16);
+      const fee = parseInt(dataFee, 16);
+
+      const value = Math.round(((pay + fee) / 10 ** 18) * 10000) / 10000;
 
       return (
         <Stack direction={{ base: 'column', lg: 'row' }}>
