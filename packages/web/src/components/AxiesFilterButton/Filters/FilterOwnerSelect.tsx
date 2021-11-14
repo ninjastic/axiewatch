@@ -17,7 +17,9 @@ export const FilterOwnerSelect = ({ setFilter, formValues }: FilterProps): JSX.E
 
   const managerWithoutRonin = preferences?.managerAddress.replace('ronin:', '0x');
 
-  const defaultLabel = scholars.find(scholar => scholar.address === formValues.owner)?.name;
+  const defaultLabel =
+    scholars.find(scholar => scholar.address === formValues.owner)?.name ??
+    (formValues.owner === managerWithoutRonin ? 'Manager' : null);
 
   const options = [
     {

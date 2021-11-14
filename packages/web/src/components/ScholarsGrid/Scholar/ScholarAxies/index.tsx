@@ -91,7 +91,7 @@ export const ScholarAxies = ({ address, shouldLoad = true }: ScholarAxiesProps):
       {!isLoading &&
         firstThreeAxies?.map(axie => (
           <Link
-            href={`https://marketplace.axieinfinity.com/axie/${axie.id}?referrer=axie.watch`}
+            href={`https://marketplace.axieinfinity.com/axie/${axie.id}/?referrer=axie.watch`}
             target="_blank"
             key={axie.id}
           >

@@ -17,7 +17,7 @@ export const AxieTraits = ({ axieData }: AxiePartsProps): JSX.Element => {
   );
 
   return (
-    <Box bg={useColorModeValue('gray.100', 'gray.900')} py={2} px={2} borderRadius={8} overflow="hidden">
+    <Box bg={useColorModeValue('white', 'gray.900')} py={2} px={2} borderRadius={8} overflow="hidden">
       {useMemo(
         () =>
           partTypes.map(partType => (
