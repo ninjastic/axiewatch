@@ -108,7 +108,7 @@ export const useBatchScholarAxie = ({ addresses, size = 200 }: UseBatchScholarAx
     return promises.flat(2);
   }
 
-  const { data, isLoading } = useQuery(['batchAxies', hashedKey], async () => load(), {
+  const { data, isLoading } = useQuery(['batchScholarAxies', hashedKey], async () => load(), {
     staleTime: 1000 * 60 * 15,
   });
 
