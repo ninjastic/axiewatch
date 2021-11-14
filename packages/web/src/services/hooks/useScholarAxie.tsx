@@ -52,6 +52,12 @@ const GetAxieBriefListQuery = gql`
       specialGenes
       __typename
     }
+    stats {
+      hp
+      speed
+      skill
+      morale
+    }
     __typename
   }
 `;
@@ -80,7 +86,7 @@ export const useScholarAxie = ({
   const scholar = useRecoilValue(scholarSelector(address));
 
   const result = useQuery(
-    ['axies', address, size],
+    ['scholarAxies', address, size],
     async () => {
       const response = await axieInfinityGraphQl.request<Response>(GetAxieBriefListQuery, {
         auctionType: 'All',

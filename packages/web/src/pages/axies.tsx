@@ -15,6 +15,7 @@ import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState 
 import dynamic from 'next/dynamic';
 import { useMemo, useEffect } from 'react';
 import pluralize from 'pluralize';
+import lodash from 'lodash';
 
 import { scholarAxiesFilter, scholarsMap, ScholarAxiesFilter, Axie, axiePartsAtom } from '../recoil/scholars';
 import { preferencesAtom } from '../recoil/preferences';
@@ -22,6 +23,7 @@ import { useBatchScholarAxie } from '../services/hooks/useBatchScholarAxie';
 import { BallScaleLoading } from '../components/BallScaleLoading';
 import { AxiesFilterButton } from '../components/AxiesFilterButton';
 import { AxieCard } from '@src/components/AxieCard';
+import { PreferencesButton } from '@src/components/Header/PreferencesButton';
 
 const filterAxies = (scholarAxies: Axie[][], filters: ScholarAxiesFilter) =>
   scholarAxies.map(axies =>
@@ -52,8 +54,13 @@ export const Axies = (): JSX.Element => {
   const setAxieParts = useSetRecoilState(axiePartsAtom);
   const [preferences, setPreferences] = useRecoilState(preferencesAtom);
 
-  const addresses = useMemo(() => scholars.map(scholar => scholar.address), [scholars]);
-  const { scholarAxies, isLoading } = useBatchScholarAxie({ addresses, size: 200 });
+  const managerAddress = preferences.managerAddress.replace('ronin:', '0x');
+  const addresses = scholars.map(scholar => scholar.address);
+  const addressesWithManager = preferences.managerAddress
+    ? lodash.uniqWith([managerAddress, ...addresses], (a, b) => a.toLowerCase() === b.toLowerCase())
+    : addresses;
+
+  const { scholarAxies, isLoading } = useBatchScholarAxie({ addresses: addressesWithManager, size: 200 });
 
   const axiesCount = useMemo(() => scholarAxies.reduce((count, axies) => count + axies.length, 0), [scholarAxies]);
 
@@ -114,10 +121,14 @@ export const Axies = (): JSX.Element => {
 
   return (
     <Box h="full" maxW="1450px" margin="auto" p={3}>
-      <Box>
-        <Heading as="h2">Axies</Heading>
-        <Text opacity={0.9}>See all your scholar axies.</Text>
-      </Box>
+      <Flex justify="space-between">
+        <Box>
+          <Heading as="h2">Axies</Heading>
+          <Text opacity={0.9}>See all your scholar axies.</Text>
+        </Box>
+
+        <PreferencesButton />
+      </Flex>
 
       {isLoading && scholars.length && (
         <Stack d="flex" flexDir="column" justifyContent="center" alignItems="center" h="80%">

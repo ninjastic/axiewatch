@@ -1,21 +1,11 @@
-import { Tooltip, Link, Tag, Text, Stack, Image, Box, SkeletonCircle, HStack, Icon, Flex } from '@chakra-ui/react';
+import { Tooltip, Link, Tag, Text, Stack, Image, Box, SkeletonCircle, HStack, Flex } from '@chakra-ui/react';
 import { gql } from 'graphql-request';
 import { useQuery } from 'react-query';
 import { useMemo } from 'react';
 
 import { axieInfinityGraphQl } from '@src/services/api';
-import { Axie } from '@src/recoil/scholars';
-import {
-  AquaticIcon,
-  BeastIcon,
-  BirdIcon,
-  BugIcon,
-  DawnIcon,
-  DuskIcon,
-  MechIcon,
-  PlantIcon,
-  ReptileIcon,
-} from '../Icons/AxieIcons';
+import { Axie, AxieClass } from '@src/recoil/scholars';
+import { AxieIcon } from '../Icons/AxieIcon';
 import { AxieTraits } from '../AxieTraits';
 import { parseAxieData } from '@src/services/utils/parseAxieData';
 import { AxieInfo } from '../AxieInfo';
@@ -174,18 +164,6 @@ interface AxieTagProps {
 export const AxieTag = ({ id }: AxieTagProps): JSX.Element => {
   const axieUrl = useMemo(() => `https://marketplace.axieinfinity.com/axie/${id}/?referrer=axie.watch`, [id]);
 
-  const icons = {
-    Beast: BeastIcon,
-    Plant: PlantIcon,
-    Bug: BugIcon,
-    Mech: MechIcon,
-    Dusk: DuskIcon,
-    Aquatic: AquaticIcon,
-    Bird: BirdIcon,
-    Reptile: ReptileIcon,
-    Dawn: DawnIcon,
-  };
-
   const { data, isLoading } = useQuery(
     ['axie', id],
     async () => {
@@ -205,7 +183,7 @@ export const AxieTag = ({ id }: AxieTagProps): JSX.Element => {
           <Box>
             <HStack>
               {isLoading && <SkeletonCircle size="3" />}
-              {data && <Icon as={icons[data?.class]} />}
+              {data && <AxieIcon type={data.class.toLowerCase() as AxieClass} />}
               <Text>{id}</Text>
             </HStack>
           </Box>

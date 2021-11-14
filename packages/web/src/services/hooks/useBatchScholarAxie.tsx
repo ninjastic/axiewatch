@@ -84,6 +84,12 @@ export const useBatchScholarAxie = ({ addresses, size = 200 }: UseBatchScholarAx
             type
             specialGenes
           }
+          stats {
+            hp
+            speed
+            skill
+            morale
+          }
         }
       `;
 
@@ -102,7 +108,7 @@ export const useBatchScholarAxie = ({ addresses, size = 200 }: UseBatchScholarAx
     return promises.flat(1);
   }
 
-  const { data, isLoading } = useQuery(['axies', hashedKey], async () => load(), {
+  const { data, isLoading } = useQuery(['batchAxies', hashedKey], async () => load(), {
     staleTime: 1000 * 60 * 15,
   });
 
