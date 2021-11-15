@@ -20,23 +20,14 @@ interface ApiResponse {
 }
 
 export const getUniqueAddresses = async (): Promise<string[]> => {
-  const syncs = await Sync.query();
+  const scholars: Array<{ address: string }> = await Sync.knex()
+    .raw("SELECT DISTINCT jsonb_array_elements(data)->'address' as address FROM sync")
+    .then(data => data.rows);
 
-  const addresses = syncs.reduce((array, sync) => {
-    const draft = [...array];
-
-    sync.data.forEach(scholar => {
-      draft.push(scholar.address);
-    });
-
-    return draft;
-  }, [] as string[]);
-
-  const uniqueAddresses = addresses
-    .reduce((unique, item) => (unique.includes(item) ? unique : [...unique, item]), [] as string[])
-    .map(address => {
+  const uniqueAddresses = scholars
+    .map(scholar => {
       try {
-        return ethers.utils.getAddress(address);
+        return ethers.utils.getAddress(scholar.address);
       } catch (error) {
         return null;
       }
@@ -58,8 +49,6 @@ export const insertData = async (data: ApiResponse): Promise<Tracking> => {
   if (!data.client_id) {
     throw new Error('No client id');
   }
-
-  // return {} as Tracking;
 
   return Tracking.query().insert({
     address: client_id,

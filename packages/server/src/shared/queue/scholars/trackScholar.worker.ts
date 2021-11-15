@@ -9,7 +9,7 @@ const worker = new Worker('trackScholarQueue', async (job: Job) => trackScholarJ
     duration: Number(process.env.TRACK_SCHOLARS_QUEUE_DURATION_MS),
   },
   connection: cache,
-  sharedConnection: true,
+  concurrency: Number(process.env.TRACK_SCHOLARS_QUEUE_CONCURRENCY),
 });
 
 export default worker;
