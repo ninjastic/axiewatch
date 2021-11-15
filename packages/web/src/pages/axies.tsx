@@ -204,7 +204,7 @@ export const Axies = (): JSX.Element => {
             </HStack>
           </Flex>
 
-          <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} gap={3} pb={5}>
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} gap={3} pb={5}>
             {pageData.map(axie => (
               <AxieCard key={axie.id} axie={axie} />
             ))}

@@ -57,15 +57,6 @@ export const AxieCard = ({ axie }: AxieCardProps): JSX.Element => {
       overflow="hidden"
       borderWidth={1}
       bg={useColorModeValue('light.card', '#282b39')}
-      cursor="pointer"
-      _hover={{
-        boxShadow: 'lg',
-        borderColor: useColorModeValue('#282b39', '#fff'),
-        transform: 'scale(1.02)',
-        perspective: '1000',
-      }}
-      transition="all 0.05s ease-in-out"
-      onClick={() => window.open(`https://marketplace.axieinfinity.com/axie/${axie.id}/?referrer=axie.watch`, '_blank')}
     >
       <Box py={2} display="flex" justifyContent="space-between" alignItems="center">
         <Box width="80%" display="flex" alignItems="center" overflow="hidden">
@@ -77,9 +68,11 @@ export const AxieCard = ({ axie }: AxieCardProps): JSX.Element => {
           />
 
           <Stack spacing={1} ml="3">
-            <Text fontWeight="bold" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
-              {axie.name}
-            </Text>
+            <Link href={`https://marketplace.axieinfinity.com/axie/${axie.id}/?referrer=axie.watch`} target="_blank">
+              <Text fontWeight="bold" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
+                {axie.name}
+              </Text>
+            </Link>
           </Stack>
         </Box>
         <Box width="30%" color="gray.400" fontSize="xs" display="flex" flexDirection="column" alignItems="flex-end">
@@ -111,7 +104,9 @@ export const AxieCard = ({ axie }: AxieCardProps): JSX.Element => {
           isDisabled={!preferences.hideAxieTraits}
         >
           <Box display="flex" alignItems="center" justifyContent="center" width="55%" height="125px" overflow="hidden">
-            <Image src={axie.image} fallback={<SkeletonCircle size="14" />} alt={`Axie ${axie.id}`} />
+            <Link href={`https://marketplace.axieinfinity.com/axie/${axie.id}/?referrer=axie.watch`} target="_blank">
+              <Image src={axie.image} fallback={<SkeletonCircle size="14" />} alt={`Axie ${axie.id}`} h="125px" />
+            </Link>
           </Box>
         </Tooltip>
 
