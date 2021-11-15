@@ -94,6 +94,9 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
     if (transaction.input.startsWith('0x2e17de78')) return 'Unstake AXS';
     if (transaction.input.startsWith('0x92bd7b2c')) return 'Claim AXS';
     if (transaction.input.startsWith('0x3d8527ba')) return 'Restake Rewards';
+    if (transaction.input.startsWith('0xe8e337')) return 'Add Liquidity';
+    if (transaction.input.startsWith('0x38ed1739')) return 'Swap Tokens';
+    if (transaction.input.startsWith('0xbaa2abde')) return 'Remove Liquidity';
     return '??';
   }, [transaction]);
 

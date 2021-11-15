@@ -10,6 +10,9 @@ import {
   MenuItem,
   HStack,
   Tooltip,
+  Alert,
+  AlertIcon,
+  AlertDescription,
 } from '@chakra-ui/react';
 import { FiChevronDown } from 'react-icons/fi';
 import { useEffect, useMemo, useState } from 'react';
@@ -48,6 +51,9 @@ const getActionType = (to: string, input: string, axie: any) => {
   if (input.startsWith('0x2e17de78')) return 'Unstake AXS';
   if (input.startsWith('0x92bd7b2c')) return 'Claim AXS';
   if (input.startsWith('0x3d8527ba')) return 'Restake Rewards';
+  if (input.startsWith('0xe8e337')) return 'Add Liquidity';
+  if (input.startsWith('0x38ed1739')) return 'Swap Tokens';
+  if (input.startsWith('0xbaa2abde')) return 'Remove Liquidity';
   return '??';
 };
 
@@ -78,7 +84,10 @@ const TransactionsTypeSelector = ({ typeFilter, setTypeFilter }: TransactionsTyp
     'Stake AXS',
     'Unstake AXS',
     'Claim AXS',
-    'Restake Rewards  ',
+    'Restake Rewards',
+    'Swap Tokens',
+    'Add Liquidity',
+    'Remove Liquidity',
   ];
 
   return (
@@ -203,6 +212,18 @@ export const WalletTransactions = (): JSX.Element => {
           <TransactionsPerPageSelector perPage={perPage} setPerPage={setPerPage} />
         </HStack>
       </Flex>
+
+      <Alert mb={3} status="warning">
+        <AlertDescription>
+          <HStack>
+            <AlertIcon />
+
+            <Text>
+              The <b>Axie Sold</b> transactions are disabled for the time being. Sorry for the incovenience.
+            </Text>
+          </HStack>
+        </AlertDescription>
+      </Alert>
 
       <TransactionsTable transactions={pagedTransactions} />
 
