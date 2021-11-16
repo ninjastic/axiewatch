@@ -14,7 +14,7 @@ interface GraphQLResponse {
 }
 
 interface UseBatchScholarAxieData {
-  scholarAxies: ParsedAxieData[][];
+  scholarAxies: ParsedAxieData[];
   isLoading: boolean;
 }
 
@@ -84,6 +84,12 @@ export const useBatchScholarAxie = ({ addresses, size = 200 }: UseBatchScholarAx
             type
             specialGenes
           }
+          stats {
+            hp
+            speed
+            skill
+            morale
+          }
         }
       `;
 
@@ -99,10 +105,10 @@ export const useBatchScholarAxie = ({ addresses, size = 200 }: UseBatchScholarAx
       })
     );
 
-    return promises.flat(1);
+    return promises.flat(2);
   }
 
-  const { data, isLoading } = useQuery(['axies', hashedKey], async () => load(), {
+  const { data, isLoading } = useQuery(['batchScholarAxies', hashedKey], async () => load(), {
     staleTime: 1000 * 60 * 15,
   });
 

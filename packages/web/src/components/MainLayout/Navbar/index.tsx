@@ -1,6 +1,6 @@
 import { ReactText, useState } from 'react';
 import Router from 'next/router';
-import { Icon, InfoOutlineIcon, HamburgerIcon } from '@chakra-ui/icons';
+import { Icon, HamburgerIcon } from '@chakra-ui/icons';
 import { IoLogoYoutube } from 'react-icons/io';
 import {
   Grid,
@@ -21,11 +21,10 @@ import {
   DarkMode,
 } from '@chakra-ui/react';
 
-import { DiscordIcon, AnalysisIcon, BagIcon, TrackerIcon, AlertsIcon } from './icons';
-import { useCreateModal } from '../../../services/hooks/useCreateModal';
-import { EBCModal } from './EBCModal';
+import { DiscordIcon, AnalysisIcon, BagIcon, TrackerIcon } from './icons';
 import { NavbarContent } from './NavbarContent';
 import { ColorSwitchIcon } from './ColorSwitchIcon';
+import AlertsIcon from './icons/AlertsIcon';
 
 interface LinkItemProps {
   name: string;
@@ -134,13 +133,6 @@ const Header = ({ currentTool }: HeaderProps): JSX.Element => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   Router.events.on('routeChangeStart', () => onNavClose());
-
-  const ebcModal = useCreateModal({
-    id: 'ebcModal',
-    title: () => '',
-    content: () => <EBCModal />,
-    size: '2xl',
-  });
 
   return (
     <Grid
@@ -252,35 +244,6 @@ const Header = ({ currentTool }: HeaderProps): JSX.Element => {
           mr={1}
         >
           <ColorSwitchIcon />
-        </Box>
-
-        <Box
-          sx={{
-            display: { base: 'none', '2xl': 'block' },
-            position: 'relative',
-          }}
-        >
-          <IconButton
-            variant="ghost"
-            aria-label="Info"
-            icon={<InfoOutlineIcon />}
-            onClick={ebcModal.onOpen}
-            color="white"
-            _hover={{
-              bg: 'whiteAlpha.200',
-            }}
-          />
-          <Box
-            sx={{
-              position: 'absolute',
-              right: '8px',
-              top: '9px',
-              borderRadius: 'full',
-              backgroundColor: 'blue.400',
-              width: 2,
-              height: 2,
-            }}
-          />
         </Box>
 
         <IconButton

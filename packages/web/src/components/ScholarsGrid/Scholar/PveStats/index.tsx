@@ -34,7 +34,7 @@ export const PveStats = ({ address, shouldLoad = true }: PveStatsProps): JSX.Ele
     );
   }
 
-  if (isError) {
+  if (isError || !data?.pve) {
     return (
       <Box>
         <Text opacity={0.9}>Error</Text>
@@ -44,7 +44,7 @@ export const PveStats = ({ address, shouldLoad = true }: PveStatsProps): JSX.Ele
 
   return (
     <Text>
-      {data?.pve.slp} / {data?.pve.maxSlp}
+      {data.pve?.slp} / {data.pve?.maxSlp}
     </Text>
   );
 };

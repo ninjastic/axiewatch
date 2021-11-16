@@ -40,4 +40,20 @@ export const colors = {
   'rariry-epic': ' #ffa22a',
   'rarity-mystic': ' #ae2aff',
   'text-arctic': ' #55586a',
+  hp: {
+    200: '#3ac279',
+    500: '#3ac279',
+  },
+  speed: {
+    200: '#f7ac0a',
+    500: '#f7ac0a',
+  },
+  morale: {
+    200: '#c23a3a',
+    500: '#c23a3a',
+  },
+  skill: {
+    200: '#6a3ac2',
+    500: '#6a3ac2',
+  },
 };

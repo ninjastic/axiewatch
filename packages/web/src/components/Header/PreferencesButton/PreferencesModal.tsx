@@ -59,7 +59,7 @@ export const PreferencesModal = (): JSX.Element => {
         investor: data.shares.investor,
         scholar: 100 - (data.shares.manager + (data.shares.investor ?? 0)),
       },
-      managerAddress: data.managerAddress,
+      managerAddress: data.managerAddress ? managerAddressWithoutPrefix : '',
       currency: data.currency,
       includeRoninBalance: data.includeRoninBalance,
     }));
@@ -83,7 +83,7 @@ export const PreferencesModal = (): JSX.Element => {
             manager: preferences.shares.manager,
             investor: preferences.shares.investor,
           },
-          managerAddress: preferences.managerAddress,
+          managerAddress: preferences.managerAddress ? preferences.managerAddress.replace('0x', 'ronin:') : '',
           currency: preferences.currency,
           includeRoninBalance: preferences.includeRoninBalance,
           includeTodayOnAverageSlp: scholarParseOptions.includeTodayOnAverageSlp,

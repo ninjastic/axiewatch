@@ -62,6 +62,12 @@ export interface Axie {
   };
   traits: ReturnType<typeof getTraits>;
   quality: number;
+  stats: {
+    hp: number;
+    morale: number;
+    skill: number;
+    speed: number;
+  };
 }
 
 export interface ScholarAxies {

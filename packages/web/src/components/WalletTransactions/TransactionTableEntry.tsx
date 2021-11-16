@@ -94,6 +94,9 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
     if (transaction.input.startsWith('0x2e17de78')) return 'Unstake AXS';
     if (transaction.input.startsWith('0x92bd7b2c')) return 'Claim AXS';
     if (transaction.input.startsWith('0x3d8527ba')) return 'Restake Rewards';
+    if (transaction.input.startsWith('0xe8e337')) return 'Add Liquidity';
+    if (transaction.input.startsWith('0x38ed1739')) return 'Swap Tokens';
+    if (transaction.input.startsWith('0xbaa2abde')) return 'Remove Liquidity';
     return '??';
   }, [transaction]);
 
@@ -382,8 +385,13 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
 
     if (actionType === 'Buy Axie' && transaction.status) {
       const id = parseInt(transaction.logs[0]?.topics[3], 16);
-      const { data } = transaction.logs[2];
-      const value = Math.round((parseInt(data, 16) / 10 ** 18) * 1000) / 1000;
+      const { data: dataFee } = transaction.logs[1];
+      const { data: dataPay } = transaction.logs[2];
+
+      const pay = parseInt(dataPay, 16);
+      const fee = parseInt(dataFee, 16);
+
+      const value = Math.round(((pay + fee) / 10 ** 18) * 10000) / 10000;
 
       return (
         <Stack direction={{ base: 'column', lg: 'row' }}>

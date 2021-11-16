@@ -14,7 +14,7 @@ import {
   MechIcon,
   PlantIcon,
   ReptileIcon,
-} from '../Icons/AxieIcons';
+} from '../Icons/AxieIcon';
 
 interface AxieInfoProps {
   axieData: Axie;

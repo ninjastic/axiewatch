@@ -28,7 +28,7 @@ interface ParseScholarDataProps {
 }
 
 export function parseScholarData({ data, options }: ParseScholarDataProps): ParsedScholarData {
-  const { slp, roninSlp, totalSlp, lastClaim } = data.scholar;
+  const { slp, roninSlp, totalSlp, lastClaim } = data.scholar || {};
   const { yesterday, today, dates } = data.historical || {};
 
   const pvpElo = data.pvp?.elo ?? 0;

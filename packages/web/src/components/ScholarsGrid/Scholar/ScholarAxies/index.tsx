@@ -1,51 +1,53 @@
-import { Box, SkeletonCircle, Image, HStack, Link, Tooltip, Stack, Tag, SimpleGrid } from '@chakra-ui/react';
+import {
+  Box,
+  SkeletonCircle,
+  Image,
+  HStack,
+  Link,
+  Tooltip,
+  Stack,
+  Tag,
+  SimpleGrid,
+  Checkbox,
+  Flex,
+} from '@chakra-ui/react';
 import { useMemo } from 'react';
+import { useRecoilState } from 'recoil';
 
+import { preferencesAtom } from '@src/recoil/preferences';
 import { useScholarAxie } from '@src/services/hooks/useScholarAxie';
+import { useCreateModal } from '@src/services/hooks/useCreateModal';
 import { AxieInfo } from '../../../AxieInfo';
 import { AxieTraits } from '../../../AxieTraits';
 import { Axie } from '@src/recoil/scholars';
-import { useCreateModal } from '@src/services/hooks/useCreateModal';
+import { AxieCard } from '@src/components/AxieCard';
 
 interface OtherScholarAxiesModalProps {
   data: Axie[];
 }
 
 const OtherScholarAxiesModal = ({ data }: OtherScholarAxiesModalProps): JSX.Element => {
+  const [preferences, setPreferences] = useRecoilState(preferencesAtom);
+
   return (
     <Box overflow="auto" p={3}>
-      <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 5 }}>
+      <Flex overflow="auto" my={3} justify="flex-end">
+        <Checkbox
+          defaultChecked={preferences.hideAxieTraits}
+          onChange={e =>
+            setPreferences(prev => ({
+              ...prev,
+              hideAxieTraits: e.target.checked,
+            }))
+          }
+        >
+          Hide Traits
+        </Checkbox>
+      </Flex>
+
+      <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} gridGap={3}>
         {data.map(axie => (
-          <Link
-            href={`https://marketplace.axieinfinity.com/axie/${axie.id}?referrer=axie.watch`}
-            target="_blank"
-            key={axie.id}
-          >
-            <Tooltip
-              label={
-                <Stack>
-                  <AxieInfo axieData={axie} />
-                  <AxieTraits axieData={axie} />
-                </Stack>
-              }
-              p={3}
-            >
-              <Image
-                src={axie.image}
-                w="96px"
-                h={{ lg: '72px' }}
-                cursor="pointer"
-                alt={`Axie ${axie.id}`}
-                fallback={
-                  <Box d="flex" alignItems="center" justifyContent="center" w="96px" h={{ lg: '72px' }}>
-                    <SkeletonCircle />
-                  </Box>
-                }
-                transition="all .2s ease-out"
-                _hover={{ transform: 'translateY(-4px)', opacity: 0.9 }}
-              />
-            </Tooltip>
-          </Link>
+          <AxieCard key={axie.id} axie={axie} />
         ))}
       </SimpleGrid>
     </Box>
@@ -66,7 +68,7 @@ export const ScholarAxies = ({ address, shouldLoad = true }: ScholarAxiesProps):
     id: 'otherAxiesModal',
     title: () => 'Other axies',
     content: () => <OtherScholarAxiesModal data={hasMoreAxies ? data?.results.slice(3) : []} />,
-    size: '4xl',
+    size: '6xl',
   });
 
   return (
@@ -89,16 +91,18 @@ export const ScholarAxies = ({ address, shouldLoad = true }: ScholarAxiesProps):
       {!isLoading &&
         firstThreeAxies?.map(axie => (
           <Link
-            href={`https://marketplace.axieinfinity.com/axie/${axie.id}?referrer=axie.watch`}
+            href={`https://marketplace.axieinfinity.com/axie/${axie.id}/?referrer=axie.watch`}
             target="_blank"
             key={axie.id}
           >
             <Tooltip
               label={
-                <Stack>
-                  <AxieInfo axieData={axie} />
-                  <AxieTraits axieData={axie} />
-                </Stack>
+                <Box w="300px">
+                  <Stack>
+                    <AxieInfo axieData={axie} />
+                    <AxieTraits axieData={axie} />
+                  </Stack>
+                </Box>
               }
               p={3}
             >
