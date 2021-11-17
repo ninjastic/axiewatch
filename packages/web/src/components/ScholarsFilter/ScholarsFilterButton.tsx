@@ -21,8 +21,8 @@ export const ScholarsFilterButton = ({ variant = 'ghost' }: ButtonProps): JSX.El
 
   const scholarsFilterModal = useCreateModal({
     id: 'scholarsFilterModal',
-    title: () => 'Filters',
-    content: () => <ScholarsFilterModal />,
+    title: 'Filters',
+    content: <ScholarsFilterModal />,
   });
 
   return (

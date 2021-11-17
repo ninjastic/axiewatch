@@ -23,11 +23,11 @@ const TooltipComponent = ({ percentage, slp }: TooltipComponentProps): JSX.Eleme
 
   return (
     <Stack spacing={0} align="center">
-      <Text>{fiatValue}</Text>
+      <Text>{String(fiatValue)}</Text>
 
       <HStack>
         <Text opacity={0.9} fontSize="sm">
-          {percentage}% share
+          {String(percentage)}% share
         </Text>
       </HStack>
     </Stack>
@@ -60,7 +60,7 @@ export const ScholarFieldManagerShare = ({ address, isLoading }: ScholarFieldMan
 
           <HStack>
             <MdBusinessCenter />
-            <Text>{slpValue}</Text>
+            <Text>{String(slpValue)}</Text>
           </HStack>
         </Stack>
       </Tooltip>

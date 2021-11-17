@@ -4,9 +4,9 @@ import { atom, selector, atomFamily, selectorFamily, DefaultValue } from 'recoil
 
 export interface ModalState {
   id: string;
-  title: () => ReactNode;
-  content: () => ReactNode;
-  footer?: () => ReactNode;
+  title: ReactNode;
+  content: ReactNode;
+  footer?: ReactNode;
   size?: ThemeTypings['sizes'];
   isOpen: boolean;
   onOpen: () => void;
@@ -24,8 +24,8 @@ export const modalAtom = atomFamily<ModalState, string>({
   key: 'modalAtom',
   default: {
     id: '',
-    title: () => null,
-    content: () => null,
+    title: null,
+    content: null,
     isOpen: false,
     onOpen: () => undefined,
     onClose: () => undefined,

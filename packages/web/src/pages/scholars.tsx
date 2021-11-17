@@ -95,8 +95,8 @@ const SyncModalContent = (): JSX.Element => {
 function SyncButton({ variant = 'ghost' }: ButtonProps) {
   const syncModal = useCreateModal({
     id: 'syncModal',
-    title: () => 'Sync Scholars',
-    content: () => <SyncModalContent />,
+    title: 'Sync Scholars',
+    content: <SyncModalContent />,
   });
 
   return (

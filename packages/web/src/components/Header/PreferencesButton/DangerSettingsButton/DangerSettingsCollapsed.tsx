@@ -11,7 +11,7 @@ interface DangerSettingsCollapsedProps {
   isOpen: boolean;
 }
 
-export function DangerSettingsCollapsed({ isOpen }: DangerSettingsCollapsedProps) {
+export const DangerSettingsCollapsed = ({ isOpen }: DangerSettingsCollapsedProps): JSX.Element => {
   const { onClose } = useRecoilValue(modalSelector('preferencesModal'));
 
   const setScholars = useSetRecoilState(scholarsMap);
@@ -33,4 +33,4 @@ export function DangerSettingsCollapsed({ isOpen }: DangerSettingsCollapsedProps
       </Button>
     </Collapse>
   );
-}
+};

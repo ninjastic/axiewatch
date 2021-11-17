@@ -7,8 +7,8 @@ import { PreferencesModal } from './PreferencesModal';
 export const PreferencesButton = ({ ...rest }: Omit<IconButtonProps, 'aria-label'>): JSX.Element => {
   const preferencesModal = useCreateModal({
     id: 'preferencesModal',
-    title: () => 'Preferences',
-    content: () => <PreferencesModal />,
+    title: 'Preferences',
+    content: <PreferencesModal />,
     size: '6xl',
   });
 

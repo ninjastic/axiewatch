@@ -18,8 +18,8 @@ export const ScholarCard = ({ address, isLoading }: ScholarCardParams): JSX.Elem
 
   const scholarDetailsModal = useCreateModal({
     id: 'scholarDetailsModal',
-    title: () => scholar.name,
-    content: () => <ScholarDetails address={address} />,
+    title: scholar.name,
+    content: <ScholarDetails address={address} />,
   });
 
   return (

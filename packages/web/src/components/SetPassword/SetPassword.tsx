@@ -2,37 +2,41 @@ import { Heading, Button, Input, Flex, Stack, Text } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { AES, enc } from 'crypto-js';
 import { toast } from 'react-toastify';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { useCreateModal } from '../../services/hooks/useCreateModal';
 import { hasPasswordAtom, passwordAtom, resetPasswordAndPrivateKeysSelector } from '../../recoil/wallets';
+import { modalSelector } from '@src/recoil/modal';
+
+const SetPasswordFooter = (): JSX.Element => {
+  const resetPasswordAndPrivateKeys = useSetRecoilState(resetPasswordAndPrivateKeysSelector);
+  const modal = useRecoilValue(modalSelector('confirmResetModal'));
+
+  const handleConfirm = () => {
+    resetPasswordAndPrivateKeys();
+    modal.onClose();
+  };
+
+  return (
+    <>
+      <Button onClick={modal.onClose}>No</Button>
+
+      <Button colorScheme="red" ml={3} onClick={handleConfirm}>
+        Yes
+      </Button>
+    </>
+  );
+};
 
 export const SetPassword = (): JSX.Element => {
   const [hasPassword, setHasPassword] = useRecoilState(hasPasswordAtom);
   const setPassword = useSetRecoilState(passwordAtom);
 
-  const resetPasswordAndPrivateKeys = useSetRecoilState(resetPasswordAndPrivateKeysSelector);
-
   const confirmResetModal = useCreateModal({
     id: 'confirmResetModal',
-    title: () => 'Are you sure?',
-    content: () => 'Are you sure you want to reset your password and private-keys?',
-    footer: () => {
-      const handleConfirm = () => {
-        resetPasswordAndPrivateKeys();
-        confirmResetModal.onClose();
-      };
-
-      return (
-        <>
-          <Button onClick={confirmResetModal.onClose}>No</Button>
-
-          <Button colorScheme="red" ml={3} onClick={handleConfirm}>
-            Yes
-          </Button>
-        </>
-      );
-    },
+    title: 'Are you sure?',
+    content: 'Are you sure you want to reset your password and private-keys?',
+    footer: <SetPasswordFooter />,
   });
 
   const handleSave = (data: any) => {
