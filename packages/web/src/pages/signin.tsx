@@ -11,7 +11,7 @@ const SignInPage = (): JSX.Element => {
   const router = useRouter();
 
   useEffect(() => {
-    if (session && router.pathname === 'signin') {
+    if (session && router.pathname === '/signin') {
       router.push('/profile');
     }
   }, [router, session]);
