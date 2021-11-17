@@ -14,6 +14,7 @@ export const ConfirmDeleteButton = ({ scholarAddress }: ConfirmDeleteButtonProps
     title: () => 'Delete this scholar?',
     content: () => <ConfirmDeleteModalBody scholarAddress={scholarAddress} />,
     footer: () => <ConfirmDeleteModalFooter scholarAddress={scholarAddress} />,
+    size: '2xl',
   });
 
   return (

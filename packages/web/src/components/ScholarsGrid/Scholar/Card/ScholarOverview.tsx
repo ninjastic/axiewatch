@@ -11,11 +11,10 @@ import { preferencesAtom } from '../../../../recoil/preferences';
 
 interface ScholarOverviewProps {
   address: string;
-  isLoading: boolean;
-  refetch: () => void;
+  isLoading?: boolean;
 }
 
-export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverviewProps): JSX.Element => {
+export const ScholarOverview = ({ address, isLoading }: ScholarOverviewProps): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
   const preferences = useRecoilValue(preferencesAtom);
   const price = useRecoilValue(priceAtom);
@@ -96,21 +95,7 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
 
           <HStack>
             <Icon as={RiSwordLine} />
-            {scholar.pvpErrored && (
-              <Text
-                onClick={e => {
-                  if (isLoading) return;
-                  e.stopPropagation();
-                  refetch();
-                }}
-                _hover={{
-                  textDecor: isLoading ? 'none' : 'underline',
-                }}
-                color={isLoading ? 'inherit' : 'red.300'}
-              >
-                Retry
-              </Text>
-            )}
+            {scholar.pvpErrored && <Text color={isLoading ? 'inherit' : 'red.300'}>Error</Text>}
 
             {!scholar.pvpErrored && <Text>{scholar.pvpElo}</Text>}
           </HStack>

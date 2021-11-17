@@ -1,5 +1,5 @@
 import { Box, Text, Flex, Heading, Button, HStack, Link, Divider, Tag } from '@chakra-ui/react';
-import { useState, Fragment } from 'react';
+import { useState, Fragment, useEffect } from 'react';
 import { AiFillCaretRight, AiOutlineLink } from 'react-icons/ai';
 import { useRecoilValue } from 'recoil';
 import Router from 'next/router';
@@ -13,6 +13,10 @@ export const PaymentsPage = (): JSX.Element => {
 
   const [page, setPage] = useState(0);
   const limit = 5;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
 
   const handleNextPage = () => {
     Router.push({

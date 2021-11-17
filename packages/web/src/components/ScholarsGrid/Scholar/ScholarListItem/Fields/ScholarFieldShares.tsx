@@ -22,7 +22,7 @@ export const ScholarFieldShares = ({ address, isLoading }: ScholarFieldSharesPro
     [preferences.includeRoninBalance, scholar.roninSlp, scholar.slp]
   );
 
-  const slpValue = useMemo(() => Math.floor((slp * scholar.shares.scholar) / 100), [scholar.shares.scholar, slp]);
+  const slpValue = useMemo(() => Math.floor((slp * scholar?.shares?.scholar) / 100), [scholar?.shares?.scholar, slp]);
 
   const fiatValue = useMemo(
     () => formatter((slp * price.values.slp * scholar.shares.scholar) / 100, price.locale),

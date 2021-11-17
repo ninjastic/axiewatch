@@ -48,11 +48,11 @@ export const ScholarFieldScholarShare = ({ address, isLoading }: ScholarFieldSch
     [preferences.includeRoninBalance, scholar.roninSlp, scholar.slp]
   );
 
-  const slpValue = useMemo(() => Math.floor((slp * scholar.shares.scholar) / 100), [scholar.shares.scholar, slp]);
+  const slpValue = useMemo(() => Math.floor((slp * scholar?.shares?.scholar) / 100), [scholar?.shares?.scholar, slp]);
 
   return (
-    <SkeletonText isLoaded={!isLoading} noOfLines={2}>
-      <Tooltip label={<TooltipComponent percentage={scholar.shares.scholar} slp={slp} />}>
+    <SkeletonText isLoaded={!isLoading} w="100px" noOfLines={2}>
+      <Tooltip label={<TooltipComponent percentage={scholar?.shares?.scholar} slp={slp} />}>
         <Stack spacing={0}>
           <Text opacity={0.9} fontSize="xs">
             Scholar
@@ -60,7 +60,7 @@ export const ScholarFieldScholarShare = ({ address, isLoading }: ScholarFieldSch
 
           <HStack>
             <IoSchoolOutline />
-            <Text>{slpValue}</Text>
+            <Text>{String(slpValue)}</Text>
           </HStack>
         </Stack>
       </Tooltip>

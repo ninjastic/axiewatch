@@ -1,19 +1,20 @@
 import { Text, Box, Flex, Stack, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { useEffect } from 'react';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { useAuth } from '../services/hooks/useAuth';
 
 const SignInPage = (): JSX.Element => {
   const { signIn, session, isLoading } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
-    if (session) {
-      Router.push('/profile');
+    if (session && router.pathname === 'signin') {
+      router.push('/profile');
     }
-  }, [session]);
+  }, [router, session]);
 
   const handleSubmit = async (data: any) => {
     await signIn({

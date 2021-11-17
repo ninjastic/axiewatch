@@ -24,12 +24,10 @@ import {
 
 interface ItemParams {
   address: string;
-  isLoading: boolean;
-  isError: boolean;
-  refetch: () => void;
+  isLoading?: boolean;
 }
 
-export const ScholarListItem = ({ address, isLoading, isError, refetch }: ItemParams): JSX.Element => {
+export const ScholarListItem = ({ address, isLoading = false }: ItemParams): JSX.Element => {
   const [show, setShow] = useState(false);
   const handleToggle = () => setShow(!show);
 
@@ -40,7 +38,7 @@ export const ScholarListItem = ({ address, isLoading, isError, refetch }: ItemPa
     () =>
       ({
         name: {
-          element: <ScholarFieldName address={address} />,
+          element: <ScholarFieldName address={address} isLoading={isLoading} />,
           size: 5,
         },
         slp: {
@@ -60,7 +58,7 @@ export const ScholarListItem = ({ address, isLoading, isError, refetch }: ItemPa
           size: 3,
         },
         arenaElo: {
-          element: <ScholarFieldArenaElo address={address} isLoading={isLoading} refetch={refetch} />,
+          element: <ScholarFieldArenaElo address={address} isLoading={isLoading} />,
           size: 3,
         },
         todaySlp: {
@@ -93,7 +91,7 @@ export const ScholarListItem = ({ address, isLoading, isError, refetch }: ItemPa
           size: number;
         };
       }),
-    [address, isLoading, refetch]
+    [address, isLoading]
   );
 
   const columns = useMemo(
@@ -105,8 +103,8 @@ export const ScholarListItem = ({ address, isLoading, isError, refetch }: ItemPa
     [fields, scholarFields]
   );
 
-  if (isError) {
-    return <ErroredItem address={address} refetch={refetch} />;
+  if (scholar.errored) {
+    return <ErroredItem address={address} />;
   }
 
   return (
@@ -115,8 +113,8 @@ export const ScholarListItem = ({ address, isLoading, isError, refetch }: ItemPa
         alignItems="center"
         minH="75px"
         w="100%"
-        cursor="pointer"
-        onClick={handleToggle}
+        cursor={!isLoading ? 'pointer' : 'default'}
+        onClick={!isLoading ? handleToggle : undefined}
         columns={columns + 1}
         gap={5}
         px={5}
@@ -129,10 +127,12 @@ export const ScholarListItem = ({ address, isLoading, isError, refetch }: ItemPa
           ) : null
         )}
 
-        <GridItem ml={-5} colSpan={1}>
-          {show && <Icon fontSize="2xl" as={BsChevronUp} opacity={!isLoading ? 0.5 : 1} />}
-          {!show && <Icon fontSize="2xl" as={BsChevronDown} opacity={!isLoading ? 0.5 : 1} />}
-        </GridItem>
+        {!isLoading ? (
+          <GridItem ml={-5} colSpan={1}>
+            {show && <Icon fontSize="2xl" as={BsChevronUp} opacity={!isLoading ? 0.5 : 1} />}
+            {!show && <Icon fontSize="2xl" as={BsChevronDown} opacity={!isLoading ? 0.5 : 1} />}
+          </GridItem>
+        ) : null}
       </SimpleGrid>
 
       <Collapsed address={address} show={show} />

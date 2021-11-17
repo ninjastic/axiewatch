@@ -28,6 +28,7 @@ if (process.browser) {
     persistor: localStoragePersistor,
   });
 }
+
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
     <QueryClientProvider client={queryClient}>

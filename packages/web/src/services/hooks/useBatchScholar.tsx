@@ -1,11 +1,11 @@
-import { useQueries, UseQueryOptions, UseQueryResult } from 'react-query';
-import { useRecoilCallback } from 'recoil';
-import { useCallback, useMemo } from 'react';
+import { useQuery } from 'react-query';
+import { useRecoilTransaction_UNSTABLE } from 'recoil';
+import { useEffect } from 'react';
 
 import { APIScholarResponse } from '../../types/api';
 import { serverApi } from '../api';
 import { scholarState, ScholarState } from '../../recoil/scholars';
-import { parseScholarData } from '../utils/parseScholarData';
+import { ParsedScholarData, parseScholarData } from '../utils/parseScholarData';
 
 type ScholarSetter = Partial<ScholarState> & { address: string };
 
@@ -17,39 +17,41 @@ interface UseBatchScholarProps {
 interface UseBatchScholarData {
   isLoading: boolean;
   isError: boolean;
-  refetchAll: () => void;
-  results: UseQueryResult<APIScholarResponse>[];
+  data: ParsedScholarData[];
 }
 
-export const useBatchScholar = ({ addresses, enabled = true }: UseBatchScholarProps): UseBatchScholarData => {
-  const setScholarState = useRecoilCallback(({ set, snapshot }) => (scholar: ScholarSetter) => {
-    const prevState = snapshot.getLoadable(scholarState(scholar.address)).getValue();
-    set(scholarState(scholar.address), { ...prevState, ...scholar });
+export const useBatchScholar = ({ addresses }: UseBatchScholarProps): UseBatchScholarData => {
+  const setBatchScholarData = useRecoilTransaction_UNSTABLE(({ set, get }) => (scholars: ScholarSetter[]) => {
+    return scholars.forEach(scholar => {
+      const prevState = get(scholarState(scholar.address));
+      set(scholarState(scholar.address), { ...prevState, ...scholar });
+    });
   });
 
-  const queries: UseQueryOptions[] = addresses.map(address => ({
-    queryKey: ['scholar', address],
-    queryFn: async () => {
-      const { data } = await serverApi.get<APIScholarResponse>('/scholar', {
-        params: { address },
+  const { isLoading, isError, data } = useQuery(
+    ['scholars', addresses],
+    async () => {
+      const response = await serverApi.post<APIScholarResponse[]>('/batch-scholar', {
+        addresses,
       });
 
-      const scholarData = parseScholarData({ data });
-      setScholarState({ address, ...scholarData });
+      const parsedScholars = response.data.map(result => {
+        const parsed = parseScholarData({ data: result });
+        return parsed;
+      });
 
-      return data;
+      return parsedScholars;
     },
-    enabled,
-    staleTime: 1000 * 60 * 15,
-  }));
+    {
+      staleTime: 1000 * 60 * 15,
+    }
+  );
 
-  const results = useQueries(queries) as UseQueryResult<APIScholarResponse>[];
-  const isLoading = useMemo(() => !!results.length && results.some(r => !!r.isLoading), [results]);
-  const isError = useMemo(() => !!results.length && results.every(r => r.isError), [results]);
+  useEffect(() => {
+    if (data) {
+      setBatchScholarData(data);
+    }
+  }, [data, setBatchScholarData]);
 
-  const refetchAll = useCallback(() => {
-    results.forEach(result => result.refetch());
-  }, [results]);
-
-  return { isLoading, isError, refetchAll, results };
+  return { isLoading, isError, data: data ?? [] };
 };

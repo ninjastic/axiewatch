@@ -14,39 +14,38 @@ export const SummaryCards = (): JSX.Element => {
   const scholars = useRecoilValue(scholarsMap);
   const addresses = scholars.filter(scholar => !scholar.inactive).map(scholar => scholar.address);
 
-  const { results, isLoading, isError, refetchAll } = useBatchScholar({ addresses });
-  const resultsWithSuccess = results.filter(result => result.isSuccess);
+  const { data, isLoading, isError } = useBatchScholar({ addresses });
 
   const farmedYesterday = useMemo(
     () =>
-      resultsWithSuccess.reduce((prev, currResult) => {
-        const { scholar } = currResult.data;
+      data.reduce((prev, currResult) => {
+        const { historical, totalSlp } = currResult;
 
-        const yesterday = currResult.data.historical?.yesterday?.totalSlp;
-        const today = currResult.data.historical?.today?.totalSlp;
+        const yesterday = historical?.yesterday?.totalSlp;
+        const today = historical?.today?.totalSlp;
 
         if (!yesterday) return prev;
 
         if (!today) {
-          return prev + (scholar.totalSlp - yesterday);
+          return prev + (totalSlp - yesterday);
         }
 
         return prev + (today - yesterday);
       }, 0),
-    [resultsWithSuccess]
+    [data]
   );
 
   const farmedToday = useMemo(
     () =>
-      resultsWithSuccess.reduce((prev, currResult) => {
-        const { scholar } = currResult.data;
-        const todayStart = currResult.data.historical?.today?.totalSlp;
+      data.reduce((prev, currResult) => {
+        const { historical, totalSlp } = currResult;
+        const todayStart = historical?.today?.totalSlp;
 
         if (!todayStart) return prev;
 
-        return prev + (scholar.totalSlp - todayStart);
+        return prev + (totalSlp - todayStart);
       }, 0),
-    [resultsWithSuccess]
+    [data]
   );
 
   return (
@@ -57,11 +56,11 @@ export const SummaryCards = (): JSX.Element => {
 
       {!isError && (
         <SimpleGrid columns={1} gap={2}>
-          <TotalScholarsCard data={results} isLoading={isLoading} />
+          <TotalScholarsCard data={data} isLoading={isLoading} />
 
           <SimpleGrid columns={{ base: 1, lg: 2 }} gap={2}>
-            <AccumulatedSlpCard data={results} isLoading={isLoading} />
-            <NextClaimCard data={results} isLoading={isLoading} />
+            <AccumulatedSlpCard data={data} isLoading={isLoading} />
+            <NextClaimCard data={data} isLoading={isLoading} />
           </SimpleGrid>
 
           <SimpleGrid columns={{ base: 1, lg: 2 }} gap={2}>
@@ -75,7 +74,7 @@ export const SummaryCards = (): JSX.Element => {
         <Card p={3} h="100%">
           <Stack align="center" justify="center" h="100%">
             <Text fontWeight="bold">Something went wrong...</Text>
-            <Button onClick={() => refetchAll()}>Retry</Button>
+            <Button onClick={() => undefined}>Retry</Button>
           </Stack>
         </Card>
       )}

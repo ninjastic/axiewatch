@@ -1,13 +1,13 @@
 import { Collapse, HStack, Stack, Divider, Flex, Text, Box } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 
-import { scholarFieldsAtom, scholarSelector } from '../../../../recoil/scholars';
+import { scholarFieldsAtom } from '../../../../recoil/scholars';
 import { EditScholarButton } from '../EditScholarButton/EditScholarButton';
 import { ProfileButton } from '../ProfileButton';
 import { PveStats } from '../PveStats';
 import { ScholarAxies } from '../ScholarAxies';
 import { SlpTrackingButton } from '../SlpTrackingButton';
-import { BattlesButton } from '../../../BattlesButton';
+// import { BattlesButton } from '../../../BattlesButton';
 
 interface CollapsedProps {
   address: string;
@@ -15,7 +15,6 @@ interface CollapsedProps {
 }
 
 export const Collapsed = ({ address, show }: CollapsedProps): JSX.Element => {
-  const scholar = useRecoilValue(scholarSelector(address));
   const scholarFields = useRecoilValue(scholarFieldsAtom);
 
   return (
@@ -31,7 +30,7 @@ export const Collapsed = ({ address, show }: CollapsedProps): JSX.Element => {
                   <Text fontWeight="bold" fontSize="sm">
                     Daily Adventure
                   </Text>
-                  <PveStats address={address} shouldLoad={show} />
+                  <PveStats address={address} />
                 </Stack>
               )}
               <Box minH="75px">
@@ -40,9 +39,9 @@ export const Collapsed = ({ address, show }: CollapsedProps): JSX.Element => {
             </HStack>
 
             <HStack>
-              <BattlesButton address={scholar.address} />
-              <SlpTrackingButton address={scholar.address} />
-              <ProfileButton address={scholar.address} />
+              {/* <BattlesButton address={scholar.address} /> */}
+              <SlpTrackingButton address={address} />
+              <ProfileButton address={address} />
               <EditScholarButton address={address} />
             </HStack>
           </Flex>

@@ -1,8 +1,8 @@
-import axios from 'axios';
 import { ethers } from 'ethers';
 
 import Sync from '@models/Sync';
 import Tracking from '@src/models/Tracking';
+import { proxiedApi } from '@src/services/api';
 
 interface ApiResponse {
   client_id: string;
@@ -39,7 +39,7 @@ export const getUniqueAddresses = async (): Promise<string[]> => {
 
 export const requestScholarData = async (address: string): Promise<ApiResponse> => {
   const endpoint = `https://game-api.skymavis.com/game-api/clients/${address}/items/1`;
-  const response = await axios.get<ApiResponse>(endpoint);
+  const response = await proxiedApi.get<ApiResponse>(endpoint);
   return response.data;
 };
 

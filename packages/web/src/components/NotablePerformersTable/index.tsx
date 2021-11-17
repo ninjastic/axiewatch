@@ -26,14 +26,12 @@ import { FiChevronDown } from 'react-icons/fi';
 import { RiSwordLine } from 'react-icons/ri';
 import { useRecoilValue } from 'recoil';
 import { useMemo, useState } from 'react';
-import { UseQueryResult } from 'react-query';
 
 import dayjs from '../../services/dayjs';
 import { scholarsMap } from '@src/recoil/scholars';
 import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
 import { Card } from '@components/Card';
-import { parseScholarData } from '@src/services/utils/parseScholarData';
-import { APIScholarResponse } from '@src/types/api';
+import { ParsedScholarData } from '@src/services/utils/parseScholarData';
 import { SlpTrackingButton } from '../ScholarsGrid/Scholar/SlpTrackingButton';
 
 interface NumberMenuProps {
@@ -58,7 +56,7 @@ const NumberMenu = ({ number, setNumber }: NumberMenuProps): JSX.Element => {
 
 interface TableComponentProps {
   label: string;
-  data: UseQueryResult<APIScholarResponse, unknown>[];
+  data: ParsedScholarData[];
   isLoading: boolean;
 }
 
@@ -99,9 +97,8 @@ const TableComponent = ({ label, data, isLoading }: TableComponentProps): JSX.El
 
             <Tbody>
               {data.map(result => {
-                const { address } = result.data;
+                const { address, yesterdaySlp, slpDay, slp, pvpElo } = result;
                 const state = scholars.find(scholar => scholar.address === address);
-                const { yesterdaySlp, slpDay, slp, pvpElo } = parseScholarData({ data: result.data });
 
                 return (
                   <Tr key={address}>
@@ -141,33 +138,28 @@ export const NotablePerformersTable = (): JSX.Element => {
 
   const [scholarsNumber, setScholarsNumber] = useState(5);
 
-  const { results, isLoading } = useBatchScholar({ addresses });
+  const { data, isLoading } = useBatchScholar({ addresses });
 
   const sortedScholars = useMemo(
     () =>
-      results
-        .filter(result => result.isSuccess)
+      data
         .filter(result => {
-          const state = scholars.find(scholar => scholar.address === result.data.address);
+          const state = scholars.find(scholar => scholar.address === result.address);
           return !state.inactive;
         })
         .filter(result => {
-          const data = parseScholarData({ data: result.data });
-          return data.lastClaim !== 0 && dayjs.utc().isAfter(dayjs.unix(data.lastClaim).add(1, 'day'));
+          return result.lastClaim !== 0 && dayjs.utc().isAfter(dayjs.unix(result.lastClaim).add(1, 'day'));
         })
         .sort((a, b) => {
-          const aData = parseScholarData({ data: a.data });
-          const bData = parseScholarData({ data: b.data });
-
-          if (aData.slpDay > bData.slpDay) return -1;
-          if (aData.slpDay < bData.slpDay) return 1;
+          if (a.slpDay > b.slpDay) return -1;
+          if (a.slpDay < b.slpDay) return 1;
           return 0;
         }),
-    [results, scholars]
+    [data, scholars]
   );
 
   const topScholars = sortedScholars.slice(0, scholarsNumber);
-  const bottomScholars = sortedScholars.reverse().slice(0, scholarsNumber);
+  const bottomScholars = [...sortedScholars].reverse().slice(0, scholarsNumber);
 
   return (
     <Stack>

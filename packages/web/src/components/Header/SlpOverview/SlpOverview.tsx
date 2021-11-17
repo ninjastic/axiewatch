@@ -1,36 +1,15 @@
 import { Stat, StatLabel, StatNumber, StatHelpText, Stack, HStack, Image, Tooltip } from '@chakra-ui/react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 import { formatter } from '../../../services/formatter';
 import { usePrice } from '../../../services/hooks/usePrice';
-import { allScholarsSelector, totalSlpSelector } from '../../../recoil/scholars';
+import { totalSlpSelector } from '../../../recoil/scholars';
 import { TooltipPredictionSlp } from '../TooltipPredictionSlp';
 
 export const SlpOverview = (): JSX.Element => {
   const price = usePrice();
 
-  useRecoilValue(allScholarsSelector);
-
-  const [values, setValues] = useState({
-    total: 0,
-    manager: 0,
-    scholars: 0,
-    investor: 0,
-  });
-
-  const getValue = useRecoilCallback(
-    ({ snapshot }) =>
-      () =>
-        snapshot.getLoadable(totalSlpSelector).getValue(),
-    []
-  );
-
-  const timeout = setTimeout(() => {
-    setValues(getValue());
-  }, 500);
-
-  useEffect(() => () => clearInterval(timeout), [timeout]);
+  const values = useRecoilValue(totalSlpSelector);
 
   return (
     <Stack direction={{ base: 'column', lg: 'row' }} spacing={5}>

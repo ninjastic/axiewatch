@@ -48,11 +48,11 @@ export const ScholarFieldManagerShare = ({ address, isLoading }: ScholarFieldMan
     [preferences.includeRoninBalance, scholar.roninSlp, scholar.slp]
   );
 
-  const slpValue = useMemo(() => Math.floor((slp * scholar.shares.manager) / 100), [scholar.shares.manager, slp]);
+  const slpValue = useMemo(() => Math.floor((slp * scholar?.shares?.manager) / 100), [scholar?.shares?.manager, slp]);
 
   return (
     <SkeletonText isLoaded={!isLoading} noOfLines={2}>
-      <Tooltip label={<TooltipComponent percentage={scholar.shares.manager} slp={slp} />}>
+      <Tooltip label={<TooltipComponent percentage={scholar?.shares?.manager} slp={slp} />}>
         <Stack spacing={0}>
           <Text opacity={0.9} fontSize="xs">
             Manager

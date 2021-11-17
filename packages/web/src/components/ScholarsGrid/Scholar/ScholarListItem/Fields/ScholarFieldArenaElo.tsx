@@ -42,17 +42,10 @@ const TooltipComponent = ({ elo, rank }: TooltipComponentProps): JSX.Element => 
 interface ScholarFieldArenaEloProps {
   address: string;
   isLoading: boolean;
-  refetch(): void;
 }
 
-export const ScholarFieldArenaElo = ({ address, isLoading, refetch }: ScholarFieldArenaEloProps): JSX.Element => {
+export const ScholarFieldArenaElo = ({ address, isLoading }: ScholarFieldArenaEloProps): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
-
-  const handleRetry = (e: React.MouseEvent<HTMLParagraphElement, MouseEvent>) => {
-    if (isLoading) return;
-    e.stopPropagation();
-    refetch();
-  };
 
   return (
     <SkeletonText isLoaded={!isLoading} noOfLines={2}>
@@ -64,15 +57,7 @@ export const ScholarFieldArenaElo = ({ address, isLoading, refetch }: ScholarFie
 
           <HStack>
             <Icon as={RiSwordLine} />
-            {scholar.pvpErrored && (
-              <Text
-                onClick={handleRetry}
-                color={isLoading ? 'inherit' : 'red.300'}
-                _hover={{ textDecor: isLoading ? 'none' : 'underline' }}
-              >
-                Retry
-              </Text>
-            )}
+            {scholar.pvpErrored && <Text color={isLoading ? 'inherit' : 'red.300'}>Error</Text>}
 
             {!scholar.pvpErrored && <Text>{scholar.pvpElo}</Text>}
           </HStack>
