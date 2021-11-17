@@ -42,11 +42,11 @@ interface PerPageSelectorSelectorProps {
 }
 
 const PerPageSelector = ({ value, onChange }: PerPageSelectorSelectorProps): JSX.Element => {
-  const options = [20, 50, 100, 200, 500, 1000];
+  const options = [20, 50, 100, 200, 500];
 
   return (
     <Menu isLazy>
-      <MenuButton as={Button} rightIcon={<FiChevronDown />} maxW="160px" variant="outline" textAlign="left">
+      <MenuButton as={Button} rightIcon={<FiChevronDown />} maxW="165px" variant="outline" textAlign="left">
         {!value ? 'Scholars per page...' : `${value} rows/page`}
       </MenuButton>
 

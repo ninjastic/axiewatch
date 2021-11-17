@@ -4,14 +4,13 @@ import { useMemo } from 'react';
 import lodash from 'lodash';
 
 import dayjs from '../../services/dayjs';
-import { scholarFilter, scholarSelector, scholarsMap, scholarSort } from '../../recoil/scholars';
+import { scholarFilter, ScholarMap, scholarSelector, scholarsMap, scholarSort } from '../../recoil/scholars';
 import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
 import { Scholar } from './Scholar';
 import { Card } from '../Card';
-import { ParsedScholarData } from '@src/services/utils/parseScholarData';
 import { preferencesAtom } from '@src/recoil/preferences';
 
-const useFilterScholars = (scholars: ParsedScholarData[]): ParsedScholarData[] => {
+const useFilterScholars = (scholars: ScholarMap[]): ScholarMap[] => {
   const { search, onlyClaimable, SLP } = useRecoilValue(scholarFilter);
   const preferences = useRecoilValue(preferencesAtom);
   const sort = useRecoilValue(scholarSort);
@@ -41,8 +40,8 @@ const useFilterScholars = (scholars: ParsedScholarData[]): ParsedScholarData[] =
     const stateB = getScholarState(scholarB.address);
 
     const slpValues = {
-      a: preferences.includeRoninBalance ? scholarA.slp + scholarA.roninSlp : scholarA.slp,
-      b: preferences.includeRoninBalance ? scholarB.slp + scholarB.roninSlp : scholarB.slp,
+      a: preferences.includeRoninBalance ? stateA.slp + stateA.roninSlp : stateA.slp,
+      b: preferences.includeRoninBalance ? stateB.slp + stateB.roninSlp : stateB.slp,
     };
 
     switch (sort) {
@@ -51,33 +50,33 @@ const useFilterScholars = (scholars: ParsedScholarData[]): ParsedScholarData[] =
         if (slpValues.a < slpValues.b) return 1;
         return 1;
       case 'Arena Elo':
-        if (scholarA.pvpElo > scholarB.pvpElo) return -1;
-        if (scholarA.pvpElo < scholarB.pvpElo) return 1;
+        if (stateA.pvpElo > stateB.pvpElo) return -1;
+        if (stateA.pvpElo < stateB.pvpElo) return 1;
         return 0;
       case 'SLP per Day':
-        if (scholarA.slpDay > scholarB.slpDay) return -1;
-        if (scholarA.slpDay < scholarB.slpDay) return 1;
+        if (stateA.slpDay > stateB.slpDay) return -1;
+        if (stateA.slpDay < stateB.slpDay) return 1;
         return 0;
       case 'SLP Today':
-        if (scholarA.todaySlp !== null && scholarB.todaySlp !== null) {
-          if (scholarA.todaySlp > scholarB.todaySlp) return -1;
+        if (stateA.todaySlp !== null && stateB.todaySlp !== null) {
+          if (stateA.todaySlp > stateB.todaySlp) return -1;
           return 1;
         }
-        if (scholarA.todaySlp && !scholarB.todaySlp) return -1;
-        if (!scholarA.todaySlp && scholarB.todaySlp) return 1;
+        if (stateA.todaySlp && !stateB.todaySlp) return -1;
+        if (!stateA.todaySlp && stateB.todaySlp) return 1;
         return 0;
       case 'SLP Yesterday':
-        if (scholarA.yesterdaySlp !== null && scholarB.yesterdaySlp !== null) {
-          if (scholarA.yesterdaySlp > scholarB.yesterdaySlp) return -1;
+        if (stateA.yesterdaySlp !== null && stateB.yesterdaySlp !== null) {
+          if (stateA.yesterdaySlp > stateB.yesterdaySlp) return -1;
           return 1;
         }
-        if (scholarA.yesterdaySlp && !scholarB.yesterdaySlp) return -1;
-        if (!scholarA.yesterdaySlp && scholarB.yesterdaySlp) return 1;
+        if (stateA.yesterdaySlp && !stateB.yesterdaySlp) return -1;
+        if (!stateA.yesterdaySlp && stateB.yesterdaySlp) return 1;
         return 0;
       case 'Next Claim':
-        if (scholarA.nextClaim === 0) return 1;
-        if (scholarB.nextClaim === 0) return -1;
-        if (dayjs.unix(scholarA.nextClaim).isBefore(dayjs.unix(scholarB.nextClaim))) return -1;
+        if (stateA.nextClaim === 0) return 1;
+        if (stateB.nextClaim === 0) return -1;
+        if (dayjs.unix(stateA.nextClaim).isBefore(dayjs.unix(stateB.nextClaim))) return -1;
         return 1;
       case 'Name':
         if (stateA.name.toLowerCase() > stateB.name.toLowerCase()) return 1;
@@ -101,8 +100,8 @@ export const ScholarsGrid = ({ page, setPage, perPage }: ScholarsGridProps): JSX
   const map = useRecoilValue(scholarsMap);
   const addresses = useMemo(() => map.map(scholar => scholar.address), [map]);
 
-  const { isLoading, data } = useBatchScholar({ addresses });
-  const filteredScholars = useFilterScholars(data);
+  const { isLoading } = useBatchScholar({ addresses });
+  const filteredScholars = useFilterScholars(map);
 
   const paginationData = useMemo(
     () => filteredScholars.slice(page * perPage, (page + 1) * perPage),
@@ -113,7 +112,7 @@ export const ScholarsGrid = ({ page, setPage, perPage }: ScholarsGridProps): JSX
   return (
     <Box>
       {isLoading && !!map.length && (
-        <SimpleGrid gap={3}>
+        <SimpleGrid gap={3} columns={{ base: 1, lg: 2, xl: 1 }}>
           {lodash.times(Math.min(map.length, 20)).map(x => (
             <Scholar key={x} address="0x" isLoading />
           ))}
@@ -121,7 +120,7 @@ export const ScholarsGrid = ({ page, setPage, perPage }: ScholarsGridProps): JSX
       )}
 
       {!isLoading && !!map.length && (
-        <SimpleGrid gap={3} columns={{ base: 1, lg: 2, xl: 1 }} mt={2}>
+        <SimpleGrid gap={3} columns={{ base: 1, lg: 2, xl: 1 }}>
           {paginationData.map(scholar => (
             <Scholar key={scholar.address} address={scholar.address} />
           ))}

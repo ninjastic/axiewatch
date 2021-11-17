@@ -20,7 +20,7 @@ interface UseBatchScholarData {
   data: ParsedScholarData[];
 }
 
-export const useBatchScholar = ({ addresses }: UseBatchScholarProps): UseBatchScholarData => {
+export const useBatchScholar = ({ addresses, enabled }: UseBatchScholarProps): UseBatchScholarData => {
   const setBatchScholarData = useRecoilTransaction_UNSTABLE(({ set, get }) => (scholars: ScholarSetter[]) => {
     return scholars.forEach(scholar => {
       const prevState = get(scholarState(scholar.address));
@@ -43,6 +43,7 @@ export const useBatchScholar = ({ addresses }: UseBatchScholarProps): UseBatchSc
       return parsedScholars;
     },
     {
+      enabled: enabled && !!addresses.length,
       staleTime: 1000 * 60 * 15,
     }
   );

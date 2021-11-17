@@ -10,7 +10,7 @@ export const ScholarsSorter = (): JSX.Element => {
 
   return (
     <Menu isLazy>
-      <MenuButton as={Button} rightIcon={<FiChevronDown />} w="160px" variant="outline" textAlign="left">
+      <MenuButton as={Button} rightIcon={<FiChevronDown />} w="165px" variant="outline" textAlign="left">
         {!sort ? 'Sort by...' : sort}
       </MenuButton>
 

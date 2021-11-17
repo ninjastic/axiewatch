@@ -26,16 +26,16 @@ export const ScholarOverview = ({ address, isLoading }: ScholarOverviewProps): J
   const fiatValues = useMemo(
     () => ({
       total: formatter(slpAmount * price.values.slp, price.locale),
-      scholar: formatter((slpAmount * price.values.slp * shares.scholar) / 100, price.locale),
-      manager: formatter((slpAmount * price.values.slp * shares.manager) / 100, price.locale),
+      scholar: formatter((slpAmount * price.values.slp * shares?.scholar) / 100, price.locale),
+      manager: formatter((slpAmount * price.values.slp * shares?.manager) / 100, price.locale),
     }),
     [slpAmount, price, shares]
   );
 
   const slpValues = useMemo(
     () => ({
-      scholar: Math.floor((slpAmount * shares.scholar) / 100),
-      manager: Math.floor((slpAmount * shares.manager) / 100),
+      scholar: Math.floor((slpAmount * shares?.scholar) / 100),
+      manager: Math.floor((slpAmount * shares?.manager) / 100),
     }),
     [slpAmount, shares]
   );
@@ -139,7 +139,7 @@ export const ScholarOverview = ({ address, isLoading }: ScholarOverviewProps): J
                 Scholar
               </Text>
               <Text opacity={0.9} fontSize="xs">
-                ({shares.scholar}%)
+                ({shares?.scholar}%)
               </Text>
             </HStack>
 
@@ -159,7 +159,7 @@ export const ScholarOverview = ({ address, isLoading }: ScholarOverviewProps): J
                 Manager
               </Text>
               <Text opacity={0.9} fontSize="xs">
-                ({scholar.shares.manager}%)
+                ({shares?.manager}%)
               </Text>
             </HStack>
 

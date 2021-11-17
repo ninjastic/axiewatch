@@ -38,51 +38,51 @@ export const ScholarListItem = ({ address, isLoading = false }: ItemParams): JSX
     () =>
       ({
         name: {
-          element: <ScholarFieldName address={address} isLoading={isLoading} />,
+          element: <ScholarFieldName address={address} isLoading={isLoading || !scholar.loaded} />,
           size: 5,
         },
         slp: {
-          element: <ScholarFieldSlp address={address} isLoading={isLoading} />,
+          element: <ScholarFieldSlp address={address} isLoading={isLoading || !scholar.loaded} />,
           size: 3,
         },
         scholarShare: {
-          element: <ScholarFieldScholarShare address={address} isLoading={isLoading} />,
+          element: <ScholarFieldScholarShare address={address} isLoading={isLoading || !scholar.loaded} />,
           size: 3,
         },
         managerShare: {
-          element: <ScholarFieldManagerShare address={address} isLoading={isLoading} />,
+          element: <ScholarFieldManagerShare address={address} isLoading={isLoading || !scholar.loaded} />,
           size: 3,
         },
         investorShare: {
-          element: <ScholarFieldInvestorShare address={address} isLoading={isLoading} />,
+          element: <ScholarFieldInvestorShare address={address} isLoading={isLoading || !scholar.loaded} />,
           size: 3,
         },
         arenaElo: {
-          element: <ScholarFieldArenaElo address={address} isLoading={isLoading} />,
+          element: <ScholarFieldArenaElo address={address} isLoading={isLoading || !scholar.loaded} />,
           size: 3,
         },
         todaySlp: {
-          element: <ScholarFieldTodaySlp address={address} isLoading={isLoading} />,
+          element: <ScholarFieldTodaySlp address={address} isLoading={isLoading || !scholar.loaded} />,
           size: 3,
         },
         yesterdaySlp: {
-          element: <ScholarFieldYesterdaySlp address={address} isLoading={isLoading} />,
+          element: <ScholarFieldYesterdaySlp address={address} isLoading={isLoading || !scholar.loaded} />,
           size: 3,
         },
         slpDay: {
-          element: <ScholarFieldSlpDay address={address} isLoading={isLoading} />,
+          element: <ScholarFieldSlpDay address={address} isLoading={isLoading || !scholar.loaded} />,
           size: 3,
         },
         adventureSlp: {
-          element: <ScholarFieldAdventureSlp address={address} isLoading={isLoading} />,
+          element: <ScholarFieldAdventureSlp address={address} isLoading={isLoading || !scholar.loaded} />,
           size: 4,
         },
         lastClaim: {
-          element: <ScholarFieldLastClaim address={address} isLoading={isLoading} />,
+          element: <ScholarFieldLastClaim address={address} isLoading={isLoading || !scholar.loaded} />,
           size: 4,
         },
         nextClaim: {
-          element: <ScholarFieldNextClaim address={address} isLoading={isLoading} />,
+          element: <ScholarFieldNextClaim address={address} isLoading={isLoading || !scholar.loaded} />,
           size: 4,
         },
       } as {
@@ -91,7 +91,7 @@ export const ScholarListItem = ({ address, isLoading = false }: ItemParams): JSX
           size: number;
         };
       }),
-    [address, isLoading]
+    [address, isLoading, scholar.loaded]
   );
 
   const columns = useMemo(
@@ -127,7 +127,7 @@ export const ScholarListItem = ({ address, isLoading = false }: ItemParams): JSX
           ) : null
         )}
 
-        {!isLoading ? (
+        {!isLoading && scholar.loaded ? (
           <GridItem ml={-5} colSpan={1}>
             {show && <Icon fontSize="2xl" as={BsChevronUp} opacity={!isLoading ? 0.5 : 1} />}
             {!show && <Icon fontSize="2xl" as={BsChevronDown} opacity={!isLoading ? 0.5 : 1} />}
