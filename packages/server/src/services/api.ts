@@ -26,16 +26,26 @@ const proxiedApi = axios.create();
 
 proxiedApi.interceptors.request.use(request => {
   const proxy = getRandomProxy();
+
+  if (!proxy.ip || !proxy.port) {
+    return request;
+  }
+
   const requestWithProxy = { ...request };
+
+  const auth =
+    proxy.username && proxy.password
+      ? {
+          username: proxy.username,
+          password: proxy.password,
+        }
+      : undefined;
 
   requestWithProxy.proxy = {
     protocol: 'http',
     host: proxy.ip,
     port: proxy.port,
-    auth: {
-      username: proxy.username,
-      password: proxy.password,
-    },
+    auth,
   };
 
   return requestWithProxy;
