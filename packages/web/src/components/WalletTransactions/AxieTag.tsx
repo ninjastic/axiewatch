@@ -164,26 +164,42 @@ interface AxieTagProps {
 export const AxieTag = ({ id }: AxieTagProps): JSX.Element => {
   const axieUrl = useMemo(() => `https://marketplace.axieinfinity.com/axie/${id}/?referrer=axie.watch`, [id]);
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError } = useQuery(
     ['axie', id],
     async () => {
       const { axie } = await axieInfinityGraphQl.request<GraphQLResponse>(query, { axieId: id });
 
-      return parseAxieData(axie);
+      if (axie.class) {
+        return parseAxieData(axie);
+      }
+
+      return axie;
     },
     {
-      staleTime: 1000 * 60 * 60 * 24,
+      staleTime: 1000 * 60 * 60 * 12,
     }
   );
 
+  if (isError) {
+    return <Tag color="red.300">Error</Tag>;
+  }
+
   return (
-    <Tooltip label={<AxieCard data={data} />} isDisabled={isLoading}>
+    <Tooltip
+      label={
+        <Box w="300px">
+          <AxieCard data={data} />
+        </Box>
+      }
+      isDisabled={isLoading || !data?.class}
+    >
       <Link href={axieUrl} target="_blank">
         <Tag>
           <Box>
             <HStack>
               {isLoading && <SkeletonCircle size="3" />}
-              {data && <AxieIcon type={data.class.toLowerCase() as AxieClass} />}
+              {data && data.class && <AxieIcon type={data.class?.toLowerCase() as AxieClass} />}
+              {data && !data?.class && <Text>🥚</Text>}
               <Text>{id}</Text>
             </HStack>
           </Box>
