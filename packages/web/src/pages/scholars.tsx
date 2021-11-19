@@ -42,7 +42,7 @@ interface PerPageSelectorSelectorProps {
 }
 
 const PerPageSelector = ({ value, onChange }: PerPageSelectorSelectorProps): JSX.Element => {
-  const options = [20, 50, 100, 200, 500];
+  const options = [20, 50, 100, 200];
 
   return (
     <Menu isLazy>
