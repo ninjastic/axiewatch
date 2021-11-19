@@ -23,7 +23,7 @@ export const getScholarHistoricalSlp = async (address: string): Promise<ScholarH
 
   const dates = await Tracking.query()
     .select('*')
-    .where('address', address)
+    .where('address', address.toLowerCase())
     .andWhere('createdAt', '>', dayjs.utc().subtract(14, 'days').startOf('day').toISOString())
     .orderBy('createdAt', 'desc')
     .limit(14)
