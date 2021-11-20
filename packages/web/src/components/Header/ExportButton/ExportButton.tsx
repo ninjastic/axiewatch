@@ -30,14 +30,14 @@ export const ExportButton = (): JSX.Element => {
 
   const exportFileModal = useCreateModal({
     id: 'exportFileModal',
-    title: () => 'Export Scholars',
-    content: () => <ExportFileModal />,
+    title: 'Export Scholars',
+    content: <ExportFileModal />,
     size: '2xl',
   });
 
   const exportDashboardModal = useCreateModal({
     id: 'exportDashboardModal',
-    title: () => (
+    title: (
       <Box>
         <Text>Export Dashboard</Text>
         <Text fontSize="sm" fontWeight="normal" opacity={0.9}>
@@ -45,7 +45,7 @@ export const ExportButton = (): JSX.Element => {
         </Text>
       </Box>
     ),
-    content: () => <ExportDashboardModal />,
+    content: <ExportDashboardModal />,
     size: '2xl',
   });
 

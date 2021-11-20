@@ -33,8 +33,8 @@ export const UploadScholarsModal = ({ uploadedScholars }: UploadScholarsModalPro
       setScholars(data.scholars);
     }
 
-    modal.onClose();
     setIsLoading(false);
+    modal.onClose();
   };
 
   return (

@@ -1,7 +1,6 @@
-import axios from 'axios';
-
 import { cache } from '@src/services/cache';
 import dayjs from '@src/services/dayjs';
+import { proxiedApi } from '@src/services/api';
 
 interface APIScholarPvpResponse {
   items: Array<{
@@ -32,7 +31,7 @@ export const getScholarPvp = async (address: string): Promise<ScholarPvpData> =>
   const cached = await cache.get(cacheKey);
   if (cached) return JSON.parse(cached);
 
-  const data = await axios
+  const data = await proxiedApi
     .get<APIScholarPvpResponse>(apiUrl, { params: apiParams })
     .then(response => response.data.items.find(item => item.client_id.toLowerCase() === address.toLowerCase()));
 

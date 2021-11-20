@@ -44,11 +44,11 @@ export const ScholarFieldInvestorShare = ({ address, isLoading }: ScholarFieldIn
   const preferences = useRecoilValue(preferencesAtom);
 
   const slp = preferences.includeRoninBalance ? scholar.slp + scholar.roninSlp : scholar.slp;
-  const slpValue = Math.floor((slp * (scholar.shares.investor ?? 0)) / 100);
+  const slpValue = Math.floor((slp * (scholar?.shares?.investor ?? 0)) / 100);
 
   return (
     <SkeletonText isLoaded={!isLoading} noOfLines={2}>
-      <Tooltip label={<TooltipComponent percentage={scholar.shares.investor} slp={slp} />}>
+      <Tooltip label={<TooltipComponent percentage={scholar?.shares?.investor} slp={slp} />}>
         <Stack spacing={0}>
           <Text opacity={0.9} fontSize="xs">
             Investor

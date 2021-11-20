@@ -1,7 +1,6 @@
-import axios from 'axios';
-
 import { cache } from '@src/services/cache';
 import dayjs from '@src/services/dayjs';
+import { proxiedApi } from '@src/services/api';
 
 interface ApiScholarAdventureResponse {
   gained_slp_response: {
@@ -28,7 +27,7 @@ export const getScholarAdventure = async (address: string): Promise<ScholarAdven
   const cached = await cache.get(cacheKey);
   if (cached) return JSON.parse(cached);
 
-  const { data } = await axios.get<ApiScholarAdventureResponse>(apiUrl, { params: apiParams });
+  const { data } = await proxiedApi.get<ApiScholarAdventureResponse>(apiUrl, { params: apiParams });
 
   const scholarPvp = {
     slp: data.gained_slp_response.gained_slp,

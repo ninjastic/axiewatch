@@ -67,18 +67,17 @@ const DailySlpChartComponent = (): JSX.Element => {
   const addresses = scholars.filter(scholar => !scholar.inactive).map(scholar => scholar.address);
 
   const { colors } = useTheme();
-  const { results, isLoading } = useBatchScholar({ addresses });
+  const { data, isLoading } = useBatchScholar({ addresses });
 
-  const data = useMemo(() => {
-    return results
-      .filter(result => result.isSuccess)
+  const chartData = useMemo(() => {
+    return data
       .reduce((prevResult, currResult) => {
         const draft = [...prevResult];
-        const scholar = scholars.find(schol => schol.address === currResult.data?.address);
+        const scholar = scholars.find(schol => schol.address === currResult.address);
 
         if (!scholar) return draft;
 
-        currResult.data?.historical?.dates.forEach((date, index, array) => {
+        currResult.historical?.dates.forEach((date, index, array) => {
           const dayIndex = draft.findIndex(d => d.day === date.day);
           const prevDate = array[index - 1];
 
@@ -113,7 +112,7 @@ const DailySlpChartComponent = (): JSX.Element => {
         if (a.day < b.day) return -1;
         return 0;
       });
-  }, [results, scholars]);
+  }, [data, scholars]);
 
   if (isLoading) {
     return (
@@ -123,7 +122,7 @@ const DailySlpChartComponent = (): JSX.Element => {
     );
   }
 
-  if (!data.length) {
+  if (!chartData.length) {
     return (
       <Flex align="center" justify="center" h="150px">
         <Text variant="faded">Oopss... there is nothing to see here</Text>
@@ -134,7 +133,7 @@ const DailySlpChartComponent = (): JSX.Element => {
   return (
     <ResponsiveContainer width="100%" height={400}>
       <BarChart
-        data={data}
+        data={chartData}
         margin={{
           top: 20,
           right: 30,

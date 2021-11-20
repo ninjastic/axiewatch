@@ -11,11 +11,10 @@ import { preferencesAtom } from '../../../../recoil/preferences';
 
 interface ScholarOverviewProps {
   address: string;
-  isLoading: boolean;
-  refetch: () => void;
+  isLoading?: boolean;
 }
 
-export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverviewProps): JSX.Element => {
+export const ScholarOverview = ({ address, isLoading }: ScholarOverviewProps): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
   const preferences = useRecoilValue(preferencesAtom);
   const price = useRecoilValue(priceAtom);
@@ -27,16 +26,16 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
   const fiatValues = useMemo(
     () => ({
       total: formatter(slpAmount * price.values.slp, price.locale),
-      scholar: formatter((slpAmount * price.values.slp * shares.scholar) / 100, price.locale),
-      manager: formatter((slpAmount * price.values.slp * shares.manager) / 100, price.locale),
+      scholar: formatter((slpAmount * price.values.slp * shares?.scholar) / 100, price.locale),
+      manager: formatter((slpAmount * price.values.slp * shares?.manager) / 100, price.locale),
     }),
     [slpAmount, price, shares]
   );
 
   const slpValues = useMemo(
     () => ({
-      scholar: Math.floor((slpAmount * shares.scholar) / 100),
-      manager: Math.floor((slpAmount * shares.manager) / 100),
+      scholar: Math.floor((slpAmount * shares?.scholar) / 100),
+      manager: Math.floor((slpAmount * shares?.manager) / 100),
     }),
     [slpAmount, shares]
   );
@@ -96,21 +95,7 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
 
           <HStack>
             <Icon as={RiSwordLine} />
-            {scholar.pvpErrored && (
-              <Text
-                onClick={e => {
-                  if (isLoading) return;
-                  e.stopPropagation();
-                  refetch();
-                }}
-                _hover={{
-                  textDecor: isLoading ? 'none' : 'underline',
-                }}
-                color={isLoading ? 'inherit' : 'red.300'}
-              >
-                Retry
-              </Text>
-            )}
+            {scholar.pvpErrored && <Text color={isLoading ? 'inherit' : 'red.300'}>Error</Text>}
 
             {!scholar.pvpErrored && <Text>{scholar.pvpElo}</Text>}
           </HStack>
@@ -154,7 +139,7 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
                 Scholar
               </Text>
               <Text opacity={0.9} fontSize="xs">
-                ({shares.scholar}%)
+                ({shares?.scholar}%)
               </Text>
             </HStack>
 
@@ -174,7 +159,7 @@ export const ScholarOverview = ({ address, isLoading, refetch }: ScholarOverview
                 Manager
               </Text>
               <Text opacity={0.9} fontSize="xs">
-                ({scholar.shares.manager}%)
+                ({shares?.manager}%)
               </Text>
             </HStack>
 

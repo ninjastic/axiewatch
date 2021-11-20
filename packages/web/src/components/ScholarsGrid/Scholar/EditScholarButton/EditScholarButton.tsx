@@ -17,9 +17,9 @@ export const EditScholarButton = ({ address, size = 'md', onlyIcon = false }: Ed
 
   const editScholarModal = useCreateModal({
     id: 'editScholarModal',
-    title: () => 'Edit scholar',
+    title: 'Edit scholar',
     size: 'lg',
-    content: () => <EditScholarModal name={scholar.name} address={address} />,
+    content: <EditScholarModal name={scholar.name} address={address} />,
   });
 
   return onlyIcon ? (

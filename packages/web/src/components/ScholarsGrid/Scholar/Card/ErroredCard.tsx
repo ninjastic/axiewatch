@@ -1,5 +1,4 @@
-import { Stack, Box, Text, ButtonGroup, Button } from '@chakra-ui/react';
-import { BsArrowRepeat } from 'react-icons/bs';
+import { Stack, Box, Text, ButtonGroup } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 
 import { scholarSelector } from '../../../../recoil/scholars';
@@ -8,10 +7,9 @@ import { ScholarAddress } from '../ScholarAddress';
 
 interface ErroredCardProps {
   address: string;
-  refetch: () => void;
 }
 
-export const ErroredCard = ({ address, refetch }: ErroredCardProps): JSX.Element => {
+export const ErroredCard = ({ address }: ErroredCardProps): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
 
   return (
@@ -34,15 +32,6 @@ export const ErroredCard = ({ address, refetch }: ErroredCardProps): JSX.Element
       <Text fontWeight="bold">Something went wrong...</Text>
 
       <ButtonGroup>
-        <Button
-          leftIcon={<BsArrowRepeat />}
-          onClick={e => {
-            e.stopPropagation();
-            refetch();
-          }}
-        >
-          Retry
-        </Button>
         <ConfirmDeleteButton scholarAddress={address} />
       </ButtonGroup>
     </Stack>

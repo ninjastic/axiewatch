@@ -66,8 +66,8 @@ export const ScholarAxies = ({ address, shouldLoad = true }: ScholarAxiesProps):
 
   const otherAxiesModal = useCreateModal({
     id: 'otherAxiesModal',
-    title: () => 'Other axies',
-    content: () => <OtherScholarAxiesModal data={hasMoreAxies ? data?.results.slice(3) : []} />,
+    title: 'Other axies',
+    content: <OtherScholarAxiesModal data={hasMoreAxies ? data?.results.slice(3) : []} />,
     size: '6xl',
   });
 

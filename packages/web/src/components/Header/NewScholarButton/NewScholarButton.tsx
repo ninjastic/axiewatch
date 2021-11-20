@@ -7,8 +7,8 @@ import { NewScholarModal } from './NewScholarModal';
 export const NewScholarButton = (): JSX.Element => {
   const newScholarModal = useCreateModal({
     id: 'newScholarModal',
-    title: () => 'New Scholar',
-    content: () => <NewScholarModal />,
+    title: 'New Scholar',
+    content: <NewScholarModal />,
     size: '2xl',
   });
 
