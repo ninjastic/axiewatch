@@ -140,6 +140,10 @@ export const WalletTransactions = (): JSX.Element => {
   const [perPage, setPerPage] = useState(20);
   const [typeFilter, setTypeFilter] = useState('All');
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
+
   const managerAddress = preferences.managerAddress.replace('ronin:', '0x');
 
   const addresses = scholars.map(scholar => scholar.address);

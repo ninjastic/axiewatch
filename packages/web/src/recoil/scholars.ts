@@ -32,6 +32,7 @@ export interface ScholarState {
   pvpElo: number;
   pvpRank: number;
   pvpErrored: boolean;
+  pveSlp: number;
   loaded: boolean;
   errored: boolean;
 }
@@ -79,6 +80,7 @@ export interface ScholarAxies {
 }
 
 export interface ScholarFilter {
+  search: string;
   SLP: {
     above: null | number;
     under: null | number;
@@ -153,6 +155,7 @@ export const scholarSort = atom({
 export const scholarFilter = atom<ScholarFilter>({
   key: 'scholarFilter',
   default: {
+    search: '',
     SLP: {
       above: null,
       under: null,

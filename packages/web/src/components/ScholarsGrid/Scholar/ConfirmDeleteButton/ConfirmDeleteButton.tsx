@@ -11,9 +11,10 @@ interface ConfirmDeleteButtonProps {
 export const ConfirmDeleteButton = ({ scholarAddress }: ConfirmDeleteButtonProps): JSX.Element => {
   const confirmDeleteModal = useCreateModal({
     id: 'confirmDeleteModal',
-    title: () => 'Delete this scholar?',
-    content: () => <ConfirmDeleteModalBody scholarAddress={scholarAddress} />,
-    footer: () => <ConfirmDeleteModalFooter scholarAddress={scholarAddress} />,
+    title: 'Delete this scholar?',
+    content: <ConfirmDeleteModalBody scholarAddress={scholarAddress} />,
+    footer: <ConfirmDeleteModalFooter scholarAddress={scholarAddress} />,
+    size: '2xl',
   });
 
   return (

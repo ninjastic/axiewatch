@@ -23,11 +23,11 @@ const TooltipComponent = ({ percentage, slp }: TooltipComponentProps): JSX.Eleme
 
   return (
     <Stack spacing={0} align="center">
-      <Text>{fiatValue}</Text>
+      <Text>{String(fiatValue)}</Text>
 
       <HStack>
         <Text opacity={0.9} fontSize="sm">
-          {percentage}% share
+          {String(percentage)}% share
         </Text>
       </HStack>
     </Stack>
@@ -48,11 +48,11 @@ export const ScholarFieldManagerShare = ({ address, isLoading }: ScholarFieldMan
     [preferences.includeRoninBalance, scholar.roninSlp, scholar.slp]
   );
 
-  const slpValue = useMemo(() => Math.floor((slp * scholar.shares.manager) / 100), [scholar.shares.manager, slp]);
+  const slpValue = useMemo(() => Math.floor((slp * scholar?.shares?.manager) / 100), [scholar?.shares?.manager, slp]);
 
   return (
     <SkeletonText isLoaded={!isLoading} noOfLines={2}>
-      <Tooltip label={<TooltipComponent percentage={scholar.shares.manager} slp={slp} />}>
+      <Tooltip label={<TooltipComponent percentage={scholar?.shares?.manager} slp={slp} />}>
         <Stack spacing={0}>
           <Text opacity={0.9} fontSize="xs">
             Manager
@@ -60,7 +60,7 @@ export const ScholarFieldManagerShare = ({ address, isLoading }: ScholarFieldMan
 
           <HStack>
             <MdBusinessCenter />
-            <Text>{slpValue}</Text>
+            <Text>{String(slpValue)}</Text>
           </HStack>
         </Stack>
       </Tooltip>

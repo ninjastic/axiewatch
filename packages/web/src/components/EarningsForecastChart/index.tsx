@@ -5,7 +5,6 @@ import { useRecoilValue } from 'recoil';
 import dayjs from '../../services/dayjs';
 import { scholarsMap } from '@src/recoil/scholars';
 import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
-import { parseScholarData } from '@src/services/utils/parseScholarData';
 import { usePrice } from '@src/services/hooks/usePrice';
 import { formatter } from '@src/services/formatter';
 import { Card } from '@components/Card';
@@ -46,17 +45,14 @@ export const EarningsForecastChart = (): JSX.Element => {
   const addresses = scholars.map(scholar => scholar.address);
   const { colors } = useTheme();
 
-  const { results, isLoading, isError, refetchAll } = useBatchScholar({ addresses });
-  const resultsWithSuccess = results.filter(result => result.isSuccess);
+  const { data, isLoading, isError } = useBatchScholar({ addresses });
 
-  const accumulated = resultsWithSuccess.reduce((prev, currResult) => {
-    return prev + currResult.data.scholar.slp;
+  const accumulated = data.reduce((prev, currResult) => {
+    return prev + currResult.slp;
   }, 0);
 
-  const totalSlpDay = resultsWithSuccess.reduce((prev, currResult) => {
-    const scholarData = parseScholarData({ data: currResult.data });
-
-    return prev + scholarData.slpDay;
+  const totalSlpDay = data.reduce((prev, currResult) => {
+    return prev + currResult.slpDay;
   }, 0);
 
   const dates = Array(30)
@@ -85,7 +81,7 @@ export const EarningsForecastChart = (): JSX.Element => {
     return (
       <Stack align="center" justify="center" h="290px">
         <Text fontWeight="bold">Something went wrong...</Text>
-        <Button onClick={() => refetchAll()}>Retry</Button>
+        <Button onClick={() => undefined}>Retry</Button>
       </Stack>
     );
   }

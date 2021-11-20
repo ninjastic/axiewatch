@@ -8,6 +8,8 @@ module.exports = {
     {
       name: 'workers',
       script: 'packages/server/dist/shared/queue/workers.js',
+      instances: process.env.WORKERS_INSTANCES || 1,
+      exec_mode: 'cluster',
     },
   ],
   deploy: {

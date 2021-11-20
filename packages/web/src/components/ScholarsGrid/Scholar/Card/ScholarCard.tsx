@@ -10,27 +10,25 @@ import { ErroredCard } from './ErroredCard';
 
 interface ScholarCardParams {
   address: string;
-  isLoading: boolean;
-  isError: boolean;
-  refetch: () => void;
+  isLoading?: boolean;
 }
 
-export const ScholarCard = ({ address, isLoading, isError, refetch }: ScholarCardParams): JSX.Element => {
+export const ScholarCard = ({ address, isLoading }: ScholarCardParams): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
 
   const scholarDetailsModal = useCreateModal({
     id: 'scholarDetailsModal',
-    title: () => scholar.name,
-    content: () => <ScholarDetails address={address} />,
+    title: scholar.name,
+    content: <ScholarDetails address={address} />,
   });
 
   return (
-    <Card rounded="lg" h="270px" cursor={isError ? 'auto' : 'pointer'} opacity={scholar.inactive ? 0.4 : 1}>
-      {isError && <ErroredCard address={address} refetch={refetch} />}
+    <Card rounded="lg" h="270px" cursor={scholar.errored ? 'auto' : 'pointer'} opacity={scholar.inactive ? 0.4 : 1}>
+      {scholar.errored && <ErroredCard address={address} />}
 
-      {!isError && (
-        <Box onClick={!isLoading ? scholarDetailsModal.onOpen : undefined}>
-          <ScholarOverview address={address} isLoading={isLoading} refetch={refetch} />
+      {!scholar.errored && (
+        <Box onClick={scholarDetailsModal.onOpen}>
+          <ScholarOverview address={address} isLoading={isLoading} />
         </Box>
       )}
     </Card>

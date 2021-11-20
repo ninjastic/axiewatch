@@ -29,7 +29,6 @@ import { BallScaleLoading } from '../components/BallScaleLoading';
 import { PreferencesButton } from '../components/Header/PreferencesButton';
 import { PriceTicker } from '../components/Header/PriceTicker';
 import { ScholarAddress } from '../components/ScholarsGrid/Scholar/ScholarAddress';
-import { parseScholarData } from '@src/services/utils/parseScholarData';
 
 interface ScholarDates {
   month: number;
@@ -44,31 +43,28 @@ export const Calendar = (): JSX.Element => {
 
   const scholars = useRecoilValue(scholarsMap);
   const addresses = scholars.map(scholar => scholar.address);
-  const { isLoading, results } = useBatchScholar({ addresses });
+  const { isLoading, data } = useBatchScholar({ addresses });
 
   const dates = useMemo(
     () =>
       !isLoading
-        ? results
-            .filter(
-              result => result.isSuccess && !scholars.find(scholar => scholar.address === result.data.address).inactive
-            )
+        ? data
+            .filter(result => !scholars.find(scholar => scholar.address === result.address).inactive)
             .sort((a, b) => {
-              if (a.data.scholar.lastClaim === 0) return 1;
-              if (b.data.scholar.lastClaim === 0) return -1;
+              if (a.lastClaim === 0) return 1;
+              if (b.lastClaim === 0) return -1;
 
-              if (dayjs.unix(a.data.scholar.lastClaim).isBefore(dayjs.unix(b.data.scholar.lastClaim))) {
+              if (dayjs.unix(a.lastClaim).isBefore(dayjs.unix(b.lastClaim))) {
                 return -1;
               }
 
               return 1;
             })
             .reduce((prev, curr) => {
-              const scholar = scholars.find(({ address }) => address === curr.data.address);
-              const data = parseScholarData({ data: curr.data });
-              const state = { ...scholar, ...data };
+              const scholar = scholars.find(({ address }) => address === curr.address);
+              const state = { ...scholar, ...curr };
 
-              const nextClaim = dayjs.unix(data.nextClaim);
+              const nextClaim = dayjs.unix(curr.nextClaim);
 
               const day = nextClaim.date();
               const month = nextClaim.month() + 1;
@@ -91,7 +87,7 @@ export const Calendar = (): JSX.Element => {
               return prev;
             }, [] as ScholarDates[])
         : [],
-    [isLoading, results, scholars]
+    [data, isLoading, scholars]
   );
 
   return (
@@ -115,10 +111,6 @@ export const Calendar = (): JSX.Element => {
             <BallScaleLoading />
 
             <Text fontWeight="bold">Loading scholars...</Text>
-
-            <Text>
-              {results.filter(result => result.isSuccess).length}/{scholars.length}
-            </Text>
           </Flex>
         </Box>
       )}

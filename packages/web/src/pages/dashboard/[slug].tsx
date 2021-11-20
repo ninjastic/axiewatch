@@ -16,7 +16,6 @@ import {
   Button,
   Stack,
   Flex,
-  Tag,
 } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { AiOutlineTrophy } from 'react-icons/ai';
@@ -29,7 +28,6 @@ import dynamic from 'next/dynamic';
 
 import { serverApi } from '../../services/api';
 import { useBatchScholar } from '../../services/hooks/useBatchScholar';
-import { parseScholarData } from '../../services/utils/parseScholarData';
 import { Card } from '../../components/Card';
 import { LoadingScreen } from '../../components/MainLayout/LoadingScreen';
 import { BallScaleLoading } from '@src/components/BallScaleLoading';
@@ -57,20 +55,19 @@ export const DashboardSlug = (): JSX.Element => {
 
   const addresses = data?.scholars ? data.scholars.map(scholar => scholar.address) : [];
 
-  const { results, isLoading: isLoadingScholars } = useBatchScholar({
+  const { data: scholarsData, isLoading: isLoadingScholars } = useBatchScholar({
     addresses,
     enabled: data && !isLoading,
   });
 
   const scholars = useMemo(
     () =>
-      results.map((result, index) => ({
+      scholarsData.map((result, index) => ({
         name: data.scholars[index].name,
-        address: data.scholars[index].address,
         inactive: data.scholars[index].inactive,
-        ...(result.isSuccess ? parseScholarData({ data: result.data }) : {}),
+        ...result,
       })),
-    [data?.scholars, results]
+    [data?.scholars, scholarsData]
   );
 
   const filteredScholars = useMemo(() => scholars.filter(scholar => !scholar.inactive), [scholars]);
@@ -189,14 +186,7 @@ export const DashboardSlug = (): JSX.Element => {
                 <Stack spacing={3} my={5} align="center">
                   <BallScaleLoading />
 
-                  <Stack>
-                    <Text fontWeight="bold">Loading scholars...</Text>
-                    <Text>
-                      <Tag>
-                        {results.filter(result => result.isSuccess).length}/{results.length}
-                      </Tag>
-                    </Text>
-                  </Stack>
+                  <Text fontWeight="bold">Loading scholars...</Text>
                 </Stack>
               ) : (
                 <Table variant="unstyled">

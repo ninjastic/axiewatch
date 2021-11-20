@@ -14,8 +14,8 @@ export const AxiesFilterButton = (): JSX.Element => {
 
   const axiesFilterModal = useCreateModal({
     id: 'axiesFilterModal',
-    title: () => 'Filters',
-    content: () => <AxiesFilterModal />,
+    title: 'Filters',
+    content: <AxiesFilterModal />,
     size: '2xl',
   });
 

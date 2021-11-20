@@ -60,8 +60,8 @@ const StartPaymentsPage = (): JSX.Element => {
 
   const finishOverviewModal = useCreateModal({
     id: 'finishOverviewModal',
-    title: () => 'Ahoy, we are done here!',
-    content: () => <PaymentsOverview status={status} />,
+    title: 'Ahoy, we are done here!',
+    content: <PaymentsOverview status={status} />,
     size: '3xl',
   });
 

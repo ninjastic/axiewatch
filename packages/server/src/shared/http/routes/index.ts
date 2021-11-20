@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import { ScholarController } from '../controllers/ScholarController';
+import { BatchScholarController } from '../controllers/BatchScholarController';
 import { PveController } from '../controllers/PveController';
 import { DailyController } from '../controllers/DailyController';
 import { ExplorerController } from '../controllers/ExplorerController';
@@ -14,6 +15,7 @@ import { StatusController } from '../controllers/StatusController';
 const router = Router();
 
 const scholarController = new ScholarController();
+const batchScholarController = new BatchScholarController();
 const pveController = new PveController();
 const dailyController = new DailyController();
 const explorerController = new ExplorerController();
@@ -25,6 +27,7 @@ const matchesController = new MatchesController();
 const statusController = new StatusController();
 
 router.get('/scholar', scholarController.get);
+router.post('/batch-scholar', batchScholarController.post);
 router.get('/pve', pveController.get);
 router.get('/daily', dailyController.get);
 router.get('/explorer/*', explorerController.get);

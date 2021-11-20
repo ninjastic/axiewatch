@@ -26,9 +26,8 @@ import { FiChevronDown } from 'react-icons/fi';
 import { scholarAxiesFilter, scholarsMap, ScholarAxiesFilter, Axie, axiePartsAtom } from '../recoil/scholars';
 import { preferencesAtom } from '../recoil/preferences';
 import { useBatchScholarAxie } from '../services/hooks/useBatchScholarAxie';
-import { BallScaleLoading } from '../components/BallScaleLoading';
 import { AxiesFilterButton } from '../components/AxiesFilterButton';
-import { AxieCard } from '@src/components/AxieCard';
+import { AxieCard, AxieCardSkeleton } from '@src/components/AxieCard';
 import { PreferencesButton } from '@src/components/Header/PreferencesButton';
 
 interface PerPageSelectorSelectorProps {
@@ -85,6 +84,10 @@ export const Axies = (): JSX.Element => {
 
   const [page, setPage] = useState(0);
   const [perPage, setPerPage] = useState(25);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
 
   const managerAddress = preferences.managerAddress.replace('ronin:', '0x');
   const addresses = scholars.map(scholar => scholar.address);
@@ -160,11 +163,11 @@ export const Axies = (): JSX.Element => {
       </Flex>
 
       {isLoading && scholars.length && (
-        <Stack d="flex" flexDir="column" justifyContent="center" alignItems="center" h="80%">
-          <BallScaleLoading />
-
-          <Text fontWeight="bold">Loading axies...</Text>
-        </Stack>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} gap={3} pb={5} mt={5}>
+          {lodash.times(4).map(x => (
+            <AxieCardSkeleton key={x} />
+          ))}
+        </SimpleGrid>
       )}
 
       {!isLoading && !!scholarAxies.length && (

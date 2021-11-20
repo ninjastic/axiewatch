@@ -29,8 +29,8 @@ export const DownloadScholarsModal = ({ uploadedScholars }: UploadScholarsModalP
       setScholars(data.scholars);
     }
 
-    modal.onClose();
     setIsLoading(false);
+    modal.onClose();
   };
 
   return (

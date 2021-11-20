@@ -4,6 +4,7 @@ import {
   Image,
   Box,
   SkeletonCircle,
+  Skeleton,
   Avatar,
   Text,
   Tooltip,
@@ -16,6 +17,7 @@ import {
 import { useRecoilValue } from 'recoil';
 import { useMemo } from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
+import lodash from 'lodash';
 
 import { Axie, AxieClass, scholarSelector } from '@src/recoil/scholars';
 import { preferencesAtom } from '@src/recoil/preferences';
@@ -23,6 +25,51 @@ import { AxieIcon } from '../Icons/AxieIcon';
 import { StatusIcon, StatusIconType } from '../Icons/StatusIcon';
 import { AxieTraits } from '../AxieTraits';
 import { Card } from '../Card';
+
+export const AxieCardSkeleton = (): JSX.Element => {
+  return (
+    <Card h="419px" w="100%" px={3} py={5}>
+      <Flex align="center" justify="space-between">
+        <HStack>
+          <SkeletonCircle />
+          <Skeleton w="100px" h="20px" />
+        </HStack>
+
+        <Stack align="flex-end">
+          <Skeleton w="50px" h="10px" />
+          <Skeleton w="60px" h="10px" />
+        </Stack>
+      </Flex>
+
+      <Flex mx={8} my={12} justify="space-between">
+        <SkeletonCircle w="64px" h="64px" />
+
+        <Stack>
+          <Skeleton w="130px" h="10px" />
+          <Skeleton w="130px" h="10px" />
+          <Skeleton w="130px" h="10px" />
+          <Skeleton w="130px" h="10px" />
+        </Stack>
+      </Flex>
+
+      {lodash.times(6).map(x => (
+        <Flex mx={3} my={2} key={x}>
+          <SkeletonCircle w="18px" h="18px" />
+
+          <HStack ml={3}>
+            <Skeleton w="80px" h="10px" />
+            <Skeleton w="80px" h="10px" />
+            <Skeleton w="80px" h="10px" />
+          </HStack>
+        </Flex>
+      ))}
+
+      <Flex justify="flex-end" mt={8}>
+        <Skeleton w="70px" h="10px" />
+      </Flex>
+    </Card>
+  );
+};
 
 interface AxieCardProps {
   axie: Axie;

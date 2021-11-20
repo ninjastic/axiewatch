@@ -1,7 +1,6 @@
-import axios from 'axios';
-
 import { cache } from '@src/services/cache';
 import dayjs from '@src/services/dayjs';
+import { proxiedApi } from '@src/services/api';
 
 interface APIScholarResponse {
   items: Array<{
@@ -36,7 +35,9 @@ export const getScholarBattles = async (address: string): Promise<APIScholarResp
   const cached = await cache.get(cacheKey);
   if (cached) return JSON.parse(cached);
 
-  const { data } = await axios.get<APIScholarResponse>(apiUrl, { params: apiParams }).catch(error => error.message);
+  const { data } = await proxiedApi
+    .get<APIScholarResponse>(apiUrl, { params: apiParams })
+    .catch(error => error.message);
 
   await cache.set(cacheKey, JSON.stringify(data), 'PX', cacheTime);
   return data;

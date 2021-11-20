@@ -7,12 +7,11 @@ import { modalSelector } from '../../recoil/modal';
 import { scholarFilter, ScholarFilter } from '../../recoil/scholars';
 
 interface FilterInputProps {
-  value: any;
   setFilter: Dispatch<SetStateAction<ScholarFilter>>;
   formValues: ScholarFilter;
 }
 
-const FilterInputTotalSLP = ({ value, setFilter, formValues }: FilterInputProps) => {
+const FilterInputTotalSLP = ({ setFilter, formValues }: FilterInputProps) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
 
@@ -35,7 +34,6 @@ const FilterInputTotalSLP = ({ value, setFilter, formValues }: FilterInputProps)
             h={7}
             w={14}
             name="above"
-            defaultValue={value.above}
             value={formValues.SLP.above || ''}
             placeholder="ANY"
             variant="unstyled"
@@ -50,7 +48,6 @@ const FilterInputTotalSLP = ({ value, setFilter, formValues }: FilterInputProps)
             h={7}
             w={14}
             name="under"
-            defaultValue={value.under}
             value={formValues.SLP.under || ''}
             placeholder="ANY"
             variant="unstyled"
@@ -63,7 +60,7 @@ const FilterInputTotalSLP = ({ value, setFilter, formValues }: FilterInputProps)
   );
 };
 
-function FilterOnlyClaimable({ value, setFilter, formValues }: FilterInputProps) {
+function FilterOnlyClaimable({ setFilter, formValues }: FilterInputProps) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target;
 
@@ -75,7 +72,7 @@ function FilterOnlyClaimable({ value, setFilter, formValues }: FilterInputProps)
 
   return (
     <Flex>
-      <Checkbox onChange={handleChange} defaultChecked={value} checked={formValues.onlyClaimable}>
+      <Checkbox onChange={handleChange} defaultChecked={formValues.onlyClaimable} checked={formValues.onlyClaimable}>
         Show only claimable
       </Checkbox>
     </Flex>
@@ -95,9 +92,9 @@ export const ScholarsFilterModal = (): JSX.Element => {
 
   return (
     <Stack p={5} spacing={6}>
-      <FilterInputTotalSLP value={formValues.SLP} setFilter={setFormValues} formValues={formValues} />
+      <FilterInputTotalSLP setFilter={setFormValues} formValues={formValues} />
 
-      <FilterOnlyClaimable value={formValues.onlyClaimable} setFilter={setFormValues} formValues={formValues} />
+      <FilterOnlyClaimable setFilter={setFormValues} formValues={formValues} />
 
       <Button leftIcon={<BiCheckCircle />} onClick={handleSave}>
         Save

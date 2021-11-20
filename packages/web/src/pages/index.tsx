@@ -17,7 +17,7 @@ function DashboardPage() {
   const scholars = useRecoilValue(scholarsMap);
   const addresses = scholars.map(scholar => scholar.address);
 
-  const { isError, refetchAll } = useBatchScholar({ addresses });
+  const { isError } = useBatchScholar({ addresses });
 
   return (
     <Box h="full" maxW="1450px" margin="auto" p={3}>
@@ -88,7 +88,7 @@ function DashboardPage() {
           </Stack>
 
           <Stack align="center" spacing={0} mt={10}>
-            <Button onClick={() => refetchAll()}>Retry</Button>
+            <Button onClick={() => undefined}>Retry</Button>
           </Stack>
         </Flex>
       )}

@@ -33,4 +33,4 @@ app.use((error: Error, request: Request, response: Response, _: NextFunction) =>
   });
 });
 
-app.listen(3333);
+app.listen(Number(process.env.API_PORT || 3333));

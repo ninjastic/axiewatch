@@ -1,16 +1,15 @@
 import { Stat, StatLabel, StatNumber, Tooltip, Stack, Box, Text, Skeleton, StatHelpText } from '@chakra-ui/react';
 import { useMemo } from 'react';
-import { UseQueryResult } from 'react-query';
 import { useRecoilValue } from 'recoil';
 
-import { Card } from '@components/Card';
-import { usePrice } from '@src/services/hooks/usePrice';
 import { formatter } from '@src/services/formatter';
-import { APIScholarResponse } from '@src/types/api';
+import { ParsedScholarData } from '@src/services/utils/parseScholarData';
+import { usePrice } from '@src/services/hooks/usePrice';
 import { scholarsMap } from '@src/recoil/scholars';
+import { Card } from '@components/Card';
 
 interface AccumulatedSlpCardProps {
-  data: UseQueryResult<APIScholarResponse>[];
+  data: ParsedScholarData[];
   isLoading: boolean;
 }
 
@@ -60,25 +59,23 @@ export const AccumulatedSlpCard = ({ data, isLoading }: AccumulatedSlpCardProps)
   const scholars = useRecoilValue(scholarsMap);
   const price = usePrice();
 
-  const values = data
-    .filter(result => result.isSuccess)
-    .reduce(
-      (prev, currResult) => {
-        const state = scholars.find(scholar => scholar.address === currResult.data.address);
+  const values = data.reduce(
+    (prev, currResult) => {
+      const state = scholars.find(scholar => scholar.address === currResult.address);
 
-        const manager = (currResult.data.scholar.slp * state.shares.manager) / 100;
-        const scholar = (currResult.data.scholar.slp * state.shares.scholar) / 100;
-        const investor = (currResult.data.scholar.slp * (state.shares.investor ?? 0)) / 100;
+      const manager = (currResult.slp * state.shares.manager) / 100;
+      const scholar = (currResult.slp * state.shares.scholar) / 100;
+      const investor = (currResult.slp * (state.shares.investor ?? 0)) / 100;
 
-        return {
-          total: prev.total + currResult.data.scholar.slp,
-          manager: prev.manager + manager,
-          scholars: prev.scholars + scholar,
-          investor: prev.investor + investor,
-        };
-      },
-      { total: 0, manager: 0, scholars: 0, investor: 0 }
-    );
+      return {
+        total: prev.total + currResult.slp,
+        manager: prev.manager + manager,
+        scholars: prev.scholars + scholar,
+        investor: prev.investor + investor,
+      };
+    },
+    { total: 0, manager: 0, scholars: 0, investor: 0 }
+  );
 
   const fiatValues = useMemo(
     () => ({

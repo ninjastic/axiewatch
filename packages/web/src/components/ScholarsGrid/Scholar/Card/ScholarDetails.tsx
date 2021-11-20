@@ -1,7 +1,5 @@
 import { Stack, Text } from '@chakra-ui/react';
-import { useRecoilValue } from 'recoil';
 
-import { scholarSelector } from '../../../../recoil/scholars';
 import { EditScholarButton } from '../EditScholarButton/EditScholarButton';
 import { ProfileButton } from '../ProfileButton';
 import { PveStats } from '../PveStats';
@@ -14,8 +12,6 @@ interface ScholarDetailsProps {
 }
 
 export const ScholarDetails = ({ address }: ScholarDetailsProps): JSX.Element => {
-  const scholar = useRecoilValue(scholarSelector(address));
-
   return (
     <Stack p={5} spacing={5}>
       <Stack align="flex-start">
@@ -28,9 +24,9 @@ export const ScholarDetails = ({ address }: ScholarDetailsProps): JSX.Element =>
       <ScholarAxies address={address} />
 
       <Stack>
-        <SlpTrackingButton address={scholar.address} />
+        <SlpTrackingButton address={address} />
         {/* <BattlesButton address={scholar.address} /> */}
-        <ProfileButton address={scholar.address} />
+        <ProfileButton address={address} />
         <EditScholarButton address={address} />
       </Stack>
     </Stack>

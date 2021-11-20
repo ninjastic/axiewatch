@@ -1,7 +1,8 @@
 import dayjs from '../dayjs';
-import { APIScholarResponse } from '../../types/api';
+import { APIScholarResponse, ScholarHistoricalSlpData } from '../../types/api';
 
-interface ParsedScholarData {
+export interface ParsedScholarData {
+  address: string;
   slp: number;
   roninSlp: number;
   totalSlp: number;
@@ -14,8 +15,10 @@ interface ParsedScholarData {
   pvpElo: number;
   pvpRank: number;
   pvpErrored: boolean;
+  pveSlp: number;
   loaded: boolean;
   errored: boolean;
+  historical: ScholarHistoricalSlpData;
 }
 
 type ParseScholarDataOptions = {
@@ -30,10 +33,33 @@ interface ParseScholarDataProps {
 export function parseScholarData({ data, options }: ParseScholarDataProps): ParsedScholarData {
   const { slp, roninSlp, totalSlp, lastClaim } = data.scholar || {};
   const { yesterday, today, dates } = data.historical || {};
+  const { pve, pvp } = data;
 
-  const pvpElo = data.pvp?.elo ?? 0;
-  const pvpRank = data.pvp?.rank ?? 0;
-  const pvpErrored = data.pvp === null;
+  if (slp === undefined) {
+    return {
+      address: data.address,
+      slp: 0,
+      roninSlp: 0,
+      totalSlp: 0,
+      claimableSlp: 0,
+      yesterdaySlp: 0,
+      todaySlp: 0,
+      lastClaim: 0,
+      nextClaim: 0,
+      slpDay: 0,
+      pvpElo: 0,
+      pvpRank: 0,
+      pvpErrored: true,
+      pveSlp: 0,
+      loaded: true,
+      errored: true,
+      historical: null,
+    };
+  }
+
+  const pvpElo = pvp?.elo ?? 0;
+  const pvpRank = pvp?.rank ?? 0;
+  const pvpErrored = pvp === null;
 
   const nextClaim = lastClaim === 0 ? 0 : dayjs.unix(lastClaim).add(2, 'weeks').unix();
 
@@ -82,6 +108,7 @@ export function parseScholarData({ data, options }: ParseScholarDataProps): Pars
   const slpDayFallback = Math.floor(slp / daysFromLastClaim);
 
   return {
+    address: data.address,
     slp,
     roninSlp,
     totalSlp,
@@ -94,7 +121,9 @@ export function parseScholarData({ data, options }: ParseScholarDataProps): Pars
     pvpElo,
     pvpRank,
     pvpErrored,
+    pveSlp: pve.slp,
     loaded: true,
     errored: false,
+    historical: data.historical,
   };
 }

@@ -9,7 +9,7 @@ const queue = new Queue('trackScholarQueue', {
   defaultJobOptions: {
     removeOnComplete: true,
     removeOnFail: true,
-    attempts: 3,
+    attempts: 5,
     backoff: {
       type: 'exponential',
       delay: 1000,

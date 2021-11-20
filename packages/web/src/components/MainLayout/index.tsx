@@ -23,8 +23,8 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
 
   const { onOpen, setExtra } = useCreateModal({
     id: 'resetPasswordModal',
-    title: () => 'Reset Password',
-    content: () => <ResetPasswordModal />,
+    title: 'Reset Password',
+    content: <ResetPasswordModal />,
   });
 
   useEffect(() => {

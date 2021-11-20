@@ -54,7 +54,7 @@ export interface ScholarHistoricalSlpData {
   today: ScholarHistoricalDate | undefined;
 }
 
-export interface APIScholarResponse {
+export interface APIScholarResponseSuccess {
   address: string;
   scholar: ScholarData;
   pvp: ScholarPvpData;
@@ -62,6 +62,12 @@ export interface APIScholarResponse {
   historical: ScholarHistoricalSlpData;
 }
 
+export interface APIScholarResponseError {
+  address: string;
+  error: boolean;
+}
+
+export type APIScholarResponse = APIScholarResponseSuccess;
 export interface APIGameStatusResponse {
   from: number;
   to: number;

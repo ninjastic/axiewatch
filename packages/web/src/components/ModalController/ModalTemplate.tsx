@@ -25,11 +25,11 @@ export const ModalTemplate = ({ id }: ModalTemplateProps): JSX.Element => {
       <ModalOverlay />
 
       <ModalContent>
-        <ModalHeader>{title()}</ModalHeader>
+        <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
 
-        <ModalBody>{content()}</ModalBody>
-        {footer && <ModalFooter>{footer()}</ModalFooter>}
+        <ModalBody>{content}</ModalBody>
+        {footer && <ModalFooter>{footer}</ModalFooter>}
       </ModalContent>
     </Modal>
   );

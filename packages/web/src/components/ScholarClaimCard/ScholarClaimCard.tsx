@@ -1,5 +1,6 @@
 import { Box, Text, Button, HStack, SimpleGrid } from '@chakra-ui/react';
 import Image from 'next/image';
+import { useRecoilValue } from 'recoil';
 
 import { useCreateModal } from '../../services/hooks/useCreateModal';
 import { ScholarSelector } from '../../recoil/scholars';
@@ -7,6 +8,34 @@ import { ScholarPrivateKeyInput } from '../ScholarsGrid/Scholar/ScholarPaymentsB
 import { ScholarPaymentsAddressInput } from '../ScholarsGrid/Scholar/ScholarPaymentsButton/ScholarPaymentsAddressInput';
 import { EditScholarButton } from '../ScholarsGrid/Scholar/EditScholarButton/EditScholarButton';
 import { ScholarAddress } from '../ScholarsGrid/Scholar/ScholarAddress';
+import { modalSelector } from '@src/recoil/modal';
+
+interface SetPrivateKeyModalProps {
+  address: string;
+}
+
+const SetPrivateKeyModal = ({ address }: SetPrivateKeyModalProps): JSX.Element => {
+  const modal = useRecoilValue(modalSelector('setPrivateKeyModal'));
+  return (
+    <Box p={3}>
+      <ScholarPrivateKeyInput address={address} onSave={modal.onClose} />
+    </Box>
+  );
+};
+
+interface ScholarPaymentsAddressInputModalProps {
+  address: string;
+}
+
+const ScholarPaymentsAddressInputModal = ({ address }: ScholarPaymentsAddressInputModalProps): JSX.Element => {
+  const modal = useRecoilValue(modalSelector('setPaymentAddress'));
+
+  return (
+    <Box p={3}>
+      <ScholarPaymentsAddressInput address={address} onSave={modal.onClose} />
+    </Box>
+  );
+};
 
 interface ScholarData extends ScholarSelector {
   hasPrivateKey: boolean;
@@ -24,22 +53,14 @@ export const ScholarClaimCard = ({ scholarData, isSelected, toggleSelect }: Scho
 
   const setPrivateKeyModal = useCreateModal({
     id: 'setPrivateKeyModal',
-    title: () => 'Private-key',
-    content: () => (
-      <Box p={3}>
-        <ScholarPrivateKeyInput address={address} onSave={setPrivateKeyModal.onClose} />
-      </Box>
-    ),
+    title: 'Private-key',
+    content: <SetPrivateKeyModal address={address} />,
   });
 
   const setPaymentAddress = useCreateModal({
     id: 'setPaymentAddress',
-    title: () => 'Ronin payment address',
-    content: () => (
-      <Box p={3}>
-        <ScholarPaymentsAddressInput address={address} onSave={setPaymentAddress.onClose} />
-      </Box>
-    ),
+    title: 'Ronin payment address',
+    content: <ScholarPaymentsAddressInputModal address={address} />,
   });
 
   const scholarAmount = Math.floor((slp * shares.scholar) / 100);

@@ -1,14 +1,14 @@
-import { useDisclosure, ThemeTypings } from '@chakra-ui/react';
-import { useState, useEffect, ReactNode } from 'react';
+import { ThemeTypings } from '@chakra-ui/react';
+import { useState, useEffect, ReactNode, useCallback } from 'react';
 import { useResetRecoilState, useSetRecoilState } from 'recoil';
 
 import { modalSelector, ModalState } from '../../recoil/modal';
 
 export interface UseCreateModalProps {
   id: string;
-  title: () => ReactNode;
-  content: () => ReactNode;
-  footer?: () => ReactNode;
+  title: ReactNode;
+  content: ReactNode;
+  footer?: ReactNode;
   size?: ThemeTypings['sizes'];
   isDialog?: boolean;
   defaultIsOpen?: boolean;
@@ -25,12 +25,19 @@ export const useCreateModal = ({
   defaultIsOpen,
 }: UseCreateModalProps): UseCreateModalData => {
   const [extra, setExtra] = useState<any>(null);
+  const [isOpen, setIsOpen] = useState(defaultIsOpen);
   const setModal = useSetRecoilState(modalSelector(id));
   const reset = useResetRecoilState(modalSelector(id));
 
-  const { isOpen, onOpen, onClose } = useDisclosure({
-    defaultIsOpen,
-  });
+  const onOpen = useCallback(() => {
+    setModal(prev => ({ ...prev, id, isOpen: true }));
+    setIsOpen(true);
+  }, [id, setModal]);
+
+  const onClose = useCallback(() => {
+    setModal(prev => ({ ...prev, id, isOpen: false }));
+    setIsOpen(false);
+  }, [id, setModal]);
 
   useEffect(() => {
     setModal({
@@ -45,7 +52,7 @@ export const useCreateModal = ({
       setExtra,
       extra,
     });
-  }, [isOpen, onOpen, onClose, setExtra]);
+  }, [content, defaultIsOpen, extra, footer, id, isOpen, onClose, onOpen, setModal, size, title]);
 
   useEffect(() => () => reset(), [reset]);
 

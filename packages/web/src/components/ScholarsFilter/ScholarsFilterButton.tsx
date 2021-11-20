@@ -1,4 +1,4 @@
-import { Button } from '@chakra-ui/react';
+import { Button, ButtonProps } from '@chakra-ui/react';
 import { HiOutlineFilter } from 'react-icons/hi';
 import { useRecoilValue } from 'recoil';
 
@@ -6,7 +6,7 @@ import { useCreateModal } from '../../services/hooks/useCreateModal';
 import { allScholarsSelector, scholarFilter } from '../../recoil/scholars';
 import { ScholarsFilterModal } from './ScholarsFilterModal';
 
-export const ScholarsFilterButton = (): JSX.Element => {
+export const ScholarsFilterButton = ({ variant = 'ghost' }: ButtonProps): JSX.Element => {
   const scholars = useRecoilValue(allScholarsSelector);
   const filter = useRecoilValue(scholarFilter);
 
@@ -21,15 +21,15 @@ export const ScholarsFilterButton = (): JSX.Element => {
 
   const scholarsFilterModal = useCreateModal({
     id: 'scholarsFilterModal',
-    title: () => 'Filters',
-    content: () => <ScholarsFilterModal />,
+    title: 'Filters',
+    content: <ScholarsFilterModal />,
   });
 
   return (
     <Button
       aria-label="Filter"
       leftIcon={<HiOutlineFilter />}
-      variant="ghost"
+      variant={variant}
       onClick={scholarsFilterModal.onOpen}
       disabled={!isLoaded}
     >
