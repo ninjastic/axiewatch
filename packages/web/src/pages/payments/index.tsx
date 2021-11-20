@@ -11,11 +11,15 @@ import { paymentsHistorySortSelector } from '../../recoil/payments';
 export const PaymentsPage = (): JSX.Element => {
   const paymentsHistory = useRecoilValue(paymentsHistorySortSelector);
 
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const limit = 5;
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({
+      left: 0,
+      top: 0,
+      behavior: 'smooth',
+    });
   }, [page]);
 
   const handleNextPage = () => {
@@ -41,7 +45,7 @@ export const PaymentsPage = (): JSX.Element => {
 
         {!!paymentsHistory.length && (
           <Box>
-            {paymentsHistory.slice(page * limit, limit * (page + 1)).map(payment => (
+            {paymentsHistory.slice((page - 1) * limit, limit * page).map(payment => (
               <Fragment key={`${payment.address}-${payment.created_at}`}>
                 <Box p={5} rounded="3xl">
                   <Tag mb={3}>{dayjs.unix(payment.created_at).format('DD/MM/YYYY HH:mm:ss')}</Tag>
@@ -120,13 +124,10 @@ export const PaymentsPage = (): JSX.Element => {
               </Button>
 
               <Text opacity={0.9}>
-                Page {page + 1} of {Math.ceil(paymentsHistory.length / limit)}
+                Page {page} of {Math.ceil(paymentsHistory.length / limit)}
               </Text>
 
-              <Button
-                onClick={() => setPage(oldPage => oldPage + 1)}
-                disabled={limit * (page + 1) >= paymentsHistory.length}
-              >
+              <Button onClick={() => setPage(oldPage => oldPage + 1)} disabled={limit * page >= paymentsHistory.length}>
                 Next page
               </Button>
             </Flex>

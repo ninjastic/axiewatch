@@ -107,11 +107,15 @@ function SyncButton({ variant = 'ghost' }: ButtonProps) {
 }
 
 export const ScholarsPage = (): JSX.Element => {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(20);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({
+      left: 0,
+      top: 0,
+      behavior: 'smooth',
+    });
   }, [page]);
 
   return (
@@ -120,14 +124,14 @@ export const ScholarsPage = (): JSX.Element => {
         <Header />
 
         <Stack spacing={5} mt={5}>
-          <Accordion display={{ md: 'block', lg: 'none' }} allowToggle>
+          <Accordion display={{ base: 'block', lg: 'none' }} allowToggle>
             <AccordionItem>
               <AccordionButton>
                 <Text>Options</Text>
                 <AccordionIcon />
               </AccordionButton>
               <AccordionPanel>
-                <Flex align="center" justify="space-between" flexDirection={{ md: 'column', lg: 'row' }}>
+                <Flex align="center" justify="space-between" flexDirection={{ base: 'column', md: 'row', lg: 'row' }}>
                   <SearchInput />
 
                   <Stack
@@ -146,12 +150,7 @@ export const ScholarsPage = (): JSX.Element => {
             </AccordionItem>
           </Accordion>
 
-          <Flex
-            align="center"
-            justify="space-between"
-            flexDirection={{ md: 'column', lg: 'row' }}
-            display={{ md: 'none', lg: 'flex' }}
-          >
+          <Flex align="center" justify="space-between" flexDirection="row" display={{ base: 'none', lg: 'flex' }}>
             <SearchInput />
 
             <Stack justify="flex-end" spacing={5} mt={{ base: 3, lg: 0 }} direction={{ md: 'column', lg: 'row' }}>

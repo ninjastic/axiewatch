@@ -7,11 +7,10 @@ const SidebarComponent = (): JSX.Element => (
   <Box
     w="235px"
     h="100%"
-    top="65px"
+    pos="fixed"
     sx={{
       display: { base: 'none', '2xl': 'block' },
     }}
-    pos="sticky"
   >
     <SidebarContent />
   </Box>

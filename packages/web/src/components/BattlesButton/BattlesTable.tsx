@@ -1,9 +1,10 @@
-import { Table, Thead, Tr, Th, Tbody, Flex, Button, Text, Box, HStack, Tooltip } from '@chakra-ui/react';
+import { Table, Thead, Tr, Th, Tbody, Text, Box, HStack, Tooltip } from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 
 import { APIBattlesResponseItem } from '../../types/api';
 import { BattleTableEntry } from './BattleTableEntry';
+import { Pagination } from '@src/components/Pagination';
 
 interface BattlesTableProps {
   data: APIBattlesResponseItem[];
@@ -13,7 +14,7 @@ interface BattlesTableProps {
 }
 
 export const BattlesTable = ({ data, address, type, perPage }: BattlesTableProps): JSX.Element => {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
 
   const filteredData = useMemo(
     () =>
@@ -34,10 +35,10 @@ export const BattlesTable = ({ data, address, type, perPage }: BattlesTableProps
   );
 
   useEffect(() => {
-    setPage(0);
+    setPage(1);
   }, [type, perPage]);
 
-  const pageData = filteredData.slice(page * perPage, (page + 1) * perPage);
+  const pageData = filteredData.slice((page - 1) * perPage, page * perPage);
 
   const numberOfPages = Math.ceil(filteredData.length / perPage);
 
@@ -71,19 +72,7 @@ export const BattlesTable = ({ data, address, type, perPage }: BattlesTableProps
         </Tbody>
       </Table>
 
-      <Flex align="center" justify="space-between" py={5}>
-        <Button onClick={() => setPage(p => p - 1)} isDisabled={page <= 0}>
-          Prev
-        </Button>
-
-        <Text>
-          Page {page + 1} of {Math.max(numberOfPages, 1)}
-        </Text>
-
-        <Button onClick={() => setPage(p => p + 1)} isDisabled={page + 1 >= numberOfPages}>
-          Next
-        </Button>
-      </Flex>
+      <Pagination page={page} setPage={setPage} numberOfPages={numberOfPages} />
     </Box>
   );
 };
