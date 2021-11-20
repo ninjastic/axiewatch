@@ -1,4 +1,4 @@
-import { Box, Text, ButtonGroup, Flex } from '@chakra-ui/react';
+import { Box, Text, Flex } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 
 import { scholarSelector } from '../../../../recoil/scholars';
@@ -36,12 +36,7 @@ export const ErroredItem = ({ address }: ErroredItemProps): JSX.Element => {
           <Text>Either the address is incorrect or the request failed.</Text>
         </Flex>
 
-        <ButtonGroup>
-          {/* <Button leftIcon={<BsArrowRepeat />} onClick={() => refetch()}>
-            Retry
-          </Button> */}
-          <ConfirmDeleteButton scholarAddress={address} />
-        </ButtonGroup>
+        <ConfirmDeleteButton scholarAddress={address} />
       </Box>
     </Card>
   );

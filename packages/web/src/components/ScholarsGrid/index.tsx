@@ -10,6 +10,7 @@ import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
 import { Scholar } from './Scholar';
 import { Card } from '../Card';
 import { Pagination } from '../Pagination';
+import { RetryFailedButton } from '../RetryFailedButton';
 
 const useFilterScholars = (scholars: ScholarMap[]): ScholarMap[] => {
   const { search, onlyClaimable, SLP } = useRecoilValue(scholarFilter);
@@ -124,8 +125,9 @@ export const ScholarsGrid = ({ page, setPage, perPage }: ScholarsGridProps): JSX
   const addresses = useMemo(() => map.map(scholar => scholar.address), [map]);
   const filters = useRecoilValue(scholarFilter);
 
-  const { isLoading } = useBatchScholar({ addresses });
+  const { isLoading, data, refetch, isRefetching } = useBatchScholar({ addresses });
   const filteredScholars = useFilterScholars(map);
+  const erroredScholars = useMemo(() => (!isLoading ? data.filter(scholar => scholar.errored) : []), [data, isLoading]);
 
   const paginationData = useMemo(
     () => filteredScholars.slice((page - 1) * perPage, page * perPage),
@@ -156,7 +158,7 @@ export const ScholarsGrid = ({ page, setPage, perPage }: ScholarsGridProps): JSX
       )}
 
       {!map.length && (
-        <Card py={8}>
+        <Card py={8} px={2}>
           <Stack>
             <Text fontSize="lg" textAlign="center" fontWeight="bold" variant="faded">
               Oopss... there is nothing to see here
@@ -170,7 +172,7 @@ export const ScholarsGrid = ({ page, setPage, perPage }: ScholarsGridProps): JSX
       )}
 
       {!!map.length && !isLoading && !filteredScholars.length && (
-        <Card py={8}>
+        <Card py={8} px={2}>
           <Stack>
             <Text fontSize="lg" textAlign="center" fontWeight="bold" variant="faded">
               Oopss... there is nothing to see here
@@ -185,6 +187,10 @@ export const ScholarsGrid = ({ page, setPage, perPage }: ScholarsGridProps): JSX
 
       {!isLoading && !!map.length && numberOfPages > 1 && (
         <Pagination page={page} setPage={setPage} numberOfPages={numberOfPages} />
+      )}
+
+      {!isLoading && erroredScholars.length > 0 && (
+        <RetryFailedButton errored={erroredScholars} isRefetching={isRefetching} refetch={refetch} />
       )}
     </Box>
   );

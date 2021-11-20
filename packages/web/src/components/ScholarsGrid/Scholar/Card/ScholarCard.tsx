@@ -16,6 +16,8 @@ interface ScholarCardParams {
 export const ScholarCard = ({ address, isLoading }: ScholarCardParams): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
 
+  const shouldSkeletonLoading = isLoading || !scholar.loaded;
+
   const scholarDetailsModal = useCreateModal({
     id: 'scholarDetailsModal',
     title: scholar.name,
@@ -28,7 +30,7 @@ export const ScholarCard = ({ address, isLoading }: ScholarCardParams): JSX.Elem
 
       {!scholar.errored && (
         <Box onClick={scholarDetailsModal.onOpen}>
-          <ScholarOverview address={address} isLoading={isLoading} />
+          <ScholarOverview address={address} isLoading={shouldSkeletonLoading} />
         </Box>
       )}
     </Card>

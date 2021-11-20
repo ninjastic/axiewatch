@@ -9,15 +9,17 @@ import { ParsedScholarData, parseScholarData } from '../utils/parseScholarData';
 
 type ScholarSetter = Partial<ScholarState> & { address: string };
 
-interface UseBatchScholarProps {
-  addresses: string[];
-  enabled?: boolean;
-}
-
 interface UseBatchScholarData {
   isLoading: boolean;
   isError: boolean;
+  refetch: () => void;
+  isRefetching: boolean;
   data: ParsedScholarData[];
+}
+
+interface UseBatchScholarProps {
+  addresses: string[];
+  enabled?: boolean;
 }
 
 export const useBatchScholar = ({ addresses, enabled }: UseBatchScholarProps): UseBatchScholarData => {
@@ -28,7 +30,7 @@ export const useBatchScholar = ({ addresses, enabled }: UseBatchScholarProps): U
     });
   });
 
-  const { isLoading, isError, data } = useQuery(
+  const { isLoading, isRefetching, isError, refetch, data } = useQuery(
     ['scholars', addresses],
     async () => {
       const response = await serverApi.post<APIScholarResponse[]>('/batch-scholar', {
@@ -54,5 +56,5 @@ export const useBatchScholar = ({ addresses, enabled }: UseBatchScholarProps): U
     }
   }, [data, setBatchScholarData]);
 
-  return { isLoading, isError, data: data ?? [] };
+  return { isLoading, isError, refetch, isRefetching, data: data ?? [] };
 };

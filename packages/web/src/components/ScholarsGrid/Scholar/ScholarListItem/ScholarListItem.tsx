@@ -34,55 +34,57 @@ export const ScholarListItem = ({ address, isLoading = false }: ItemParams): JSX
   const scholar = useRecoilValue(scholarSelector(address));
   const scholarFields = useRecoilValue(scholarFieldsAtom);
 
+  const shouldSkeletonLoading = isLoading || !scholar.loaded;
+
   const fields = useMemo(
     () =>
       ({
         name: {
-          element: <ScholarFieldName address={address} isLoading={isLoading || !scholar.loaded} />,
+          element: <ScholarFieldName address={address} isLoading={shouldSkeletonLoading} />,
           size: 5,
         },
         slp: {
-          element: <ScholarFieldSlp address={address} isLoading={isLoading || !scholar.loaded} />,
+          element: <ScholarFieldSlp address={address} isLoading={shouldSkeletonLoading} />,
           size: 3,
         },
         scholarShare: {
-          element: <ScholarFieldScholarShare address={address} isLoading={isLoading || !scholar.loaded} />,
+          element: <ScholarFieldScholarShare address={address} isLoading={shouldSkeletonLoading} />,
           size: 3,
         },
         managerShare: {
-          element: <ScholarFieldManagerShare address={address} isLoading={isLoading || !scholar.loaded} />,
+          element: <ScholarFieldManagerShare address={address} isLoading={shouldSkeletonLoading} />,
           size: 3,
         },
         investorShare: {
-          element: <ScholarFieldInvestorShare address={address} isLoading={isLoading || !scholar.loaded} />,
+          element: <ScholarFieldInvestorShare address={address} isLoading={shouldSkeletonLoading} />,
           size: 3,
         },
         arenaElo: {
-          element: <ScholarFieldArenaElo address={address} isLoading={isLoading || !scholar.loaded} />,
+          element: <ScholarFieldArenaElo address={address} isLoading={shouldSkeletonLoading} />,
           size: 3,
         },
         todaySlp: {
-          element: <ScholarFieldTodaySlp address={address} isLoading={isLoading || !scholar.loaded} />,
+          element: <ScholarFieldTodaySlp address={address} isLoading={shouldSkeletonLoading} />,
           size: 3,
         },
         yesterdaySlp: {
-          element: <ScholarFieldYesterdaySlp address={address} isLoading={isLoading || !scholar.loaded} />,
+          element: <ScholarFieldYesterdaySlp address={address} isLoading={shouldSkeletonLoading} />,
           size: 3,
         },
         slpDay: {
-          element: <ScholarFieldSlpDay address={address} isLoading={isLoading || !scholar.loaded} />,
+          element: <ScholarFieldSlpDay address={address} isLoading={shouldSkeletonLoading} />,
           size: 3,
         },
         adventureSlp: {
-          element: <ScholarFieldAdventureSlp address={address} isLoading={isLoading || !scholar.loaded} />,
+          element: <ScholarFieldAdventureSlp address={address} isLoading={shouldSkeletonLoading} />,
           size: 4,
         },
         lastClaim: {
-          element: <ScholarFieldLastClaim address={address} isLoading={isLoading || !scholar.loaded} />,
+          element: <ScholarFieldLastClaim address={address} isLoading={shouldSkeletonLoading} />,
           size: 4,
         },
         nextClaim: {
-          element: <ScholarFieldNextClaim address={address} isLoading={isLoading || !scholar.loaded} />,
+          element: <ScholarFieldNextClaim address={address} isLoading={shouldSkeletonLoading} />,
           size: 4,
         },
       } as {
@@ -91,7 +93,7 @@ export const ScholarListItem = ({ address, isLoading = false }: ItemParams): JSX
           size: number;
         };
       }),
-    [address, isLoading, scholar.loaded]
+    [address, shouldSkeletonLoading]
   );
 
   const columns = useMemo(
