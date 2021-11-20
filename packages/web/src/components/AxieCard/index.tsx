@@ -132,13 +132,23 @@ export const AxieCard = ({ axie }: AxieCardProps): JSX.Element => {
         </Box>
       </Box>
 
-      {(scholar || isManager) && (
-        <Box>
-          <Tag size="sm" fontWeight="bold">
-            {scholar?.name ?? (isManager ? 'Manager' : null)}
-          </Tag>
-        </Box>
-      )}
+      <HStack>
+        {(scholar || isManager) && (
+          <Box>
+            <Tag size="sm" fontWeight="bold">
+              {scholar?.name ?? (isManager ? 'Manager' : null)}
+            </Tag>
+          </Box>
+        )}
+
+        {axie.battleInfo.banned && (
+          <Box>
+            <Tag size="sm" fontWeight="bold" bg="red.500">
+              Banned
+            </Tag>
+          </Box>
+        )}
+      </HStack>
 
       <Box display="flex" alignItems="center">
         <Tooltip
