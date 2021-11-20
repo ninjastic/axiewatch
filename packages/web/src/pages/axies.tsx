@@ -29,6 +29,7 @@ import { useBatchScholarAxie } from '../services/hooks/useBatchScholarAxie';
 import { AxiesFilterButton } from '../components/AxiesFilterButton';
 import { AxieCard, AxieCardSkeleton } from '@src/components/AxieCard';
 import { PreferencesButton } from '@src/components/Header/PreferencesButton';
+import { Pagination } from '@src/components/Pagination';
 
 interface PerPageSelectorSelectorProps {
   value: number;
@@ -82,12 +83,8 @@ export const Axies = (): JSX.Element => {
   const setAxieParts = useSetRecoilState(axiePartsAtom);
   const [preferences, setPreferences] = useRecoilState(preferencesAtom);
 
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(25);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [page]);
 
   const managerAddress = preferences.managerAddress.replace('ronin:', '0x');
   const addresses = scholars.map(scholar => scholar.address);
@@ -123,7 +120,7 @@ export const Axies = (): JSX.Element => {
   const numberOfPages = Math.ceil(filteredAxies.length / perPage);
 
   const pageData = useMemo(
-    () => filteredAxies.slice(page * perPage, (page + 1) * perPage),
+    () => filteredAxies.slice((page - 1) * perPage, page * perPage),
     [filteredAxies, page, perPage]
   );
 
@@ -148,8 +145,16 @@ export const Axies = (): JSX.Element => {
   }, [resetFilters]);
 
   useEffect(() => {
-    setPage(0);
+    setPage(1);
   }, [filters, perPage]);
+
+  useEffect(() => {
+    window.scrollTo({
+      left: 0,
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, [page]);
 
   return (
     <Box h="full" maxW="1450px" margin="auto" p={3}>
@@ -236,19 +241,7 @@ export const Axies = (): JSX.Element => {
       )}
 
       {!isLoading && !!filteredAxies.length && (
-        <Flex align="center" justify="space-between" py={5}>
-          <Button onClick={() => setPage(p => p - 1)} isDisabled={page <= 0}>
-            Prev
-          </Button>
-
-          <Text>
-            Page {page + 1} of {Math.max(numberOfPages, 1)}
-          </Text>
-
-          <Button onClick={() => setPage(p => p + 1)} isDisabled={page + 1 >= numberOfPages}>
-            Next
-          </Button>
-        </Flex>
+        <Pagination page={page} setPage={setPage} numberOfPages={numberOfPages} />
       )}
     </Box>
   );

@@ -100,7 +100,7 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
         {shouldShowMaintenance && <MaintenanceScreen />}
 
         {!shouldShowMaintenance && (
-          <chakra.div w="full" h="full">
+          <chakra.div w="full" h="full" pl={{ md: '0px', '2xl': '235px' }}>
             {children}
           </chakra.div>
         )}

@@ -92,9 +92,9 @@ export const AxieCard = ({ axie }: AxieCardProps): JSX.Element => {
     [axie.parts, marketAllowedParts]
   );
 
-  const findSimilarUrl = `https://market.elitebreeders.club/?classes=${axie.class.toLowerCase()}&parts=${axieParts.join(
+  const findSimilarUrl = `https://market.elitebreeders.club/?parts=${axieParts.join(
     ','
-  )}`;
+  )}&classes=${axie.class.toLowerCase()}`;
 
   return (
     <Card

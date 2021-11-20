@@ -24,6 +24,7 @@ import { scholarsMap } from '../../recoil/scholars';
 import { preferencesAtom } from '@src/recoil/preferences';
 import { useBatchWalletTransactions } from '../../services/hooks/useBatchWalletTransactions';
 import { TransactionsTable } from './TransactionsTable';
+import { Pagination } from '../Pagination';
 
 const eth = '0xc99a6a985ed2cac1ef41640596c5a5f9f4e19ef5';
 const slp = '0xa8754b9fa15fc18bb59458815510e40a12cd2014';
@@ -136,12 +137,16 @@ export const WalletTransactions = (): JSX.Element => {
   const scholars = useRecoilValue(scholarsMap);
   const preferences = useRecoilValue(preferencesAtom);
 
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(20);
   const [typeFilter, setTypeFilter] = useState('All');
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({
+      left: 0,
+      top: 0,
+      behavior: 'smooth',
+    });
   }, [page]);
 
   const managerAddress = preferences.managerAddress.replace('ronin:', '0x');
@@ -183,11 +188,11 @@ export const WalletTransactions = (): JSX.Element => {
     return 0;
   });
 
-  const pagedTransactions = sortedTransactions.slice(page * perPage, (page + 1) * perPage);
+  const pagedTransactions = sortedTransactions.slice((page - 1) * perPage, page * perPage);
   const numberOfPages = Math.ceil(sortedTransactions.length / perPage);
 
   useEffect(() => {
-    setPage(0);
+    setPage(1);
   }, [typeFilter, perPage]);
 
   if (isLoading) {
@@ -231,19 +236,7 @@ export const WalletTransactions = (): JSX.Element => {
 
       <TransactionsTable transactions={pagedTransactions} />
 
-      <Flex align="center" justify="space-between" mt={5}>
-        <Button onClick={() => setPage(p => p - 1)} isDisabled={page <= 0}>
-          Prev
-        </Button>
-
-        <Text>
-          Page {page + 1} of {numberOfPages}
-        </Text>
-
-        <Button onClick={() => setPage(p => p + 1)} isDisabled={page + 1 === numberOfPages}>
-          Next
-        </Button>
-      </Flex>
+      <Pagination page={page} setPage={setPage} numberOfPages={numberOfPages} />
     </Box>
   );
 };
