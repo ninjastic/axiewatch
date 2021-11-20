@@ -1,4 +1,4 @@
-import { Stack, Box, Text, ButtonGroup } from '@chakra-ui/react';
+import { Stack, Box, Text } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 
 import { scholarSelector } from '../../../../recoil/scholars';
@@ -31,9 +31,7 @@ export const ErroredCard = ({ address }: ErroredCardProps): JSX.Element => {
 
       <Text fontWeight="bold">Something went wrong...</Text>
 
-      <ButtonGroup>
-        <ConfirmDeleteButton scholarAddress={address} />
-      </ButtonGroup>
+      <ConfirmDeleteButton scholarAddress={address} />
     </Stack>
   );
 };

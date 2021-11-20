@@ -2,6 +2,7 @@ import { Box, Flex, Grid, GridItem, Text, HStack, Stack, Tooltip, Button, Image 
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import dynamic from 'next/dynamic';
 import { useRecoilValue } from 'recoil';
+import { useMemo } from 'react';
 
 import { SignInButton } from '../components/SignInButton';
 import { SummaryCards } from '../components/SummaryCards';
@@ -12,12 +13,14 @@ import { NotablePerformersTable } from '@src/components/NotablePerformersTable';
 import { EarningsForecastChart } from '@src/components/EarningsForecastChart';
 import { scholarsMap } from '@src/recoil/scholars';
 import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
+import { RetryFailedButton } from '@components/RetryFailedButton';
 
 function DashboardPage() {
   const scholars = useRecoilValue(scholarsMap);
   const addresses = scholars.map(scholar => scholar.address);
 
-  const { isError } = useBatchScholar({ addresses });
+  const { isError, isLoading, isRefetching, refetch, data } = useBatchScholar({ addresses });
+  const erroredScholars = useMemo(() => (!isLoading ? data.filter(scholar => scholar.errored) : []), [data, isLoading]);
 
   return (
     <Box h="full" maxW="1450px" margin="auto" p={3}>
@@ -83,14 +86,18 @@ function DashboardPage() {
               Something went wrong
             </Text>
             <Text fontSize="sm" variant="faded" textAlign="center">
-              The API requests failed.
+              The API requests failed
             </Text>
           </Stack>
 
           <Stack align="center" spacing={0} mt={10}>
-            <Button onClick={() => undefined}>Retry</Button>
+            <Button onClick={refetch}>Retry</Button>
           </Stack>
         </Flex>
+      )}
+
+      {!isLoading && erroredScholars.length > 0 && (
+        <RetryFailedButton errored={erroredScholars} isRefetching={isRefetching} refetch={refetch} />
       )}
     </Box>
   );
