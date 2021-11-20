@@ -32,6 +32,16 @@ const useFilterScholars = (scholars: ScholarMap[]): ScholarMap[] => {
   });
 
   if (!sort) {
+    const hasInactive = filtered.find(scholar => scholar.inactive);
+
+    if (hasInactive) {
+      return filtered.sort((a, b) => {
+        if (a.inactive && !b.inactive) return 1;
+        if (b.inactive && !a.inactive) return -1;
+        return 0;
+      });
+    }
+
     return filtered;
   }
 
@@ -86,6 +96,16 @@ const useFilterScholars = (scholars: ScholarMap[]): ScholarMap[] => {
         return 1;
     }
   });
+
+  const hasInactive = sortedAndFiltered.find(scholar => scholar.inactive);
+
+  if (hasInactive) {
+    return sortedAndFiltered.sort((a, b) => {
+      if (a.inactive && !b.inactive) return 1;
+      if (b.inactive && !a.inactive) return -1;
+      return 0;
+    });
+  }
 
   return sortedAndFiltered;
 };
