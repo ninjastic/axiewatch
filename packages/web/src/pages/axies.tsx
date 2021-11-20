@@ -15,6 +15,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Tag,
 } from '@chakra-ui/react';
 import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 import dynamic from 'next/dynamic';
@@ -115,6 +116,8 @@ export const Axies = (): JSX.Element => {
     [axiesClasses]
   );
 
+  const bannedAxies = useMemo(() => scholarAxies.filter(axie => axie.battleInfo.banned).length, [scholarAxies]);
+
   const filteredAxies = useMemo(() => filterAxies(scholarAxies, filters), [scholarAxies, filters]);
 
   const numberOfPages = Math.ceil(filteredAxies.length / perPage);
@@ -176,7 +179,7 @@ export const Axies = (): JSX.Element => {
       )}
 
       {!isLoading && !!scholarAxies.length && (
-        <Stack spacing={10} mt={5}>
+        <Stack spacing={5} mt={5}>
           <Flex justify="space-between" align="center" direction={{ base: 'column', lg: 'row' }}>
             <HStack mb={{ base: 5, lg: 0 }}>
               <Stat>
@@ -211,6 +214,16 @@ export const Axies = (): JSX.Element => {
               <PerPageSelector value={perPage} onChange={setPerPage} />
             </HStack>
           </Flex>
+
+          {bannedAxies > 0 && (
+            <Flex>
+              <Tag bg="red.500">
+                <Text>
+                  There are <b>{bannedAxies}</b> banned axies.
+                </Text>
+              </Tag>
+            </Flex>
+          )}
 
           <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} gap={3} pb={5}>
             {pageData.map(axie => (
