@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { APIScholarResponse } from '../../types/api';
 import { serverApi } from '../api';
 import { scholarState, ScholarState } from '../../recoil/scholars';
-import { ParsedScholarData, parseScholarData } from '../utils/parseScholarData';
+import { parseScholarData } from '../utils/parseScholarData';
 
 type ScholarSetter = Partial<ScholarState> & { address: string };
 
@@ -13,8 +13,9 @@ interface UseBatchScholarData {
   isLoading: boolean;
   isError: boolean;
   refetch: () => void;
+  isFetching: boolean;
   isRefetching: boolean;
-  data: ParsedScholarData[];
+  data: ScholarState[];
 }
 
 interface UseBatchScholarProps {
@@ -23,14 +24,13 @@ interface UseBatchScholarProps {
 }
 
 export const useBatchScholar = ({ addresses, enabled }: UseBatchScholarProps): UseBatchScholarData => {
-  const setBatchScholarData = useRecoilTransaction_UNSTABLE(({ set, get }) => (scholars: ScholarSetter[]) => {
+  const setBatchScholarData = useRecoilTransaction_UNSTABLE(({ set }) => (scholars: ScholarSetter[]) => {
     return scholars.forEach(scholar => {
-      const prevState = get(scholarState(scholar.address));
-      set(scholarState(scholar.address), { ...prevState, ...scholar });
+      set(scholarState(scholar.address), prev => ({ ...prev, ...scholar }));
     });
   });
 
-  const { isLoading, isRefetching, isError, refetch, data } = useQuery(
+  const { isLoading, isFetching, isRefetching, isError, refetch, data } = useQuery(
     ['scholars', addresses],
     async () => {
       const response = await serverApi.post<APIScholarResponse[]>('/batch-scholar', {
@@ -45,7 +45,7 @@ export const useBatchScholar = ({ addresses, enabled }: UseBatchScholarProps): U
       return parsedScholars;
     },
     {
-      enabled: enabled && !!addresses.length,
+      enabled: enabled && addresses.length > 0,
       staleTime: 1000 * 60 * 15,
     }
   );
@@ -56,5 +56,5 @@ export const useBatchScholar = ({ addresses, enabled }: UseBatchScholarProps): U
     }
   }, [data, setBatchScholarData]);
 
-  return { isLoading, isError, refetch, isRefetching, data: data ?? [] };
+  return { isLoading, isError, refetch, isRefetching, isFetching, data: data ?? [] };
 };

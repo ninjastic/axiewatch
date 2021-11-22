@@ -1,25 +1,6 @@
 import dayjs from '../dayjs';
-import { APIScholarResponse, ScholarHistoricalSlpData } from '../../types/api';
-
-export interface ParsedScholarData {
-  address: string;
-  slp: number;
-  roninSlp: number;
-  totalSlp: number;
-  claimableSlp: number;
-  yesterdaySlp: number | null;
-  todaySlp: number | null;
-  lastClaim: number;
-  nextClaim: number;
-  slpDay: number;
-  pvpElo: number;
-  pvpRank: number;
-  pvpErrored: boolean;
-  pveSlp: number;
-  loaded: boolean;
-  errored: boolean;
-  historical: ScholarHistoricalSlpData;
-}
+import { APIScholarResponse } from '../../types/api';
+import { ScholarState } from '@src/recoil/scholars';
 
 type ParseScholarDataOptions = {
   includeTodayOnAverageSlp: boolean;
@@ -30,7 +11,7 @@ interface ParseScholarDataProps {
   options?: ParseScholarDataOptions;
 }
 
-export function parseScholarData({ data, options }: ParseScholarDataProps): ParsedScholarData {
+export function parseScholarData({ data, options }: ParseScholarDataProps): ScholarState {
   const { slp, roninSlp, totalSlp, lastClaim } = data.scholar || {};
   const { yesterday, today, dates } = data.historical || {};
   const { pve, pvp } = data;

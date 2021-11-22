@@ -1,6 +1,6 @@
-import { AxieClass } from '../recoil/scholars';
-
 // battles
+
+export type AxieClass = 'Aquatic' | 'Reptile' | 'Plant' | 'Bird' | 'Beast' | 'Bug' | 'Dusk' | 'Mech' | 'Dawn';
 
 export type APIBattlesResponseItemFighter = {
   team_id: string;
@@ -73,3 +73,38 @@ export interface APIGameStatusResponse {
   to: number;
   message: string;
 }
+
+// txs
+
+export interface ExplorerTransaction {
+  hash: string;
+  block_hash: string;
+  block_number: number;
+  from: string;
+  to: string;
+  input: string;
+  value: number;
+  timestamp: number;
+  gas_used: string;
+  cumulative_gas_used: string;
+  contract_address: string;
+  status: 0 | 1;
+  logs: Array<{
+    address: string;
+    block_hash: string;
+    block_number: number;
+    data: string;
+    topics: string[];
+    transaction_hash: string;
+    transaction_index: string;
+    transaction_log_index: string;
+  }>;
+}
+
+export interface APIBatchExplorerResponseSuccess {
+  address: string;
+  total: number;
+  results: ExplorerTransaction[];
+}
+
+export type APIBatchExplorerResponse = APIBatchExplorerResponseSuccess;

@@ -40,8 +40,8 @@ export const ConfirmDeleteModalBody = ({ scholarAddress }: ConfirmDeleteModalPro
 export const ConfirmDeleteModalFooter = ({ scholarAddress }: ConfirmDeleteModalProps): JSX.Element => {
   const setScholars = useSetRecoilState(scholarsMap);
 
-  const editScholarModal = useRecoilValue(modalSelector('editScholarModal'));
-  const confirmDeleteModal = useRecoilValue(modalSelector('confirmDeleteModal'));
+  const editScholarModal = useRecoilValue(modalSelector(`editScholarModal:${scholarAddress}`));
+  const confirmDeleteModal = useRecoilValue(modalSelector(`confirmDeleteModal:${scholarAddress}`));
 
   const handleDelete = () => {
     setScholars(old => old.filter(s => s.address !== scholarAddress));

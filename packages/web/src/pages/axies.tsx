@@ -31,6 +31,7 @@ import { AxiesFilterButton } from '../components/AxiesFilterButton';
 import { AxieCard, AxieCardSkeleton } from '@src/components/AxieCard';
 import { PreferencesButton } from '@src/components/Header/PreferencesButton';
 import { Pagination } from '@src/components/Pagination';
+import { RequestStatusFloatingButton } from '@src/components/RequestStatusFloatingButton';
 
 interface PerPageSelectorSelectorProps {
   value: number;
@@ -93,7 +94,7 @@ export const Axies = (): JSX.Element => {
     ? lodash.uniqWith([managerAddress, ...addresses], (a, b) => a.toLowerCase() === b.toLowerCase())
     : addresses;
 
-  const { scholarAxies, isLoading } = useBatchScholarAxie({ addresses: addressesWithManager, size: 200 });
+  const { scholarAxies, isLoading, isFetching } = useBatchScholarAxie({ addresses: addressesWithManager, size: 200 });
 
   const axiesClasses = useMemo(
     () =>
@@ -256,6 +257,8 @@ export const Axies = (): JSX.Element => {
       {!isLoading && !!filteredAxies.length && (
         <Pagination page={page} setPage={setPage} numberOfPages={numberOfPages} />
       )}
+
+      <RequestStatusFloatingButton isFetching={isFetching} />
     </Box>
   );
 };

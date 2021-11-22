@@ -16,7 +16,7 @@ export const EditScholarButton = ({ address, size = 'md', onlyIcon = false }: Ed
   const scholar = useRecoilValue(scholarSelector(address));
 
   const editScholarModal = useCreateModal({
-    id: 'editScholarModal',
+    id: `editScholarModal:${address}`,
     title: 'Edit scholar',
     size: 'lg',
     content: <EditScholarModal name={scholar.name} address={address} />,

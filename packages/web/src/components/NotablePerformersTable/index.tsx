@@ -28,10 +28,9 @@ import { useRecoilValue } from 'recoil';
 import { useMemo, useState } from 'react';
 
 import dayjs from '../../services/dayjs';
-import { scholarsMap } from '@src/recoil/scholars';
+import { ScholarState, scholarsMap } from '@src/recoil/scholars';
 import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
 import { Card } from '@components/Card';
-import { ParsedScholarData } from '@src/services/utils/parseScholarData';
 import { SlpTrackingButton } from '../ScholarsGrid/Scholar/SlpTrackingButton';
 
 interface NumberMenuProps {
@@ -56,12 +55,12 @@ const NumberMenu = ({ number, setNumber }: NumberMenuProps): JSX.Element => {
 
 interface TableComponentProps {
   label: string;
-  data: ParsedScholarData[];
+  data: ScholarState[];
   isLoading: boolean;
 }
 
 const TableComponent = ({ label, data, isLoading }: TableComponentProps): JSX.Element => {
-  const scholars = useRecoilValue(scholarsMap);
+  const map = useRecoilValue(scholarsMap);
 
   return (
     <Box>
@@ -98,11 +97,11 @@ const TableComponent = ({ label, data, isLoading }: TableComponentProps): JSX.El
             <Tbody>
               {data.map(result => {
                 const { address, yesterdaySlp, slpDay, slp, pvpElo } = result;
-                const state = scholars.find(scholar => scholar.address === address);
+                const { name } = map.find(scholar => scholar.address === address);
 
                 return (
                   <Tr key={address}>
-                    <Td>{state.name}</Td>
+                    <Td>{name}</Td>
                     <Td fontWeight="bold">{slpDay}</Td>
                     <Td>{yesterdaySlp ?? '-'}</Td>
                     <Td>

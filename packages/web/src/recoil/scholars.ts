@@ -2,6 +2,7 @@ import { atom, atomFamily, selector, selectorFamily } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
 import dayjs from '../services/dayjs';
+import { AxieClass, ScholarHistoricalSlpData } from '@src/types/api';
 import { getTraits } from '../services/utils/axieUtils';
 import { preferencesAtom } from './preferences';
 
@@ -20,6 +21,7 @@ export interface ScholarMap {
 }
 
 export interface ScholarState {
+  address: string;
   slp: number;
   roninSlp: number;
   totalSlp: number;
@@ -35,6 +37,7 @@ export interface ScholarState {
   pveSlp: number;
   loaded: boolean;
   errored: boolean;
+  historical: ScholarHistoricalSlpData;
 }
 
 export interface ScholarSelector extends ScholarMap, ScholarState {}
@@ -47,7 +50,7 @@ export interface AxiePart {
   type: string;
 }
 
-export type AxieClass = 'Aquatic' | 'Reptile' | 'Plant' | 'Bird' | 'Beast' | 'Bug' | 'Dusk' | 'Mech' | 'Dawn';
+export type { AxieClass };
 
 export interface Axie {
   name: string;

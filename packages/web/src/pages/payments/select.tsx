@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 import dayjs from '../../services/dayjs';
 import { preferencesAtom } from '../../recoil/preferences';
 import { passwordAtom, walletMapAtom } from '../../recoil/wallets';
-import { allScholarsSelector } from '../../recoil/scholars';
+import { scholarsMap } from '../../recoil/scholars';
 import { selectedPaymentsAtom } from '../../recoil/payments';
 import { BallScaleLoading } from '../../components/BallScaleLoading';
 import { PaymentsRiskWarning } from '../../components/PaymentsRiskWarning';
@@ -17,10 +17,10 @@ import { ScholarClaimCard } from '../../components/ScholarClaimCard';
 import { useBatchScholar } from '../../services/hooks/useBatchScholar';
 
 export const SelectPaymentsPage = (): JSX.Element => {
-  const scholars = useRecoilValue(allScholarsSelector).filter(scholar => !scholar.errored);
+  const scholars = useRecoilValue(scholarsMap);
 
   const addresses = scholars.map(scholar => scholar.address);
-  const { isLoading } = useBatchScholar({ addresses });
+  const { isLoading, data } = useBatchScholar({ addresses });
 
   const walletMap = useRecoilValue(walletMapAtom);
   const preferences = useRecoilValue(preferencesAtom);
@@ -39,13 +39,17 @@ export const SelectPaymentsPage = (): JSX.Element => {
     });
   };
 
-  const scholarsClaimable = scholars
+  const scholarsClaimable = data
     .filter(scholar => scholar.lastClaim !== 0 && dayjs.unix(scholar.nextClaim).isBefore(dayjs()))
-    .map(scholar => ({
-      ...scholar,
-      hasPrivateKey: walletMap.includes(scholar.address),
-      isConfigured: walletMap.includes(scholar.address) && !!scholar.paymentAddress,
-    }));
+    .map(scholar => {
+      const scholarMap = scholars.find(map => map.address === scholar.address);
+      return {
+        ...scholarMap,
+        ...scholar,
+        hasPrivateKey: walletMap.includes(scholar.address),
+        isConfigured: walletMap.includes(scholar.address) && !!scholarMap.paymentAddress,
+      };
+    });
 
   const totalSlpClaimable = scholarsClaimable.reduce((prev, curr) => prev + curr.slp, 0);
 
@@ -92,15 +96,11 @@ export const SelectPaymentsPage = (): JSX.Element => {
 
   return (
     <Box h="full" maxW="1450px" margin="auto" p={3}>
-      {isLoading && scholars.length && (
+      {isLoading && (
         <Stack d="flex" flexDir="column" justifyContent="center" alignItems="center" w="100%" h="90%">
           <BallScaleLoading />
 
           <Text fontWeight="bold">Loading scholars...</Text>
-
-          <Text>
-            {scholars.filter(scholar => scholar.loaded).length}/{scholars.length}
-          </Text>
         </Stack>
       )}
 

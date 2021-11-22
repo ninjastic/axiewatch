@@ -6,7 +6,7 @@ import { useCreateModal } from '../../services/hooks/useCreateModal';
 import { ScholarSelector } from '../../recoil/scholars';
 import { ScholarPrivateKeyInput } from '../ScholarsGrid/Scholar/ScholarPaymentsButton/ScholarPrivateKeyInput';
 import { ScholarPaymentsAddressInput } from '../ScholarsGrid/Scholar/ScholarPaymentsButton/ScholarPaymentsAddressInput';
-import { EditScholarButton } from '../ScholarsGrid/Scholar/EditScholarButton/EditScholarButton';
+import { EditScholarButton } from '../ScholarsGrid/Scholar/EditScholarButton';
 import { ScholarAddress } from '../ScholarsGrid/Scholar/ScholarAddress';
 import { modalSelector } from '@src/recoil/modal';
 
@@ -15,7 +15,7 @@ interface SetPrivateKeyModalProps {
 }
 
 const SetPrivateKeyModal = ({ address }: SetPrivateKeyModalProps): JSX.Element => {
-  const modal = useRecoilValue(modalSelector('setPrivateKeyModal'));
+  const modal = useRecoilValue(modalSelector(`setPrivateKeyModal:${address}`));
   return (
     <Box p={3}>
       <ScholarPrivateKeyInput address={address} onSave={modal.onClose} />
@@ -28,7 +28,7 @@ interface ScholarPaymentsAddressInputModalProps {
 }
 
 const ScholarPaymentsAddressInputModal = ({ address }: ScholarPaymentsAddressInputModalProps): JSX.Element => {
-  const modal = useRecoilValue(modalSelector('setPaymentAddress'));
+  const modal = useRecoilValue(modalSelector(`setPaymentAddress:${address}`));
 
   return (
     <Box p={3}>
@@ -52,13 +52,13 @@ export const ScholarClaimCard = ({ scholarData, isSelected, toggleSelect }: Scho
   const { name, address, slp, shares, paymentAddress, hasPrivateKey, isConfigured } = scholarData || {};
 
   const setPrivateKeyModal = useCreateModal({
-    id: 'setPrivateKeyModal',
+    id: `setPrivateKeyModal:${address}`,
     title: 'Private-key',
     content: <SetPrivateKeyModal address={address} />,
   });
 
   const setPaymentAddress = useCreateModal({
-    id: 'setPaymentAddress',
+    id: `setPaymentAddress:${address}`,
     title: 'Ronin payment address',
     content: <ScholarPaymentsAddressInputModal address={address} />,
   });

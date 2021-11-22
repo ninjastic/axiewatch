@@ -10,7 +10,7 @@ import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
 import { Scholar } from './Scholar';
 import { Card } from '../Card';
 import { Pagination } from '../Pagination';
-import { RetryFailedButton } from '../RetryFailedButton';
+import { RequestStatusFloatingButton } from '../RequestStatusFloatingButton';
 
 const useFilterScholars = (scholars: ScholarMap[]): ScholarMap[] => {
   const { search, onlyClaimable, SLP } = useRecoilValue(scholarFilter);
@@ -125,7 +125,7 @@ export const ScholarsGrid = ({ page, setPage, perPage }: ScholarsGridProps): JSX
   const addresses = useMemo(() => map.map(scholar => scholar.address), [map]);
   const filters = useRecoilValue(scholarFilter);
 
-  const { isLoading, data, refetch, isRefetching } = useBatchScholar({ addresses });
+  const { isLoading, data, refetch, isRefetching, isFetching } = useBatchScholar({ addresses });
   const filteredScholars = useFilterScholars(map);
   const erroredScholars = useMemo(() => (!isLoading ? data.filter(scholar => scholar.errored) : []), [data, isLoading]);
 
@@ -189,9 +189,12 @@ export const ScholarsGrid = ({ page, setPage, perPage }: ScholarsGridProps): JSX
         <Pagination page={page} setPage={setPage} numberOfPages={numberOfPages} />
       )}
 
-      {!isLoading && erroredScholars.length > 0 && (
-        <RetryFailedButton errored={erroredScholars} isRefetching={isRefetching} refetch={refetch} />
-      )}
+      <RequestStatusFloatingButton
+        errored={erroredScholars}
+        isLoading={isLoading}
+        isFetching={isRefetching || isFetching}
+        refetch={refetch}
+      />
     </Box>
   );
 };

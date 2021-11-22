@@ -1,6 +1,6 @@
 import { Stack, Text } from '@chakra-ui/react';
 
-import { EditScholarButton } from '../EditScholarButton/EditScholarButton';
+import { EditScholarButton } from '../EditScholarButton';
 import { ProfileButton } from '../ProfileButton';
 import { PveStats } from '../PveStats';
 import { ScholarAxies } from '../ScholarAxies';

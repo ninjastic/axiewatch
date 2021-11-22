@@ -1,10 +1,13 @@
+import { mode } from '@chakra-ui/theme-tools';
+import { Dict } from '@chakra-ui/utils';
+
 export const SelectStyles = {
   parts: ['field', 'icon'],
-  baseStyle: {
+  baseStyle: (props: Dict[]): any => ({
     field: {
       '> option, > optgroup': {
-        bg: 'background',
+        bg: mode('light.background', 'dark.background')(props),
       },
     },
-  },
+  }),
 };

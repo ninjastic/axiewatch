@@ -75,7 +75,7 @@ export const SlpTrackingChart = ({ address }: DailyChartProps): JSX.Element => {
       return response.data;
     },
     {
-      staleTime: 1000 * 60 * 60 * 2, // 2 hours
+      staleTime: 1000 * 60 * 15, // 15 minutes
       enabled: !isUserLoading,
       retry: false,
     }
@@ -117,22 +117,11 @@ export const SlpTrackingChart = ({ address }: DailyChartProps): JSX.Element => {
     }
 
     return formattedData;
-  }, [data, scholar, session]);
+  }, [data, scholar]);
 
   useEffect(() => {
     if (!dates.length) refetch();
   }, [dates.length, refetch, session]);
-
-  if (!scholar.loaded) {
-    return (
-      <Flex justify="center" h="50px">
-        <Stack align="center" spacing={3}>
-          <Text>Waiting for scholar data to load...</Text>
-          <Spinner />
-        </Stack>
-      </Flex>
-    );
-  }
 
   if (isLoading) {
     return (

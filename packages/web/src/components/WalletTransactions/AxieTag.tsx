@@ -3,7 +3,7 @@ import { gql } from 'graphql-request';
 import { useQuery } from 'react-query';
 import { useMemo } from 'react';
 
-import { axieInfinityGraphQl } from '@src/services/api';
+import { axieInfinityGraphQl } from '../../services/api';
 import { Axie, AxieClass } from '@src/recoil/scholars';
 import { AxieIcon } from '../Icons/AxieIcon';
 import { AxieTraits } from '../AxieTraits';

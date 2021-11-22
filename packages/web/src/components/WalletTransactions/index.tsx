@@ -25,14 +25,13 @@ import { preferencesAtom } from '@src/recoil/preferences';
 import { useBatchWalletTransactions } from '../../services/hooks/useBatchWalletTransactions';
 import { TransactionsTable } from './TransactionsTable';
 import { Pagination } from '../Pagination';
+import { RequestStatusFloatingButton } from '../RequestStatusFloatingButton';
 
 const eth = '0xc99a6a985ed2cac1ef41640596c5a5f9f4e19ef5';
 const slp = '0xa8754b9fa15fc18bb59458815510e40a12cd2014';
 const axs = '0x97a9107c1793bc407d6f527b77e7fff4d812bece';
 
-const getActionType = (to: string, input: string, axie: any) => {
-  if (!input && to && axie) return 'Sold Axie';
-
+const getActionType = (to: string, input: string) => {
   if (input.startsWith('0xa9059cbb') && to === eth) return 'Transfer ETH';
   if (input.startsWith('0xa9059cbb') && to === slp) return 'Transfer SLP';
   if (input.startsWith('0xa9059cbb') && to === axs) return 'Transfer AXS';
@@ -156,30 +155,18 @@ export const WalletTransactions = (): JSX.Element => {
     ? lodash.uniqWith([managerAddress, ...addresses], (a, b) => a.toLowerCase() === b.toLowerCase())
     : addresses;
 
-  const { isLoading, results } = useBatchWalletTransactions(addressesWithManager);
-
-  const explorer = useMemo(
-    () => results.reduce((prev, curr) => [...prev, ...(curr.data?.transactions?.results ?? [])], [] as any[]),
-    [results]
-  );
-
-  const sales = useMemo(
-    () => results.reduce((prev, curr) => [...prev, ...(curr.data?.transactions.sales ?? [])], [] as any[]),
-    [results]
-  );
-
-  const transactions = useMemo(() => [...explorer, ...sales], [explorer, sales]);
+  const { isLoading, isFetching, data } = useBatchWalletTransactions(addressesWithManager);
 
   const filteredTransactions = useMemo(
     () =>
       typeFilter && typeFilter !== 'All'
-        ? transactions.filter(transaction => {
-            const action = getActionType(transaction.to, transaction.input, transaction.axie);
+        ? data.filter(transaction => {
+            const action = getActionType(transaction.to, transaction.input);
             if (action === typeFilter) return true;
             return false;
           })
-        : transactions,
-    [transactions, typeFilter]
+        : data,
+    [data, typeFilter]
   );
 
   const sortedTransactions = filteredTransactions.sort((a, b) => {
@@ -237,6 +224,8 @@ export const WalletTransactions = (): JSX.Element => {
       <TransactionsTable transactions={pagedTransactions} />
 
       <Pagination page={page} setPage={setPage} numberOfPages={numberOfPages} />
+
+      <RequestStatusFloatingButton isFetching={isFetching} />
     </Box>
   );
 };
