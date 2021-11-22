@@ -24,29 +24,12 @@ import dynamic from 'next/dynamic';
 import dayjs from '../../services/dayjs';
 import abi from '../../constants/abi/SLP.json';
 import { scholarsMap } from '../../recoil/scholars';
-import { AxieTag } from './AxieTag';
 import { preferencesAtom } from '@src/recoil/preferences';
-
-interface Transaction {
-  context: string;
-  hash: string;
-  from: string;
-  to: string;
-  input: string;
-  value: string;
-  timestamp: number;
-  status: 0 | 1;
-  logs: Array<{
-    address: string;
-    data: string;
-    topics: Array<string>;
-    transaction_hash: string;
-  }>;
-  axie?: any;
-}
+import { AxieTag } from './AxieTag';
+import { WalletTransaction } from '@src/services/hooks/useBatchWalletTransactions';
 
 interface TransactionTableEntryProps {
-  transaction: Transaction;
+  transaction: WalletTransaction;
 }
 
 const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryProps): JSX.Element => {
@@ -68,7 +51,7 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
   const explorerBaseUrl = 'https://explorer.roninchain.com';
 
   const actionType = useMemo(() => {
-    if (transaction.axie) return 'Sold Axie';
+    // if (transaction.axie) return 'Sold Axie';
 
     if (transaction.input.startsWith('0xa9059cbb') && transaction.to === eth) return 'Transfer ETH';
     if (transaction.input.startsWith('0xa9059cbb') && transaction.to === slp) return 'Transfer SLP';
@@ -176,7 +159,10 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
     const { input } = transaction;
     const iface = new ethers.utils.Interface(abi);
 
-    if (actionType === 'Transfer AXS' || actionType === 'Transfer ETH' || actionType === 'Transfer SLP') {
+    if (
+      (actionType === 'Transfer AXS' || actionType === 'Transfer ETH' || actionType === 'Transfer SLP') &&
+      transaction.status
+    ) {
       const data = iface.decodeFunctionData('transfer', input);
       const to = data._to;
 
@@ -190,7 +176,7 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
       );
     }
 
-    if (actionType === 'Approve AXS') {
+    if (actionType === 'Approve AXS' && transaction.status) {
       const approved = ethers.utils.hexlify(transaction.logs[0]?.topics[2]);
 
       if (approved === '0x00000000000000000000000005b0bb3c1c320b280501b86706c3551995bc8571') {
@@ -214,7 +200,7 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
       );
     }
 
-    if (actionType === 'Transfer Axie') {
+    if (actionType === 'Transfer Axie' && transaction.status) {
       const [, to] = ethers.utils.defaultAbiCoder.decode(
         ['address', 'address', 'uint256'],
         ethers.utils.hexDataSlice(transaction.input, 4)
@@ -273,7 +259,7 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
       );
     }
 
-    if (actionType === 'Transfer ETH' || actionType === 'Transfer AXS') {
+    if ((actionType === 'Transfer ETH' || actionType === 'Transfer AXS') && transaction.status) {
       const data = iface.decodeFunctionData('transfer', input);
       const value = Math.round(Number(ethers.utils.formatEther(data._value)) * 10000) / 10000;
       const coin = actionType === 'Transfer ETH' ? 'eth' : 'axs';
@@ -296,7 +282,7 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
       );
     }
 
-    if (actionType === 'Withdraw ETH' || actionType === 'Withdraw AXS') {
+    if ((actionType === 'Withdraw ETH' || actionType === 'Withdraw AXS') && transaction.status) {
       const data = iface.decodeFunctionData('withdrawERC20For', input);
       const value = Math.round(Number(ethers.utils.formatEther(data._amount)) * 10000) / 10000;
       const coin = actionType === 'Withdraw ETH' ? 'eth' : 'axs';
@@ -405,18 +391,18 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
       );
     }
 
-    if (actionType === 'Sold Axie') {
-      return (
-        <Stack direction={{ base: 'column', lg: 'row' }}>
-          <HStack spacing={1}>
-            <Image src="/images/axies/eth.png" width="16px" alt="slp" />
-            <Text>{transaction.value}</Text>
-          </HStack>
+    // if (actionType === 'Sold Axie') {
+    //   return (
+    //     <Stack direction={{ base: 'column', lg: 'row' }}>
+    //       <HStack spacing={1}>
+    //         <Image src="/images/axies/eth.png" width="16px" alt="slp" />
+    //         <Text>{transaction.value}</Text>
+    //       </HStack>
 
-          <AxieTag id={transaction.axie.id} />
-        </Stack>
-      );
-    }
+    //       <AxieTag id={transaction.axie.id} />
+    //     </Stack>
+    //   );
+    // }
 
     if (actionType === 'Create Axie Sale' && transaction.status) {
       const [, , hexId, starting, ending] = ethers.utils.defaultAbiCoder.decode(
@@ -445,7 +431,7 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
     }
 
     try {
-      if (actionType === 'Claim SLP') {
+      if (actionType === 'Claim SLP' && transaction.status) {
         const { data } = transaction.logs[0];
         const value = parseInt(data, 16);
         return (
@@ -456,7 +442,7 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
         );
       }
 
-      if (actionType === 'Stake AXS') {
+      if (actionType === 'Stake AXS' && transaction.status) {
         const { data } = transaction.logs?.length === 2 ? transaction.logs[0] : transaction.logs[1];
         const value = Math.round((parseInt(data, 16) / 10 ** 18) * 1000) / 1000;
         return (
@@ -467,7 +453,7 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
         );
       }
 
-      if (actionType === 'Unstake AXS') {
+      if (actionType === 'Unstake AXS' && transaction.status) {
         const [amount] = ethers.utils.defaultAbiCoder.decode(
           ['uint256'],
           ethers.utils.hexDataSlice(transaction.input, 4)
@@ -482,7 +468,7 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
         );
       }
 
-      if (actionType === 'Claim AXS') {
+      if (actionType === 'Claim AXS' && transaction.status) {
         const { data } = transaction.logs[transaction.logs.length - 3];
         const value = Math.round((parseInt(data, 16) / 10 ** 18) * 1000) / 1000;
         return (
@@ -493,7 +479,7 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
         );
       }
 
-      if (actionType === 'Restake Rewards') {
+      if (actionType === 'Restake Rewards' && transaction.status) {
         const { data } = transaction.logs[transaction.logs.length - 2];
         const value = Math.round((parseInt(data, 16) / 10 ** 18) * 1000) / 1000;
         return (
@@ -504,7 +490,7 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
         );
       }
 
-      if (actionType === 'Buy Axie') {
+      if (actionType === 'Buy Axie' && transaction.status) {
         const { data } = transaction.logs[2];
         const value = Math.round((parseInt(data, 16) / 10 ** 18) * 1000) / 1000;
         return (
@@ -515,7 +501,7 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
         );
       }
 
-      if (actionType === 'Create Axie Sale') {
+      if (actionType === 'Create Axie Sale' && transaction.status) {
         const [, , , starting, ending] = ethers.utils.defaultAbiCoder.decode(
           ['uint8[]', 'address[]', 'uint256[]', 'uint256[]', 'uint256[]', 'address[]', 'uint256[]'],
           ethers.utils.hexDataSlice(transaction.input, 4)

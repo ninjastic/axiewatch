@@ -2,11 +2,11 @@ import { Stat, StatLabel, StatNumber, StatHelpText, Skeleton } from '@chakra-ui/
 import { Dayjs } from 'dayjs';
 
 import dayjs from '../../services/dayjs';
-import { ParsedScholarData } from '@src/services/utils/parseScholarData';
 import { Card } from '@components/Card';
+import { ScholarState } from '@src/recoil/scholars';
 
 interface NextClaimCardProps {
-  data: ParsedScholarData[];
+  data: ScholarState[];
   isLoading: boolean;
 }
 

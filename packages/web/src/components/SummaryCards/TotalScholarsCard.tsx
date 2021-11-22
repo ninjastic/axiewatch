@@ -4,11 +4,10 @@ import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import { Card } from '@components/Card';
-import { ParsedScholarData } from '@src/services/utils/parseScholarData';
-import { scholarsMap } from '@src/recoil/scholars';
+import { ScholarState, scholarsMap } from '@src/recoil/scholars';
 
 interface TotalScholarsCardProps {
-  data: ParsedScholarData[];
+  data: ScholarState[];
   isLoading: boolean;
 }
 

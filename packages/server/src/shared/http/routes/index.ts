@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import { ScholarController } from '../controllers/ScholarController';
 import { BatchScholarController } from '../controllers/BatchScholarController';
+import { BatchExplorerController } from '../controllers/BatchExplorerController';
 import { PveController } from '../controllers/PveController';
 import { DailyController } from '../controllers/DailyController';
 import { ExplorerController } from '../controllers/ExplorerController';
@@ -16,6 +17,7 @@ const router = Router();
 
 const scholarController = new ScholarController();
 const batchScholarController = new BatchScholarController();
+const batchExplorerController = new BatchExplorerController();
 const pveController = new PveController();
 const dailyController = new DailyController();
 const explorerController = new ExplorerController();
@@ -31,6 +33,7 @@ router.post('/batch-scholar', batchScholarController.post);
 router.get('/pve', pveController.get);
 router.get('/daily', dailyController.get);
 router.get('/explorer/*', explorerController.get);
+router.post('/batch-explorer', batchExplorerController.post);
 router.get('/sales', salesController.get);
 router.post('/rpc', rpcController.post);
 router.get('/sync', syncController.get);

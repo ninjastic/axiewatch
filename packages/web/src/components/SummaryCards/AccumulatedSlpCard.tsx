@@ -3,13 +3,12 @@ import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import { formatter } from '@src/services/formatter';
-import { ParsedScholarData } from '@src/services/utils/parseScholarData';
 import { usePrice } from '@src/services/hooks/usePrice';
-import { scholarsMap } from '@src/recoil/scholars';
+import { ScholarState, scholarsMap } from '@src/recoil/scholars';
 import { Card } from '@components/Card';
 
 interface AccumulatedSlpCardProps {
-  data: ParsedScholarData[];
+  data: ScholarState[];
   isLoading: boolean;
 }
 

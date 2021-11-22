@@ -10,7 +10,7 @@ interface BattlesButtonProps {
 
 export const BattlesButton = ({ address }: BattlesButtonProps): JSX.Element => {
   const battlesModal = useCreateModal({
-    id: 'battlesModal',
+    id: `battlesModal:${address}`,
     title: 'Matches',
     content: <BattlesModal address={address} />,
     size: '6xl',

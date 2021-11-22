@@ -16,6 +16,8 @@ interface GraphQLResponse {
 interface UseBatchScholarAxieData {
   scholarAxies: ParsedAxieData[];
   isLoading: boolean;
+  isFetching: boolean;
+  isRefetching: boolean;
 }
 
 interface UseBatchScholarAxieProps {
@@ -108,9 +110,9 @@ export const useBatchScholarAxie = ({ addresses, size = 200 }: UseBatchScholarAx
     return promises.flat(2);
   }
 
-  const { data, isLoading } = useQuery(['batchScholarAxies', hashedKey], async () => load(), {
+  const { data, isLoading, isFetching, isRefetching } = useQuery(['batchScholarAxies', hashedKey], async () => load(), {
     staleTime: 1000 * 60 * 15,
   });
 
-  return { scholarAxies: data ?? [], isLoading };
+  return { scholarAxies: data ?? [], isLoading, isFetching, isRefetching };
 };

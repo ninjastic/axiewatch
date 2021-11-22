@@ -41,7 +41,7 @@ interface FormData {
 }
 
 export const EditScholarModal = ({ name, address }: EditScholarModalParams): JSX.Element => {
-  const { onClose } = useRecoilValue(modalSelector('editScholarModal'));
+  const { onClose } = useRecoilValue(modalSelector(`editScholarModal:${address}`));
 
   const [scholar, setScholar] = useRecoilState(scholarSelector(address));
 

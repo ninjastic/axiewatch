@@ -2,7 +2,7 @@ import { Collapse, HStack, Stack, Divider, Flex, Text, Box } from '@chakra-ui/re
 import { useRecoilValue } from 'recoil';
 
 import { scholarFieldsAtom } from '../../../../recoil/scholars';
-import { EditScholarButton } from '../EditScholarButton/EditScholarButton';
+import { EditScholarButton } from '../EditScholarButton';
 import { ProfileButton } from '../ProfileButton';
 import { PveStats } from '../PveStats';
 import { ScholarAxies } from '../ScholarAxies';

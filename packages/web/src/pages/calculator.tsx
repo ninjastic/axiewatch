@@ -10,9 +10,9 @@ import {
   Input,
   Select,
   Divider,
-  useBreakpointValue,
   SimpleGrid,
   GridItem,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -69,6 +69,7 @@ export const Calculator = (): JSX.Element => {
 
             <HStack>
               <Text>every</Text>
+
               <Select
                 size="lg"
                 w={32}

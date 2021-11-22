@@ -12,7 +12,7 @@ interface SlpTrackingButtonProps {
 
 export const SlpTrackingButton = ({ address, onlyIcon = false }: SlpTrackingButtonProps): JSX.Element => {
   const slpTrackingModal = useCreateModal({
-    id: 'slpTrackingModal',
+    id: `slpTrackingModal:${address}`,
     title: (
       <HStack>
         <Text fontWeight="bold">SLP Tracking</Text>

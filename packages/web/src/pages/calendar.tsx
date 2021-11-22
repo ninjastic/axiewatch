@@ -13,8 +13,9 @@ import {
   UnorderedList,
   ListItem,
   Flex,
-  chakra,
   Wrap,
+  Tag,
+  chakra,
 } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 import dynamic from 'next/dynamic';
@@ -138,11 +139,20 @@ export const Calendar = (): JSX.Element => {
                     0
                   )
                 ),
+                investor: Math.floor(
+                  date.days.reduce(
+                    (prevDay, currDay) =>
+                      prevDay +
+                      currDay.scholars.reduce((prev, curr) => prev + (curr.slp * (curr.shares.investor ?? 0)) / 100, 0),
+                    0
+                  )
+                ),
               };
 
               const valueMonth = {
                 manager: formatter(totalMonth.manager * price.values.slp, price.locale),
                 scholar: formatter(totalMonth.scholar * price.values.slp, price.locale),
+                investor: formatter(totalMonth.investor * price.values.slp, price.locale),
               };
 
               return (
@@ -170,6 +180,16 @@ export const Calendar = (): JSX.Element => {
                             (≈{valueMonth.scholar})
                           </Text>
                         </Stack>
+
+                        <Stack spacing={0}>
+                          <Text fontWeight="bold">Investor</Text>
+
+                          <Text>{totalMonth.investor} SLP</Text>
+
+                          <Text opacity={0.9} fontSize="sm">
+                            (≈{valueMonth.investor})
+                          </Text>
+                        </Stack>
                       </HStack>
                     </Stack>
 
@@ -186,6 +206,9 @@ export const Calendar = (): JSX.Element => {
                         scholar: Math.floor(
                           day.scholars.reduce((prev, curr) => prev + (curr.slp * curr.shares.scholar) / 100, 0)
                         ),
+                        investor: Math.floor(
+                          day.scholars.reduce((prev, curr) => prev + (curr.slp * (curr.shares.investor ?? 0)) / 100, 0)
+                        ),
                       };
 
                       return (
@@ -200,9 +223,11 @@ export const Calendar = (): JSX.Element => {
                               <HStack>
                                 <Text fontWeight="bold">{totalDay.total} SLP</Text>
 
-                                <Text fontSize="sm" opacity={0.9}>
-                                  {totalDay.manager} (M) / {totalDay.scholar} (S)
-                                </Text>
+                                <HStack>
+                                  <Text>{totalDay.manager} (M)</Text>
+                                  <Text>{totalDay.scholar} (S)</Text>
+                                  {totalDay.investor > 0 && <Text>{totalDay.investor} (I)</Text>}
+                                </HStack>
                               </HStack>
                             </HStack>
 
@@ -211,6 +236,7 @@ export const Calendar = (): JSX.Element => {
                                 const slpScholar = {
                                   manager: Math.floor((scholar.slp * scholar.shares.manager) / 100),
                                   scholar: Math.floor((scholar.slp * scholar.shares.scholar) / 100),
+                                  investor: Math.floor((scholar.slp * (scholar.shares.investor ?? 0)) / 100),
                                 };
 
                                 return (
@@ -220,10 +246,11 @@ export const Calendar = (): JSX.Element => {
 
                                       <Text fontWeight="bold">{scholar.slp} SLP</Text>
 
-                                      <Text fontSize="sm" opacity={0.9}>
-                                        {slpScholar.manager} (M){' / '}
-                                        {slpScholar.scholar} (S)
-                                      </Text>
+                                      <HStack>
+                                        <Tag>{slpScholar.manager} (M)</Tag>
+                                        <Tag>{slpScholar.scholar} (S)</Tag>
+                                        {slpScholar.investor > 0 && <Tag>{slpScholar.investor} (I)</Tag>}
+                                      </HStack>
 
                                       <HStack spacing={2}>
                                         <Text
