@@ -127,7 +127,10 @@ export const ScholarsGrid = ({ page, setPage, perPage }: ScholarsGridProps): JSX
 
   const { isLoading, data, refetch, isRefetching, isFetching } = useBatchScholar({ addresses });
   const filteredScholars = useFilterScholars(map);
-  const erroredScholars = useMemo(() => (!isLoading ? data.filter(scholar => scholar.errored) : []), [data, isLoading]);
+  const erroredScholars = useMemo(
+    () => (!isLoading ? data.filter(scholar => scholar.errored || scholar.pvpErrored) : []),
+    [data, isLoading]
+  );
 
   const paginationData = useMemo(
     () => filteredScholars.slice((page - 1) * perPage, page * perPage),

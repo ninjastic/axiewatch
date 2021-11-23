@@ -9,7 +9,6 @@ export type WalletTransaction = ExplorerTransaction & {
 
 interface UseBatchWalletTransactionsData {
   data: WalletTransaction[];
-  totalTransactions: number;
   isLoading: boolean;
   isFetching: boolean;
 }
@@ -33,5 +32,5 @@ export const useBatchWalletTransactions = (addresses: string[]): UseBatchWalletT
     }
   );
 
-  return { isLoading, isFetching, data: data ?? [], totalTransactions: 0 };
+  return { isLoading, isFetching, data: data ?? [] };
 };

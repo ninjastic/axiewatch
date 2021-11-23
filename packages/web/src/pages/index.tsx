@@ -20,7 +20,10 @@ function DashboardPage() {
   const addresses = scholars.map(scholar => scholar.address);
 
   const { isError, isLoading, isRefetching, isFetching, refetch, data } = useBatchScholar({ addresses });
-  const erroredScholars = useMemo(() => (!isLoading ? data.filter(scholar => scholar.errored) : []), [data, isLoading]);
+  const erroredScholars = useMemo(
+    () => (!isLoading ? data.filter(scholar => scholar.errored || scholar.pvpErrored) : []),
+    [data, isLoading]
+  );
 
   return (
     <Box h="full" maxW="1450px" margin="auto" p={3}>

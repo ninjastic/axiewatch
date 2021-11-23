@@ -13,18 +13,21 @@ interface TotalScholarsCardProps {
 
 export const TotalScholarsCard = ({ data, isLoading }: TotalScholarsCardProps): JSX.Element => {
   const scholars = useRecoilValue(scholarsMap);
+  const activeScholars = useMemo(() => scholars.filter(scholar => !scholar.inactive), [scholars]);
 
   const totalSlpDay = useMemo(
     () =>
-      data.reduce((prev, currResult) => {
-        return prev + currResult.slpDay;
-      }, 0),
-    [data]
+      data
+        .filter(dataScholar => activeScholars.find(activeScholar => activeScholar.address === dataScholar.address))
+        .reduce((prev, currResult) => {
+          return prev + currResult.slpDay;
+        }, 0),
+    [activeScholars, data]
   );
 
   const averageSlp = useMemo(
-    () => (data.length ? Math.floor(totalSlpDay / data.length) : 0),
-    [data.length, totalSlpDay]
+    () => (activeScholars.length ? Math.floor(totalSlpDay / activeScholars.length) : 0),
+    [activeScholars.length, totalSlpDay]
   );
 
   return (
@@ -32,7 +35,7 @@ export const TotalScholarsCard = ({ data, isLoading }: TotalScholarsCardProps): 
       <Stat>
         <StatLabel>You currently have</StatLabel>
         <StatNumber>
-          {scholars.length} {pluralize('scholar', scholars.length)}
+          {activeScholars.length} {pluralize('scholar', activeScholars.length)}
         </StatNumber>
         <Skeleton isLoaded={!isLoading} h="20px" w="235px" mt={1}>
           <StatHelpText>averaging {averageSlp} SLP/day</StatHelpText>
