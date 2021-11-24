@@ -3,7 +3,7 @@ import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
 
 import { DangerSettingsCollapsed } from './DangerSettingsCollapsed';
 
-export function DangerSettingsButton() {
+export const DangerSettingsButton = (): JSX.Element => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -17,4 +17,4 @@ export function DangerSettingsButton() {
       </Box>
     </Box>
   );
-}
+};

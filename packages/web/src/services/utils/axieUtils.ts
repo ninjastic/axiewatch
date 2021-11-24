@@ -185,7 +185,45 @@ function getPartsFromGroup(part: string, group: string, region: string) {
   };
 }
 
-export function getTraits(genes: string) {
+export type AxieGeneType = 'd' | 'r2' | 'r1';
+
+export interface AxieGene {
+  partId: string;
+  class: string;
+  specialGenes: string;
+  type: string;
+  name: string;
+}
+
+export interface AxieSale {
+  id: string;
+  skin: string;
+  cls: AxieClass;
+  tag: string;
+  region: string;
+  back: Record<AxieGeneType, AxieGene>;
+  ears: Record<AxieGeneType, AxieGene>;
+  mouth: Record<AxieGeneType, AxieGene>;
+  eyes: Record<AxieGeneType, AxieGene>;
+  tail: Record<AxieGeneType, AxieGene>;
+  horn: Record<AxieGeneType, AxieGene>;
+  pattern: Record<AxieGeneType, string>;
+}
+
+interface AxieTraits {
+  cls: string;
+  region: string;
+  pattern: Record<AxieGeneType, string>;
+  color: Record<AxieGeneType, string>;
+  back: Record<AxieGeneType, AxieGene>;
+  ears: Record<AxieGeneType, AxieGene>;
+  horn: Record<AxieGeneType, AxieGene>;
+  tail: Record<AxieGeneType, AxieGene>;
+  eyes: Record<AxieGeneType, AxieGene>;
+  mouth: Record<AxieGeneType, AxieGene>;
+}
+
+export const getTraits = (genes: string): AxieTraits => {
   const genesBin = genesToBin(BigInt(genes));
 
   const groups = [
@@ -209,10 +247,11 @@ export function getTraits(genes: string) {
   const horn = getPartsFromGroup('horn', groups[5], region);
   const back = getPartsFromGroup('back', groups[6], region);
   const tail = getPartsFromGroup('tail', groups[7], region);
-  return { cls, region, pattern, color, eyes, mouth, ears, horn, back, tail };
-}
 
-export function getQualityAndPureness(traits: any, cls: string) {
+  return { cls, region, pattern, color, eyes, mouth, ears, horn, back, tail };
+};
+
+export const getQualityAndPureness = (traits: any, cls: string): { quality: number; pureness: number } => {
   let quality = 0;
   let dPureness = 0;
 
@@ -228,5 +267,6 @@ export function getQualityAndPureness(traits: any, cls: string) {
       quality += PROBABILITIES.r2;
     }
   });
+
   return { quality: quality / MAX_QUALITY, pureness: dPureness };
-}
+};

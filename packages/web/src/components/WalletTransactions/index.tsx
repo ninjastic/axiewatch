@@ -10,9 +10,6 @@ import {
   MenuItem,
   HStack,
   Tooltip,
-  Alert,
-  AlertIcon,
-  AlertDescription,
 } from '@chakra-ui/react';
 import { FiChevronDown } from 'react-icons/fi';
 import { useEffect, useMemo, useState } from 'react';
@@ -71,7 +68,6 @@ const TransactionsTypeSelector = ({ typeFilter, setTypeFilter }: TransactionsTyp
     'Claim SLP',
     'Transfer Axie',
     'Buy Axie',
-    'Sold Axie',
     'Create Axie Sale',
     'Cancel Axie Sale',
     'Withdraw ETH',
@@ -140,14 +136,6 @@ export const WalletTransactions = (): JSX.Element => {
   const [perPage, setPerPage] = useState(20);
   const [typeFilter, setTypeFilter] = useState('All');
 
-  useEffect(() => {
-    window.scrollTo({
-      left: 0,
-      top: 0,
-      behavior: 'smooth',
-    });
-  }, [page]);
-
   const managerAddress = preferences.managerAddress.replace('ronin:', '0x');
 
   const addresses = scholars.map(scholar => scholar.address);
@@ -182,6 +170,14 @@ export const WalletTransactions = (): JSX.Element => {
     setPage(1);
   }, [typeFilter, perPage]);
 
+  useEffect(() => {
+    window.scrollTo({
+      left: 0,
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, [page]);
+
   if (isLoading) {
     return (
       <Box align="center">
@@ -208,18 +204,6 @@ export const WalletTransactions = (): JSX.Element => {
           <TransactionsPerPageSelector perPage={perPage} setPerPage={setPerPage} />
         </HStack>
       </Flex>
-
-      <Alert mb={3} status="warning">
-        <AlertDescription>
-          <HStack>
-            <AlertIcon />
-
-            <Text>
-              The <b>Axie Sold</b> transactions are disabled for the time being. Sorry for the incovenience.
-            </Text>
-          </HStack>
-        </AlertDescription>
-      </Alert>
 
       <TransactionsTable transactions={pagedTransactions} />
 

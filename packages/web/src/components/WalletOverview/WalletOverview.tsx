@@ -9,6 +9,7 @@ import { scholarsMap } from '../../recoil/scholars';
 import { usePrice } from '../../services/hooks/usePrice';
 import { useBatchWallet } from '../../services/hooks/useBatchWallet';
 import { preferencesAtom } from '@src/recoil/preferences';
+import { RequestStatusFloatingButton } from '../RequestStatusFloatingButton';
 
 export const WalletOverview = (): JSX.Element => {
   const price = usePrice();
@@ -23,7 +24,7 @@ export const WalletOverview = (): JSX.Element => {
     ? lodash.uniqWith([managerAddress, ...addresses], (a, b) => a.toLowerCase() === b.toLowerCase())
     : addresses;
 
-  const { results, isLoading } = useBatchWallet(addressesWithManager);
+  const { results, isLoading, isFetching } = useBatchWallet(addressesWithManager);
 
   const amount = useMemo(
     () =>
@@ -61,64 +62,68 @@ export const WalletOverview = (): JSX.Element => {
   );
 
   return (
-    <SimpleGrid columns={{ base: 2, lg: 4 }} alignItems="center" gap={5}>
-      <GridItem colSpan={1} mb={{ base: 5, lg: 0 }}>
-        <Stat>
-          <StatLabel>Total Worth</StatLabel>
+    <>
+      <SimpleGrid columns={{ base: 2, lg: 4 }} alignItems="center" gap={5}>
+        <GridItem colSpan={1} mb={{ base: 5, lg: 0 }}>
+          <Stat>
+            <StatLabel>Total Worth</StatLabel>
 
-          <Skeleton maxW="200px" h="30px" isLoaded={!isLoading}>
-            <StatNumber>~{totalWorth}</StatNumber>
+            <Skeleton maxW="200px" h="30px" isLoaded={!isLoading}>
+              <StatNumber>~{totalWorth}</StatNumber>
+            </Skeleton>
+          </Stat>
+        </GridItem>
+
+        <Stat w="120px">
+          <StatLabel>SLP</StatLabel>
+
+          <Skeleton maxW="150px" h="30px" isLoaded={!isLoading}>
+            <HStack>
+              <Image src="/images/axies/slp.png" width="18px" height="18px" alt="slp" />
+
+              <StatNumber>{amount.slp ?? '0000'}</StatNumber>
+            </HStack>
+          </Skeleton>
+
+          <Skeleton maxW="7 0px" h="20px" isLoaded={!isLoading}>
+            <StatHelpText>{prices.slp}</StatHelpText>
           </Skeleton>
         </Stat>
-      </GridItem>
 
-      <Stat w="120px">
-        <StatLabel>SLP</StatLabel>
+        <Stat w="120px">
+          <StatLabel>AXS</StatLabel>
 
-        <Skeleton maxW="150px" h="30px" isLoaded={!isLoading}>
-          <HStack>
-            <Image src="/images/axies/slp.png" width="18px" height="18px" alt="slp" />
+          <Skeleton maxW="150px" h="30px" isLoaded={!isLoading}>
+            <HStack>
+              <Image src="/images/axies/axs.png" width="18px" height="18px" alt="axs" />
 
-            <StatNumber>{amount.slp ?? '0000'}</StatNumber>
-          </HStack>
-        </Skeleton>
+              <StatNumber>{amount.axs ?? '0000'}</StatNumber>
+            </HStack>
+          </Skeleton>
 
-        <Skeleton maxW="7 0px" h="20px" isLoaded={!isLoading}>
-          <StatHelpText>{prices.slp}</StatHelpText>
-        </Skeleton>
-      </Stat>
+          <Skeleton maxW="70px" h="20px" isLoaded={!isLoading}>
+            <StatHelpText>{prices.axs}</StatHelpText>
+          </Skeleton>
+        </Stat>
 
-      <Stat w="120px">
-        <StatLabel>AXS</StatLabel>
+        <Stat w="120px">
+          <StatLabel>ETH</StatLabel>
 
-        <Skeleton maxW="150px" h="30px" isLoaded={!isLoading}>
-          <HStack>
-            <Image src="/images/axies/axs.png" width="18px" height="18px" alt="axs" />
+          <Skeleton maxW="150px" h="30px" isLoaded={!isLoading}>
+            <HStack>
+              <Image src="/images/axies/eth.png" width="20px" height="20px" alt="eth" />
 
-            <StatNumber>{amount.axs ?? '0000'}</StatNumber>
-          </HStack>
-        </Skeleton>
+              <StatNumber>{amount.eth}</StatNumber>
+            </HStack>
+          </Skeleton>
 
-        <Skeleton maxW="70px" h="20px" isLoaded={!isLoading}>
-          <StatHelpText>{prices.axs}</StatHelpText>
-        </Skeleton>
-      </Stat>
+          <Skeleton maxW="70px" h="20px" isLoaded={!isLoading}>
+            <StatHelpText>{prices.eth}</StatHelpText>
+          </Skeleton>
+        </Stat>
+      </SimpleGrid>
 
-      <Stat w="120px">
-        <StatLabel>ETH</StatLabel>
-
-        <Skeleton maxW="150px" h="30px" isLoaded={!isLoading}>
-          <HStack>
-            <Image src="/images/axies/eth.png" width="20px" height="20px" alt="eth" />
-
-            <StatNumber>{amount.eth}</StatNumber>
-          </HStack>
-        </Skeleton>
-
-        <Skeleton maxW="70px" h="20px" isLoaded={!isLoading}>
-          <StatHelpText>{prices.eth}</StatHelpText>
-        </Skeleton>
-      </Stat>
-    </SimpleGrid>
+      <RequestStatusFloatingButton isLoading={isLoading} isFetching={isFetching} />
+    </>
   );
 };

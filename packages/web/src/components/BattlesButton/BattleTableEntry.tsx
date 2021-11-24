@@ -12,7 +12,7 @@ interface BattleCardProps {
 
 export const BattleTableEntry = ({ battle, address }: BattleCardProps): JSX.Element => {
   const date = dayjs.utc(battle.created_at);
-  const formattedDate = date.format('DD MMM YYYY, HH:mm:ss UTC');
+  const formattedDate = date.format('DD MMM YYYY, HH:mm:ss');
   const relativeDate = date.fromNow();
 
   const type = battle.battle_type === 1 ? 'PVE' : 'PVP';

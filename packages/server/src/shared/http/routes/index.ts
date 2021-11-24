@@ -34,7 +34,7 @@ router.get('/pve', pveController.get);
 router.get('/daily', dailyController.get);
 router.get('/explorer/*', explorerController.get);
 router.post('/batch-explorer', batchExplorerController.post);
-router.get('/sales', salesController.get);
+router.post('/sales', salesController.post);
 router.post('/rpc', rpcController.post);
 router.get('/sync', syncController.get);
 router.post('/sync', syncController.post);

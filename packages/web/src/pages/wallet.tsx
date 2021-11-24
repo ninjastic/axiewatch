@@ -1,26 +1,14 @@
-import { Box, Flex, HStack, Grid, Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
-import { useRecoilValue } from 'recoil';
+import { Box, Flex, HStack, Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
-import lodash from 'lodash';
 
-import { scholarsMap } from '../recoil/scholars';
 import { WalletOverview } from '../components/WalletOverview';
 import { PreferencesButton } from '../components/Header/PreferencesButton';
 import { PriceTicker } from '../components/Header/PriceTicker';
-import { WalletCard } from '../components/WalletCard';
 import { WalletTransactions } from '../components/WalletTransactions';
-import { preferencesAtom } from '../recoil/preferences';
+import { WalletSales } from '@src/components/WalletSales';
+import { WalletGrid } from '@src/components/WalletGrid';
 
 export const WalletPage = (): JSX.Element => {
-  const scholars = useRecoilValue(scholarsMap);
-  const preferences = useRecoilValue(preferencesAtom);
-
-  const managerAddress = preferences.managerAddress.replace('ronin:', '0x');
-  const addresses = scholars.map(scholar => scholar.address);
-  const addressesWithManager = preferences.managerAddress
-    ? lodash.uniqWith([managerAddress, ...addresses], (a, b) => a.toLowerCase() === b.toLowerCase())
-    : addresses;
-
   return (
     <Box h="full" maxW="1450px" margin="auto" p={3}>
       <Flex flexDir={{ base: 'column-reverse', xl: 'row' }}>
@@ -34,29 +22,29 @@ export const WalletPage = (): JSX.Element => {
         </Box>
       </Flex>
 
-      <Tabs mt={5} isLazy>
+      <Tabs mt={10} isLazy>
         <TabList>
           <Tab>Wallets</Tab>
           <Tab>Transactions</Tab>
+          <Tab>Sales</Tab>
         </TabList>
 
         <TabPanels>
           <TabPanel>
-            <Grid
-              pt={{ base: 3, xl: 10 }}
-              pb={10}
-              templateColumns={{ base: '1fr', lg: 'repeat(2, 1fr)', xl: 'repeat(3, 1fr)' }}
-              gap={3}
-            >
-              {addressesWithManager.map(address => (
-                <WalletCard key={address} address={address} />
-              ))}
-            </Grid>
+            <Box pb={5}>
+              <WalletGrid />
+            </Box>
           </TabPanel>
 
           <TabPanel>
             <Box pb={5}>
               <WalletTransactions />
+            </Box>
+          </TabPanel>
+
+          <TabPanel>
+            <Box pb={5}>
+              <WalletSales />
             </Box>
           </TabPanel>
         </TabPanels>

@@ -5,8 +5,9 @@ import { rpc } from '@src/services/rpc';
 import slpAbi from '../../constants/abi/SLP.json';
 
 interface UseBatchWalletData {
-  isLoading: boolean;
   results: UseQueryResult<any, any>[];
+  isLoading: boolean;
+  isFetching: boolean;
 }
 
 export const useBatchWallet = (addresses: string[]): UseBatchWalletData => {
@@ -47,6 +48,7 @@ export const useBatchWallet = (addresses: string[]): UseBatchWalletData => {
 
   const results: UseQueryResult<any, any>[] = useQueries(queries);
   const isLoading = results.some(r => r.isLoading);
+  const isFetching = results.some(r => r.isFetching);
 
-  return { isLoading, results };
+  return { isLoading, results, isFetching };
 };

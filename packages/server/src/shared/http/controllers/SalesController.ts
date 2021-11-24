@@ -4,11 +4,11 @@ import axios from 'axios';
 import AppError from '@src/shared/errors/AppError';
 
 export class SalesController {
-  async get(req: Request, res: Response): Promise<Response> {
+  async post(req: Request, res: Response): Promise<Response> {
     return axios
       .post(
         'https://ebc-data-api.herokuapp.com/api/v1/marketplace/successful-auctions',
-        { address: req.query.address, limit: req.query.limit, take: req.query.take },
+        { address: req.body.address, limit: req.body.limit, take: req.body.take },
         {
           headers: {
             'X-API-KEY': 'exm5asdtg89232jwmnre09123',

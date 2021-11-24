@@ -51,8 +51,6 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
   const explorerBaseUrl = 'https://explorer.roninchain.com';
 
   const actionType = useMemo(() => {
-    // if (transaction.axie) return 'Sold Axie';
-
     if (transaction.input.startsWith('0xa9059cbb') && transaction.to === eth) return 'Transfer ETH';
     if (transaction.input.startsWith('0xa9059cbb') && transaction.to === slp) return 'Transfer SLP';
     if (transaction.input.startsWith('0xa9059cbb') && transaction.to === axs) return 'Transfer AXS';
@@ -390,19 +388,6 @@ const TransactionTableEntryComponent = ({ transaction }: TransactionTableEntryPr
         </Stack>
       );
     }
-
-    // if (actionType === 'Sold Axie') {
-    //   return (
-    //     <Stack direction={{ base: 'column', lg: 'row' }}>
-    //       <HStack spacing={1}>
-    //         <Image src="/images/axies/eth.png" width="16px" alt="slp" />
-    //         <Text>{transaction.value}</Text>
-    //       </HStack>
-
-    //       <AxieTag id={transaction.axie.id} />
-    //     </Stack>
-    //   );
-    // }
 
     if (actionType === 'Create Axie Sale' && transaction.status) {
       const [, , hexId, starting, ending] = ethers.utils.defaultAbiCoder.decode(

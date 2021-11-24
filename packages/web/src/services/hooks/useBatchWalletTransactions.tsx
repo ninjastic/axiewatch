@@ -27,8 +27,7 @@ export const useBatchWalletTransactions = (addresses: string[]): UseBatchWalletT
       );
     },
     {
-      staleTime: Infinity,
-      refetchOnMount: 'always',
+      staleTime: 1000 * 60 * 10,
     }
   );
 
