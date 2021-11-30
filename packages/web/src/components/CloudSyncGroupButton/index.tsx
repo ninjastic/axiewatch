@@ -22,13 +22,13 @@ export const CloudSyncGroupButton = (): JSX.Element => {
     id: 'uploadedScholarsModal',
     title: 'Upload Scholars',
     content: <UploadScholarsModal uploadedScholars={uploadedScholars} />,
-    size: 'lg',
+    size: '2xl',
   });
 
   const downloadScholarsModal = useCreateModal({
     id: 'downloadScholarsModal',
     title: 'Download scholars',
-    size: 'lg',
+    size: '2xl',
     content: <DownloadScholarsModal uploadedScholars={uploadedScholars} />,
   });
 
