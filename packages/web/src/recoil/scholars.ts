@@ -271,19 +271,6 @@ export const allScholarsSelector = selector({
   },
 });
 
-export const allScholarAxiesSelector = selector<ScholarAxies[]>({
-  key: 'allScholarAxiesSelector',
-  get: ({ get }) => {
-    const scholars = get(scholarsMap);
-    const allAxies = scholars.map(scholar => {
-      const data = get(scholarAxies(scholar.address));
-      return data;
-    });
-
-    return allAxies;
-  },
-});
-
 export const totalSlpSelector = selector({
   key: 'totalSlpSelector',
   get: ({ get }) => {

@@ -24,7 +24,14 @@ import pluralize from 'pluralize';
 import lodash from 'lodash';
 import { FiChevronDown } from 'react-icons/fi';
 
-import { scholarAxiesFilter, scholarsMap, ScholarAxiesFilter, Axie, axiePartsAtom } from '../recoil/scholars';
+import {
+  scholarAxiesFilter,
+  scholarsMap,
+  ScholarAxiesFilter,
+  Axie,
+  axiePartsAtom,
+  AxieClass,
+} from '../recoil/scholars';
 import { preferencesAtom } from '../recoil/preferences';
 import { useBatchScholarAxie } from '../services/hooks/useBatchScholarAxie';
 import { AxiesFilterButton } from '../components/AxiesFilterButton';
@@ -108,7 +115,7 @@ export const Axies = (): JSX.Element => {
         }
 
         return obj;
-      }, {} as any),
+      }, {} as { [cls in AxieClass]: number }),
     [scholarAxies]
   );
 
@@ -171,7 +178,7 @@ export const Axies = (): JSX.Element => {
         <PreferencesButton />
       </Flex>
 
-      {isLoading && scholars.length && (
+      {isLoading && !!scholars.length && (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} gap={3} pb={5} mt={5}>
           {lodash.times(4).map(x => (
             <AxieCardSkeleton key={x} />
@@ -234,7 +241,7 @@ export const Axies = (): JSX.Element => {
         </Stack>
       )}
 
-      {!isLoading && !!scholars.length && !filteredAxies.length && (
+      {!isLoading && !!addressesWithManager.length && !filteredAxies.length && (
         <Box h="70%">
           <Flex flexDir="column" justifyContent="center" alignItems="center" h="100%">
             <Text fontSize="lg" variant="faded">
@@ -244,7 +251,7 @@ export const Axies = (): JSX.Element => {
         </Box>
       )}
 
-      {!isLoading && !scholars.length && (
+      {!isLoading && !addressesWithManager.length && (
         <Box h="80%">
           <Flex flexDir="column" justifyContent="center" alignItems="center" h="100%">
             <Text fontSize="lg" variant="faded">

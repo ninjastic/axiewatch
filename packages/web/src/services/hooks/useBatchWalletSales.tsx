@@ -49,26 +49,29 @@ interface UseBatchWalletSalesProps {
   addresses: string[];
   limit?: number;
   skip?: number;
+  page?: number;
 }
 
 export const useBatchWalletSales = ({
   addresses,
   limit = 20,
   skip = 0,
+  page = 1,
 }: UseBatchWalletSalesProps): UseBatchWalletSalesData => {
   const { data, isLoading, isFetching } = useQuery(
-    ['walletSales', addresses, limit, skip],
+    ['walletSales', addresses, limit, skip, page],
     async () => {
       const response = await serverApi.post<APIWalletSalesResponse>('/sales', {
         address: addresses,
-        limit,
-        skip,
+        limit: limit * page,
+        skip: limit * (page - 1),
       });
 
       return response.data;
     },
     {
       staleTime: 1000 * 60 * 15,
+      keepPreviousData: true,
     }
   );
 

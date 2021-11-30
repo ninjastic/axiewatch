@@ -5,9 +5,17 @@ interface PageInputProps {
   page: number;
   numberOfPages: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
+  showNumberOfPages?: boolean;
+  isNextDisabled?: boolean;
 }
 
-export const Pagination = ({ page, numberOfPages, setPage }: PageInputProps): JSX.Element => {
+export const Pagination = ({
+  page,
+  numberOfPages,
+  setPage,
+  showNumberOfPages = true,
+  isNextDisabled,
+}: PageInputProps): JSX.Element => {
   const [inputValue, setInputValue] = useState(page);
   const pageInputRef = useRef<HTMLInputElement>(null);
 
@@ -16,9 +24,6 @@ export const Pagination = ({ page, numberOfPages, setPage }: PageInputProps): JS
 
     if (step === 'increase') newPageValue += 1;
     else if (step === 'decrease') newPageValue -= 1;
-
-    if (newPageValue >= numberOfPages) newPageValue = numberOfPages;
-    if (newPageValue <= 0) newPageValue = 1;
 
     setPage(newPageValue);
   };
@@ -52,10 +57,10 @@ export const Pagination = ({ page, numberOfPages, setPage }: PageInputProps): JS
 
         <Input maxW="65px" {...input} ref={pageInputRef} />
 
-        <Text>of {Math.max(numberOfPages, 1)}</Text>
+        {showNumberOfPages && <Text>of {Math.max(numberOfPages, 1)}</Text>}
       </HStack>
 
-      <Button onClick={() => handlePageChange('increase')} isDisabled={page >= numberOfPages}>
+      <Button onClick={() => handlePageChange('increase')} isDisabled={isNextDisabled ?? page >= numberOfPages}>
         Next
       </Button>
     </Flex>

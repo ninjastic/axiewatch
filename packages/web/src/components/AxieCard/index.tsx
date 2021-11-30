@@ -186,7 +186,7 @@ export const AxieCard = ({ axie }: AxieCardProps): JSX.Element => {
         </Box>
       )}
 
-      <Flex justify="flex-end">
+      <Flex justify="flex-end" align="center">
         <Tag size="sm" fontWeight="bold" bg="transparent">
           <HStack spacing={1}>
             <Link href={findSimilarUrl} target="_blank">

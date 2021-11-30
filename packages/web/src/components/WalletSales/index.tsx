@@ -125,7 +125,7 @@ interface TransactionsPerPageSelectorProps {
 }
 
 const TransactionsPerPageSelector = ({ perPage, setPerPage }: TransactionsPerPageSelectorProps): JSX.Element => {
-  const options = [10, 20];
+  const options = [10, 20, 50];
 
   return (
     <Menu>
@@ -158,7 +158,11 @@ export const WalletSales = (): JSX.Element => {
     ? lodash.uniqWith([managerAddress, ...addresses], (a, b) => a.toLowerCase() === b.toLowerCase())
     : addresses;
 
-  const { isLoading, isFetching, data } = useBatchWalletSales({ addresses: addressesWithManager });
+  const { isLoading, isFetching, data } = useBatchWalletSales({
+    addresses: addressesWithManager,
+    limit: perPage,
+    page,
+  });
 
   const sortedTransactions = data.sort((a, b) => {
     if (a.txTimestamp > b.txTimestamp) return -1;
@@ -193,9 +197,9 @@ export const WalletSales = (): JSX.Element => {
     <Box>
       <Flex align="center" justify="space-between" mb={3} direction={{ base: 'column', lg: 'row' }}>
         <HStack>
-          <Text fontSize="lg">Showing {sortedTransactions.length} transactions</Text>
+          <Text fontSize="lg">Showing {data.length} transactions</Text>
 
-          <Tooltip label="Only the last 20 sales between all wallets">
+          <Tooltip label="Data is cached for 30 minutes">
             <Box>
               <AiOutlineInfoCircle />
             </Box>
@@ -224,11 +228,27 @@ export const WalletSales = (): JSX.Element => {
             {pagedTransactions.map(saleTx => (
               <SaleEntry key={saleTx.txHash} transaction={saleTx} />
             ))}
+
+            {isFetching && (
+              <Tr>
+                <Td colSpan={6}>
+                  <Flex align="center" justify="center">
+                    <Spinner />
+                  </Flex>
+                </Td>
+              </Tr>
+            )}
           </Tbody>
         </Table>
       </Card>
 
-      <Pagination page={page} setPage={setPage} numberOfPages={numberOfPages} />
+      <Pagination
+        page={page}
+        setPage={setPage}
+        numberOfPages={numberOfPages}
+        showNumberOfPages={false}
+        isNextDisabled={isFetching || pagedTransactions.length % perPage !== 0}
+      />
 
       <RequestStatusFloatingButton isFetching={isFetching} />
     </Box>
