@@ -13,13 +13,13 @@ import {
   Box,
   Flex,
   Tooltip,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Button,
+  // Menu,
+  // MenuButton,
+  // MenuList,
+  // MenuItem,
+  // Button,
 } from '@chakra-ui/react';
-import { FiChevronDown } from 'react-icons/fi';
+// import { FiChevronDown } from 'react-icons/fi';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
@@ -119,37 +119,37 @@ const SaleEntry = ({ transaction }: SaleEntryProps): JSX.Element => {
   );
 };
 
-interface TransactionsPerPageSelectorProps {
-  perPage: number;
-  setPerPage: React.Dispatch<React.SetStateAction<number>>;
-}
+// interface TransactionsPerPageSelectorProps {
+//   perPage: number;
+//   setPerPage: React.Dispatch<React.SetStateAction<number>>;
+// }
 
-const TransactionsPerPageSelector = ({ perPage, setPerPage }: TransactionsPerPageSelectorProps): JSX.Element => {
-  const options = [10, 20, 50];
+// const TransactionsPerPageSelector = ({ perPage, setPerPage }: TransactionsPerPageSelectorProps): JSX.Element => {
+//   const options = [10, 20, 50];
 
-  return (
-    <Menu>
-      <MenuButton as={Button} variant="outline" rightIcon={<FiChevronDown />} minW="160px" textAlign="left">
-        {perPage} per page
-      </MenuButton>
+//   return (
+//     <Menu>
+//       <MenuButton as={Button} variant="outline" rightIcon={<FiChevronDown />} minW="160px" textAlign="left">
+//         {perPage} per page
+//       </MenuButton>
 
-      <MenuList>
-        {options.map(option => (
-          <MenuItem key={option} onClick={() => setPerPage(option)}>
-            {option} per page
-          </MenuItem>
-        ))}
-      </MenuList>
-    </Menu>
-  );
-};
+//       <MenuList>
+//         {options.map(option => (
+//           <MenuItem key={option} onClick={() => setPerPage(option)}>
+//             {option} per page
+//           </MenuItem>
+//         ))}
+//       </MenuList>
+//     </Menu>
+//   );
+// };
 
 export const WalletSales = (): JSX.Element => {
   const scholars = useRecoilValue(scholarsMap);
   const preferences = useRecoilValue(preferencesAtom);
 
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
+  const [perPage] = useState(50);
 
   const managerAddress = preferences.managerAddress.replace('ronin:', '0x');
 
@@ -206,9 +206,9 @@ export const WalletSales = (): JSX.Element => {
           </Tooltip>
         </HStack>
 
-        <HStack mt={{ base: 3, lg: 0 }}>
+        {/* <HStack mt={{ base: 3, lg: 0 }}>
           <TransactionsPerPageSelector perPage={perPage} setPerPage={setPerPage} />
-        </HStack>
+        </HStack> */}
       </Flex>
 
       <Card overflowX="auto" p={3} borderWidth={1}>
