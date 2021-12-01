@@ -16,11 +16,21 @@ export class BatchScholarController {
 
     const promises = await Promise.allSettled(
       addresses.map(async address => {
+        console.time(`scholar:${address}`);
         const scholar = await getScholar(address);
+        console.timeEnd(`scholar:${address}`);
 
+        console.time(`pvp:${address}`);
         const pvp = await getScholarPvp(address).catch(() => null);
+        console.timeEnd(`pvp:${address}`);
+
+        console.time(`pve:${address}`);
         const pve = await getScholarAdventure(address).catch(() => null);
+        console.timeEnd(`pve:${address}`);
+
+        console.time(`historical:${address}`);
         const historical = await getScholarHistoricalSlp(address).catch(() => null);
+        console.timeEnd(`historical:${address}`);
 
         return {
           address,

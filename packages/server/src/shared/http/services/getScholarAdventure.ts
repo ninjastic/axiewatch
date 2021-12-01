@@ -1,5 +1,4 @@
 import { cache } from '@src/services/cache';
-import dayjs from '@src/services/dayjs';
 import { proxiedApi } from '@src/services/api';
 
 interface ApiScholarAdventureResponse {
@@ -15,8 +14,7 @@ export interface ScholarAdventureData {
 }
 
 export const getScholarAdventure = async (address: string): Promise<ScholarAdventureData> => {
-  const day = dayjs().day();
-  const cacheKey = `v1:scholarAdventure:${address}:${day}`;
+  const cacheKey = `v1:scholarAdventure:${address}`;
   const cacheTime = 1000 * 60 * 15; // 15 minutes
   const apiUrl = `https://game-api.skymavis.com/game-api/clients/${address}/pve-best-scores/worlds/1/pve-stats`;
   const apiParams = {

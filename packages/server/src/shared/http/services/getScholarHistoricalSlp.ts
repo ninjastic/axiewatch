@@ -14,8 +14,7 @@ export interface ScholarHistoricalSlpData {
 }
 
 export const getScholarHistoricalSlp = async (address: string): Promise<ScholarHistoricalSlpData> => {
-  const day = dayjs().day();
-  const cacheKey = `v1:scholarHistoricalSlp:${address}:${day}`;
+  const cacheKey = `v1:scholarHistoricalSlp:${address}`;
   const cacheTime = 1000 * 60 * 15; // 15 minutes
 
   const cached = await cache.get(cacheKey);
@@ -28,7 +27,7 @@ export const getScholarHistoricalSlp = async (address: string): Promise<ScholarH
     .orderBy('createdAt', 'desc')
     .limit(14)
     .then(data =>
-      data.reverse().map(entry => ({
+      data.map(entry => ({
         day: dayjs(entry.createdAt).format('YYYY-MM-DD'),
         totalSlp: entry.slpAmount,
       }))
