@@ -63,7 +63,7 @@ const geneColorMap = {
 
 const PROBABILITIES = { d: 0.375, r1: 0.09375, r2: 0.03125 };
 
-const parts = ['eyes', 'mouth', 'ears', 'horn', 'back', 'tail'] as string[];
+const parts = ['eyes', 'mouth', 'ears', 'horn', 'back', 'tail'] as const;
 
 const MAX_QUALITY = 6 * (PROBABILITIES.d + PROBABILITIES.r1 + PROBABILITIES.r2);
 
@@ -251,7 +251,7 @@ export const getTraits = (genes: string): AxieTraits => {
   return { cls, region, pattern, color, eyes, mouth, ears, horn, back, tail };
 };
 
-export const getQualityAndPureness = (traits: any, cls: string): { quality: number; pureness: number } => {
+export const getQualityAndPureness = (traits: AxieTraits, cls: string): { quality: number; pureness: number } => {
   let quality = 0;
   let dPureness = 0;
 
@@ -269,4 +269,31 @@ export const getQualityAndPureness = (traits: any, cls: string): { quality: numb
   });
 
   return { quality: quality / MAX_QUALITY, pureness: dPureness };
+};
+
+export const getTraitProbabilities = (momTraits: AxieTraits, dadTraits: AxieTraits): any => {
+  const probabilities = {};
+
+  Object.values(parts).forEach(part => {
+    const momTrait = momTraits[part as typeof parts[number]];
+    const dadTrait = dadTraits[part as typeof parts[number]];
+
+    Object.entries(momTrait).forEach(([geneType, gene]) => {
+      if (probabilities[gene.partId]) {
+        probabilities[gene.partId] += PROBABILITIES[geneType];
+      } else {
+        probabilities[gene.partId] = PROBABILITIES[geneType];
+      }
+    });
+
+    Object.entries(dadTrait).forEach(([geneType, gene]) => {
+      if (probabilities[gene.partId]) {
+        probabilities[gene.partId] += PROBABILITIES[geneType];
+      } else {
+        probabilities[gene.partId] = PROBABILITIES[geneType];
+      }
+    });
+  });
+
+  return probabilities;
 };

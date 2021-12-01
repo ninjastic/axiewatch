@@ -19,11 +19,18 @@ export const RequestStatusFloatingButton = ({
   return (
     <>
       {shouldShowRetry && (
-        <Button pos="fixed" right={5} bottom={5} borderRadius="full" onClick={refetch} bg="red.700">
+        <Button
+          pos="fixed"
+          right={5}
+          bottom={5}
+          borderRadius="full"
+          onClick={refetch}
+          bg="red.700"
+          isLoading={isFetching}
+          _hover={{ opacity: isFetching ? 1 : 0.85 }}
+        >
           <Flex flexDirection="column" align="center" justify="center">
-            {isFetching ? (
-              <Spinner />
-            ) : (
+            {!isFetching && (
               <HStack>
                 <BsArrowRepeat />
                 <Text fontWeight="bold">Retry {errored.length} failed</Text>
