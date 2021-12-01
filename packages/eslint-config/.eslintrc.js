@@ -33,6 +33,13 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'no-param-reassign': ['error', { props: true, ignorePropertyModificationsFor: ['draft'] }],
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': [
+      'warn',
+      {
+        additionalHooks: '(useRecoilCallback|useRecoilTransaction_UNSTABLE)',
+      },
+    ],
     'import/order': [
       'error',
       {

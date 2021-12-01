@@ -5,6 +5,7 @@ import dayjs from '../services/dayjs';
 import { AxieClass, ScholarHistoricalSlpData } from '@src/types/api';
 import { getTraits } from '../services/utils/axieUtils';
 import { preferencesAtom } from './preferences';
+import { teamStateAtomFamily, selectedTeamAtom } from './teams';
 
 const { persistAtom } = recoilPersist();
 
@@ -341,9 +342,23 @@ export const scholarsSortSelector = selector({
     const sort = get(scholarSort);
     const filters = get(scholarFilter);
     const preferences = get(preferencesAtom);
+    const selectedTeam = get(selectedTeamAtom);
 
-    const scholars = get(scholarsMap);
+    const scholars = selectedTeam
+      ? get(scholarsMap).filter(scholar => get(teamStateAtomFamily(selectedTeam)).scholarsMap.includes(scholar.address))
+      : get(scholarsMap);
+
     const scholarsData = scholars.map(scholar => get<ScholarSelector>(scholarSelector(scholar.address)));
+
+    const filteredScholarsData = scholarsData.filter(scholar => {
+      if (filters.SLP.above && scholar.slp < filters.SLP.above) return false;
+      if (filters.SLP.under && scholar.slp > filters.SLP.under) return false;
+
+      if (filters.onlyClaimable && (scholar.nextClaim === 0 || dayjs.unix(scholar.nextClaim).isAfter(dayjs())))
+        return false;
+
+      return true;
+    });
 
     function getSorted(dataToSort: ScholarSelector[]) {
       switch (sort) {
@@ -415,14 +430,6 @@ export const scholarsSortSelector = selector({
       });
     }
 
-    return getSortedByActive(getSorted(scholarsData)).filter(scholar => {
-      if (filters.SLP.above && scholar.slp < filters.SLP.above) return false;
-      if (filters.SLP.under && scholar.slp > filters.SLP.under) return false;
-
-      if (filters.onlyClaimable && (scholar.nextClaim === 0 || dayjs.unix(scholar.nextClaim).isAfter(dayjs())))
-        return false;
-
-      return true;
-    });
+    return getSortedByActive(getSorted(filteredScholarsData));
   },
 });
