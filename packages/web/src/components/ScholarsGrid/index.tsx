@@ -5,7 +5,14 @@ import lodash from 'lodash';
 
 import dayjs from '../../services/dayjs';
 import { preferencesAtom } from '@src/recoil/preferences';
-import { scholarFilter, ScholarMap, scholarSelector, scholarsMap, scholarSort } from '../../recoil/scholars';
+import {
+  scholarFilter,
+  ScholarMap,
+  scholarSelector,
+  scholarsMap,
+  scholarSort,
+  scholarsPerPageAtom,
+} from '../../recoil/scholars';
 import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
 import { Scholar } from './Scholar';
 import { Card } from '../Card';
@@ -116,14 +123,14 @@ const useFilterScholars = (scholars: ScholarMap[]): ScholarMap[] => {
 
 interface ScholarsGridProps {
   page: number;
-  perPage: number;
   setPage(value: number): void;
 }
 
-export const ScholarsGrid = ({ page, setPage, perPage }: ScholarsGridProps): JSX.Element => {
+export const ScholarsGrid = ({ page, setPage }: ScholarsGridProps): JSX.Element => {
   const map = useRecoilValue(scholarsMap);
   const addresses = useMemo(() => map.map(scholar => scholar.address), [map]);
   const filters = useRecoilValue(scholarFilter);
+  const perPage = useRecoilValue(scholarsPerPageAtom);
 
   const { isLoading, data, refetch, isRefetching, isFetching } = useBatchScholar({ addresses });
   const filteredScholars = useFilterScholars(map);

@@ -22,7 +22,7 @@ import {
 import { AiOutlineCloudSync } from 'react-icons/ai';
 import { FiChevronDown } from 'react-icons/fi';
 import dynamic from 'next/dynamic';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useEffect, useState } from 'react';
 
 import { useAuth } from '../services/hooks/useAuth';
@@ -33,26 +33,22 @@ import { ScholarsFilterButton } from '../components/ScholarsFilter';
 import { useCreateModal } from '../services/hooks/useCreateModal';
 import { CloudSyncGroupButton } from '../components/CloudSyncGroupButton';
 import SignInPage from './signin';
-import { scholarFilter } from '@src/recoil/scholars';
+import { scholarFilter, scholarsPerPageAtom } from '@src/recoil/scholars';
 import { useDebounce } from '@src/services/hooks/useDebounce';
 
-interface PerPageSelectorSelectorProps {
-  value: number;
-  onChange(value: number): void;
-}
-
-const PerPageSelector = ({ value, onChange }: PerPageSelectorSelectorProps): JSX.Element => {
+const PerPageSelector = (): JSX.Element => {
   const options = [20, 50, 100, 200];
+  const [value, setValue] = useRecoilState(scholarsPerPageAtom);
 
   return (
     <Menu isLazy>
       <MenuButton as={Button} rightIcon={<FiChevronDown />} maxW="165px" variant="outline" textAlign="left">
-        {!value ? 'Scholars per page...' : `${value} rows/page`}
+        {value} rows/page
       </MenuButton>
 
       <MenuList overflow="auto" maxH="250px">
         {options.map(option => (
-          <MenuItem key={option} onClick={() => onChange(option)}>
+          <MenuItem key={option} onClick={() => setValue(option)}>
             {option}
           </MenuItem>
         ))}
@@ -108,7 +104,6 @@ function SyncButton({ variant = 'ghost' }: ButtonProps) {
 
 export const ScholarsPage = (): JSX.Element => {
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(20);
 
   useEffect(() => {
     window.scrollTo({
@@ -143,7 +138,7 @@ export const ScholarsPage = (): JSX.Element => {
                     <SyncButton variant="solid" />
                     <ScholarsFilterButton variant="solid" />
                     <ScholarsSorter />
-                    <PerPageSelector value={perPage} onChange={setPerPage} />
+                    <PerPageSelector />
                   </Stack>
                 </Flex>
               </AccordionPanel>
@@ -157,11 +152,11 @@ export const ScholarsPage = (): JSX.Element => {
               <SyncButton variant="solid" />
               <ScholarsFilterButton variant="solid" />
               <ScholarsSorter />
-              <PerPageSelector value={perPage} onChange={setPerPage} />
+              <PerPageSelector />
             </Stack>
           </Flex>
 
-          <ScholarsGrid page={page} setPage={setPage} perPage={perPage} />
+          <ScholarsGrid page={page} setPage={setPage} />
         </Stack>
       </Flex>
     </Box>

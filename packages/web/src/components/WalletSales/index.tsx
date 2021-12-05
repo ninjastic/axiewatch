@@ -229,6 +229,16 @@ export const WalletSales = (): JSX.Element => {
               <SaleEntry key={saleTx.txHash} transaction={saleTx} />
             ))}
 
+            {!isFetching && !isLoading && !pagedTransactions.length && (
+              <Tr>
+                <Td colSpan={6}>
+                  <Flex align="center" justify="center">
+                    <Text variant="faded">Nothing to see here...</Text>
+                  </Flex>
+                </Td>
+              </Tr>
+            )}
+
             {isFetching && (
               <Tr>
                 <Td colSpan={6}>
@@ -247,7 +257,7 @@ export const WalletSales = (): JSX.Element => {
         setPage={setPage}
         numberOfPages={numberOfPages}
         showNumberOfPages={false}
-        isNextDisabled={isFetching || pagedTransactions.length % perPage !== 0}
+        isNextDisabled={isFetching || pagedTransactions.length % perPage !== 0 || pagedTransactions.length === 0}
       />
 
       <RequestStatusFloatingButton isFetching={isFetching} />

@@ -150,9 +150,16 @@ export const scholarState = atomFamily({
   } as ScholarState,
 });
 
-export const scholarSort = atom({
+export const scholarSort = atom<string>({
   key: 'scholarSort',
   default: '',
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const scholarsPerPageAtom = atom<number>({
+  key: 'scholarsPerPageAtom',
+  default: 20,
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const scholarFilter = atom<ScholarFilter>({
