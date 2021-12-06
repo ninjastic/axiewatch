@@ -230,7 +230,7 @@ const SelectedAxieBreeding = ({ axie, id }: SelectedAxieBreedingProps): JSX.Elem
         </Flex>
       ) : (
         <Flex flexDirection="column" align="center" justify="center">
-          <Image src="https://marketplace.axieinfinity.com/static/image/empty-axie.png" alt="Empty Axie" w="72px" />
+          <Image src="/images/axies/empty-axie.png" alt="Empty Axie" w="72px" />
           <Input mt={3} size="sm" placeholder="ID" borderRadius="lg" {...getInputProps()} />
         </Flex>
       )}
