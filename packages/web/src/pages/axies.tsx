@@ -16,13 +16,15 @@ import {
   MenuList,
   MenuItem,
   Tag,
+  Tooltip,
 } from '@chakra-ui/react';
+import { FiChevronDown } from 'react-icons/fi';
+import { AiFillHeart } from 'react-icons/ai';
 import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 import dynamic from 'next/dynamic';
 import { useMemo, useEffect, useState } from 'react';
 import pluralize from 'pluralize';
 import lodash from 'lodash';
-import { FiChevronDown } from 'react-icons/fi';
 
 import {
   scholarAxiesFilter,
@@ -39,6 +41,8 @@ import { AxieCard, AxieCardSkeleton } from '@src/components/AxieCard';
 import { PreferencesButton } from '@src/components/Header/PreferencesButton';
 import { Pagination } from '@src/components/Pagination';
 import { RequestStatusFloatingButton } from '@src/components/RequestStatusFloatingButton';
+import { isBreedingModeAtom } from '@src/recoil/breeding';
+import { BreedingFloatingCard } from '@src/components/BreedingFloatingCard';
 
 interface PerPageSelectorSelectorProps {
   value: number;
@@ -91,6 +95,7 @@ export const Axies = (): JSX.Element => {
   const resetFilters = useResetRecoilState(scholarAxiesFilter);
   const setAxieParts = useSetRecoilState(axiePartsAtom);
   const [preferences, setPreferences] = useRecoilState(preferencesAtom);
+  const [isBreedingMode, setIsBreedingMode] = useRecoilState(isBreedingModeAtom);
 
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(25);
@@ -205,6 +210,12 @@ export const Axies = (): JSX.Element => {
             </HStack>
 
             <HStack spacing={5}>
+              <Tooltip label={`${isBreedingMode ? 'Disables' : 'Enables'} the breeding simulator`}>
+                <Button leftIcon={<AiFillHeart />} onClick={() => setIsBreedingMode(prev => !prev)}>
+                  {isBreedingMode ? 'Disable' : 'Enable'}
+                </Button>
+              </Tooltip>
+
               <Checkbox
                 defaultChecked={preferences.hideAxieTraits}
                 onChange={e =>
@@ -264,6 +275,8 @@ export const Axies = (): JSX.Element => {
       {!isLoading && !!filteredAxies.length && (
         <Pagination page={page} setPage={setPage} numberOfPages={numberOfPages} />
       )}
+
+      <BreedingFloatingCard />
 
       <RequestStatusFloatingButton isFetching={isFetching} />
     </Box>

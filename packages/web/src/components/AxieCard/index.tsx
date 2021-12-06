@@ -14,7 +14,7 @@ import {
   HStack,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useMemo } from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
 import lodash from 'lodash';
@@ -25,6 +25,7 @@ import { AxieIcon } from '../Icons/AxieIcon';
 import { StatusIcon, StatusIconType } from '../Icons/StatusIcon';
 import { AxieTraits } from '../AxieTraits';
 import { Card } from '../Card';
+import { breedingStateAtom, isBreedingModeAtom } from '@src/recoil/breeding';
 
 export const AxieCardSkeleton = (): JSX.Element => {
   return (
@@ -78,6 +79,8 @@ interface AxieCardProps {
 export const AxieCard = ({ axie }: AxieCardProps): JSX.Element => {
   const preferences = useRecoilValue(preferencesAtom);
   const scholar = useRecoilValue(scholarSelector(axie.owner));
+  const isBreedingMode = useRecoilValue(isBreedingModeAtom);
+  const setBreedingState = useSetRecoilState(breedingStateAtom);
 
   const managerWithoutRonin = preferences?.managerAddress.replace('ronin:', '0x');
   const isManager = axie.owner.toLowerCase() === managerWithoutRonin.toLowerCase();
@@ -96,6 +99,15 @@ export const AxieCard = ({ axie }: AxieCardProps): JSX.Element => {
     ','
   )}&classes=${axie.class.toLowerCase()}`;
 
+  const addAxieToBreeding = () => {
+    setBreedingState(prev => {
+      if (prev[0]) {
+        return [prev[0], axie];
+      }
+      return [axie];
+    });
+  };
+
   return (
     <Card
       px={3}
@@ -104,6 +116,9 @@ export const AxieCard = ({ axie }: AxieCardProps): JSX.Element => {
       overflow="hidden"
       borderWidth={1}
       bg={useColorModeValue('light.card', '#282b39')}
+      cursor={isBreedingMode ? 'pointer' : 'default'}
+      _hover={{ ...(isBreedingMode ? { borderColor: 'white', transform: 'scale(1.02)' } : {}) }}
+      onClick={isBreedingMode ? addAxieToBreeding : undefined}
     >
       <Box py={2} display="flex" justifyContent="space-between" alignItems="center">
         <Box width="80%" display="flex" alignItems="center" overflow="hidden">
@@ -161,9 +176,7 @@ export const AxieCard = ({ axie }: AxieCardProps): JSX.Element => {
           isDisabled={!preferences.hideAxieTraits}
         >
           <Box display="flex" alignItems="center" justifyContent="center" width="55%" height="125px" overflow="hidden">
-            <Link href={`https://marketplace.axieinfinity.com/axie/${axie.id}/?referrer=axie.watch`} target="_blank">
-              <Image src={axie.image} fallback={<SkeletonCircle size="14" />} alt={`Axie ${axie.id}`} h="125px" />
-            </Link>
+            <Image src={axie.image} fallback={<SkeletonCircle size="14" />} alt={`Axie ${axie.id}`} h="125px" />
           </Box>
         </Tooltip>
 

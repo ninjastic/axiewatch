@@ -271,7 +271,7 @@ export const getQualityAndPureness = (traits: AxieTraits, cls: string): { qualit
   return { quality: quality / MAX_QUALITY, pureness: dPureness };
 };
 
-export const getTraitProbabilities = (momTraits: AxieTraits, dadTraits: AxieTraits): any => {
+export const getTraitProbabilities = (momTraits: AxieTraits, dadTraits: AxieTraits): Record<string, number> => {
   const probabilities = {};
 
   Object.values(parts).forEach(part => {
