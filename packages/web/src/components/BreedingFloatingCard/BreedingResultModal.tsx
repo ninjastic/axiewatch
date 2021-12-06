@@ -27,10 +27,12 @@ import { Card } from '../Card';
 import { AxieClass } from '@src/types/api';
 import { AxieTraits } from '../AxieTraits';
 import { scholarsMap } from '@src/recoil/scholars';
+import { preferencesAtom } from '@src/recoil/preferences';
 
 export const BreedingResultCard = (): JSX.Element => {
   const breedingState = useRecoilValue(breedingStateAtom);
   const scholars = useRecoilValue(scholarsMap);
+  const preferences = useRecoilValue(preferencesAtom);
 
   const result = getTraitProbabilities(breedingState[0].traits, breedingState[1].traits);
 
@@ -49,7 +51,9 @@ export const BreedingResultCard = (): JSX.Element => {
     <Box>
       <HStack align="center" justify="center" spacing={10}>
         {breedingState.map((axie, index) => {
-          const scholarOwner = scholars.find(scholar => scholar.address.toLowerCase() === breedingState[0].owner);
+          const scholarOwner = scholars.find(scholar => scholar.address.toLowerCase() === axie?.owner.toLowerCase());
+          const managerWithoutRonin = preferences?.managerAddress.replace('ronin:', '0x');
+          const isManager = axie.owner.toLowerCase() === managerWithoutRonin.toLowerCase();
 
           return (
             <Fragment key={axie.id}>
@@ -104,7 +108,7 @@ export const BreedingResultCard = (): JSX.Element => {
                             target="_blank"
                           >
                             <Text textOverflow="ellipsis" overflowX="hidden" whiteSpace="nowrap" maxW="100px">
-                              {scholarOwner.name}
+                              {scholarOwner?.name ?? (isManager ? 'Manager' : null)}
                             </Text>
                           </Link>
                         </HStack>
