@@ -15,7 +15,7 @@ import {
 import { HiPlus } from 'react-icons/hi';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { GraphQLResponse } from 'graphql-request/dist/types';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gql } from 'graphql-request';
 import { useQuery } from 'react-query';
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
@@ -152,6 +152,7 @@ const SelectedAxieBreeding = ({ axie, id }: SelectedAxieBreedingProps): JSX.Elem
   const [breedingState, setBreedingState] = useRecoilState(breedingStateAtom);
   const [axieData, setAxieData] = useState(axie);
   const [customIdValue, setCustomIdValue] = useState<string>('');
+  const idInputRef = useRef<HTMLInputElement>(null);
 
   const { getInputProps } = useNumberInput({
     min: 1,
@@ -170,6 +171,10 @@ const SelectedAxieBreeding = ({ axie, id }: SelectedAxieBreedingProps): JSX.Elem
         setCustomIdValue('');
       }
     },
+  });
+
+  const input = getInputProps({
+    onKeyDown: event => event.key === 'Enter' && idInputRef.current?.blur(),
   });
 
   const { data } = useQuery(
@@ -231,7 +236,7 @@ const SelectedAxieBreeding = ({ axie, id }: SelectedAxieBreedingProps): JSX.Elem
       ) : (
         <Flex flexDirection="column" align="center" justify="center">
           <Image src="/images/axies/empty-axie.png" alt="Empty Axie" w="72px" />
-          <Input mt={3} size="sm" placeholder="ID" borderRadius="lg" {...getInputProps()} />
+          <Input mt={3} size="sm" placeholder="ID" borderRadius="lg" {...input} ref={idInputRef} />
         </Flex>
       )}
     </Box>
