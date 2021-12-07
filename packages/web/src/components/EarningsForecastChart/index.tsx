@@ -1,5 +1,15 @@
-import { Flex, SkeletonCircle, Text, Divider, Stack, Button, useTheme, useColorModeValue } from '@chakra-ui/react';
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
+import {
+  Flex,
+  SkeletonCircle,
+  Text,
+  Divider,
+  Stack,
+  HStack,
+  Button,
+  useTheme,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, TooltipProps, Legend } from 'recharts';
 import { useRecoilValue } from 'recoil';
 
 import dayjs from '../../services/dayjs';
@@ -9,7 +19,7 @@ import { usePrice } from '@src/services/hooks/usePrice';
 import { formatter } from '@src/services/formatter';
 import { Card } from '@components/Card';
 
-const CustomTooltip = ({ active, payload, label }: any): JSX.Element => {
+const CustomTooltip = ({ active, payload, label }: TooltipProps<any, any>): JSX.Element => {
   const price = usePrice();
   const { colors } = useTheme();
 
@@ -19,7 +29,10 @@ const CustomTooltip = ({ active, payload, label }: any): JSX.Element => {
     return null;
   }
 
-  const amount = Math.floor(payload.reduce((p, c) => p + c.payload[c.dataKey], 0));
+  const total = Math.floor(payload.reduce((p, c) => p + c.value, 0));
+  const scholars = Math.floor(payload.find(p => p.dataKey === 'scholars')?.value);
+  const manager = Math.floor(payload.find(p => p.dataKey === 'manager')?.value);
+  const investor = Math.floor(payload.find(p => p.dataKey === 'investor')?.value);
 
   return (
     <Card rounded="lg" shadow="lg" p={2}>
@@ -30,12 +43,31 @@ const CustomTooltip = ({ active, payload, label }: any): JSX.Element => {
       <Divider my={1} />
 
       <Stack spacing={0} textAlign="center">
-        <Text fontWeight="bold">{amount} SLP</Text>
+        <Text fontWeight="bold">{total} SLP</Text>
 
         <Text fontSize="sm" color={tooltipSecondaryColor}>
-          {formatter(amount * price.values.slp, price.locale)}
+          {formatter(total * price.values.slp, price.locale)}
         </Text>
       </Stack>
+
+      <Divider my={1} />
+
+      <HStack>
+        <Stack spacing={0} color="#58508d" fontSize="xs">
+          <Text fontWeight="bold">INVESTOR</Text>
+          <Text>{investor} SLP</Text>
+        </Stack>
+
+        <Stack spacing={0} color="#bc5090" fontSize="xs">
+          <Text fontWeight="bold">MANAGER</Text>
+          <Text>{manager} SLP</Text>
+        </Stack>
+
+        <Stack spacing={0} color="#ffa600" fontSize="xs">
+          <Text fontWeight="bold">SCHOLARS</Text>
+          <Text>{scholars} SLP</Text>
+        </Stack>
+      </HStack>
     </Card>
   );
 };
@@ -47,13 +79,27 @@ export const EarningsForecastChart = (): JSX.Element => {
 
   const { data, isLoading, isError } = useBatchScholar({ addresses });
 
-  const accumulated = data.reduce((prev, currResult) => {
-    return prev + currResult.slp;
-  }, 0);
+  const accumulated = data.reduce(
+    (prev, currResult) => {
+      const scholar = scholars.find(schol => schol.address === currResult.address);
+      const total = prev[0] + currResult.slp;
+      const manager = prev[1] + (currResult.slp * scholar.shares.manager) / 100;
+      const investor = prev[2] + (currResult.slp * (scholar.shares.investor ?? 0)) / 100;
+      return [total, manager, investor];
+    },
+    [0, 0, 0]
+  );
 
-  const totalSlpDay = data.reduce((prev, currResult) => {
-    return prev + currResult.slpDay;
-  }, 0);
+  const totalSlpDay = data.reduce(
+    (prev, currResult) => {
+      const scholar = scholars.find(schol => schol.address === currResult.address);
+      const total = prev[0] + currResult.slpDay;
+      const manager = prev[1] + (currResult.slpDay * scholar.shares.manager) / 100;
+      const investor = prev[2] + (currResult.slpDay * (scholar.shares.investor ?? 0)) / 100;
+      return [total, manager, investor];
+    },
+    [0, 0, 0]
+  );
 
   const dates = Array(30)
     .fill(null)
@@ -61,11 +107,16 @@ export const EarningsForecastChart = (): JSX.Element => {
       const day = dayjs()
         .add(index + 1, 'days')
         .toISOString();
-      const value = accumulated + (index + 1) * totalSlpDay;
+      const total = accumulated[0] + (index + 1) * totalSlpDay[0];
+      const manager = accumulated[1] + (index + 1) * totalSlpDay[1];
+      const investor = accumulated[2] + (index + 1) * totalSlpDay[2];
 
       return {
         day,
-        value,
+        total,
+        manager,
+        investor,
+        scholars: total - manager - investor,
       };
     });
 
@@ -97,7 +148,7 @@ export const EarningsForecastChart = (): JSX.Element => {
           bottom: 5,
         }}
       >
-        <YAxis dataKey="value" />
+        <YAxis dataKey="total" />
         <XAxis
           dataKey="day"
           tickFormatter={date => dayjs.utc(date).subtract(1, 'day').format('DD/MM')}
@@ -105,8 +156,11 @@ export const EarningsForecastChart = (): JSX.Element => {
             fill: colors.darkGray[500],
           }}
         />
-        <Area type="monotone" dataKey="value" />
+        <Area type="monotone" stackId="1" dataKey="investor" stroke="#58508d" fill="#58508d" />
+        <Area type="monotone" stackId="1" dataKey="manager" stroke="#bc5090" fill="#bc5090" />
+        <Area type="monotone" stackId="1" dataKey="scholars" stroke="#ffa600" fill="#ffa600" />
         <Tooltip content={<CustomTooltip />} />
+        <Legend />
       </AreaChart>
     </ResponsiveContainer>
   );

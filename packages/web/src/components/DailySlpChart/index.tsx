@@ -43,7 +43,7 @@ const CustomTooltip = ({ active, payload, label }: any): JSX.Element => {
 
       <HStack>
         {payload.map(p => (
-          <Stack key={p.dataKey} color={p.color} spacing={0}>
+          <Stack key={p.dataKey} color={p.color} spacing={0} fontSize="xs">
             <Text fontWeight="bold">{p.dataKey.toUpperCase()}</Text>
 
             <Text>{Math.floor(p.value)} SLP</Text>

@@ -195,6 +195,10 @@ const SelectedAxieBreeding = ({ axie, id }: SelectedAxieBreedingProps): JSX.Elem
   );
 
   useEffect(() => {
+    setAxieData(axie);
+  }, [axie]);
+
+  useEffect(() => {
     if (data) {
       setAxieData(data);
       setBreedingState(prev => {
@@ -205,12 +209,8 @@ const SelectedAxieBreeding = ({ axie, id }: SelectedAxieBreedingProps): JSX.Elem
     }
   }, [data, id, setBreedingState]);
 
-  useEffect(() => {
-    setAxieData(axie);
-  }, [axie]);
-
   return (
-    <Box w="94px" h="94px" px={2}>
+    <Box w="94px" h="94px" px={2} mx={2}>
       {axieData ? (
         <Flex
           flexDirection="column"
@@ -264,16 +264,16 @@ export const BreedingFloatingCard = (): JSX.Element => {
   }, [isBreedingMode, onOpen, setBreedingState]);
 
   return (
-    <Slide direction="bottom" in={isBreedingMode} style={{ zIndex: 10 }}>
-      <Card borderWidth={1} maxW="350px" margin="auto" mb={3} p={3}>
-        <Flex justify="space-between" align="center" onClick={onToggle} cursor="pointer">
+    <Slide direction="bottom" in={isBreedingMode} style={{ zIndex: 10, maxWidth: 350, margin: 'auto' }}>
+      <Card borderWidth={1} mb={3}>
+        <Flex justify="space-between" align="center" onClick={onToggle} cursor="pointer" p={3} py={2}>
           <Text fontWeight="bold">Breeding Simulator Mode</Text>
 
           <Icon as={isOpen ? BsChevronUp : BsChevronDown} aria-label="Toggle breeding simulator collapse" size="32px" />
         </Flex>
 
         <Collapse in={isOpen}>
-          <Flex align="center" justify="space-between" mt={5} px={2}>
+          <Flex align="center" justify="space-between" mt={4} px={2}>
             <SelectedAxieBreeding axie={breedingState[0]} id={0} />
 
             <Icon as={HiPlus} aria-label="Plus icon" fontSize="32px" />
@@ -281,7 +281,7 @@ export const BreedingFloatingCard = (): JSX.Element => {
             <SelectedAxieBreeding axie={breedingState[1]} id={1} />
           </Flex>
 
-          <Flex align="center" justify="center" mt={1}>
+          <Flex align="center" justify="center" mb={2}>
             <Button isDisabled={!(breedingState[0]?.traits && breedingState[1]?.traits)} onClick={resultModal.onOpen}>
               Simulate
             </Button>
