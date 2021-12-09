@@ -17,6 +17,7 @@ export interface ScholarMap {
     scholar: number;
     investor: number;
   };
+  discordId?: string;
   inactive: boolean;
 }
 
@@ -255,6 +256,7 @@ export const scholarSelector = selectorFamily<ScholarSelector, string>({
           paymentAddress: updated.paymentAddress,
           shares: { ...updated.shares },
           inactive: updated.inactive,
+          discordId: updated.discordId,
         };
 
         return newState;

@@ -10,14 +10,16 @@ import {
   Text,
   Checkbox,
   Tooltip,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 import { Formik } from 'formik';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { BiCheckCircle } from 'react-icons/bi';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { toast } from 'react-toastify';
+import * as Yup from 'yup';
 
-import { scholarSelector } from '../../../../recoil/scholars';
+import { ScholarMap, scholarSelector } from '../../../../recoil/scholars';
 import { modalSelector } from '../../../../recoil/modal';
 import { checkValidAddress } from '../../../../services/utils/checkValidAddress';
 import { ScholarSharesForm } from '../../../ScholarSharesForm';
@@ -28,38 +30,33 @@ interface EditScholarModalParams {
   address: string;
 }
 
-interface FormData {
-  name: string;
-  address: string;
-  paymentAddress: string;
-  shares: {
-    scholar: number;
-    manager: number;
-    investor: number;
-  };
-  inactive: boolean;
-}
+const validationSchema = Yup.object().shape({
+  name: Yup.string().min(3).max(50).required(),
+  address: Yup.string()
+    .required()
+    .test('isAddress', 'Address is invalid', address => checkValidAddress(address)),
+  paymentAddress: Yup.string()
+    .notRequired()
+    .test('isPaymentAddress', 'Payment address is invalid', paymentAddress =>
+      paymentAddress ? checkValidAddress(paymentAddress) : true
+    ),
+  shares: Yup.object()
+    .shape({
+      scholar: Yup.number(),
+      manager: Yup.number(),
+      investor: Yup.number(),
+    })
+    .required(),
+  discordId: Yup.number().typeError('Discord ID must be a number'),
+  inactive: Yup.boolean(),
+});
 
 export const EditScholarModal = ({ name, address }: EditScholarModalParams): JSX.Element => {
   const { onClose } = useRecoilValue(modalSelector(`editScholarModal:${address}`));
 
   const [scholar, setScholar] = useRecoilState(scholarSelector(address));
 
-  const handleUpdate = (data: FormData) => {
-    if (data.paymentAddress && !checkValidAddress(data.paymentAddress)) {
-      toast('Payment address is invalid.', {
-        type: 'error',
-      });
-      return;
-    }
-
-    if (!data.name) {
-      toast('The scholar name can not be empty.', {
-        type: 'error',
-      });
-      return;
-    }
-
+  const handleUpdate = (data: ScholarMap) => {
     setScholar(oldScholar => ({
       ...oldScholar,
       ...data,
@@ -68,6 +65,7 @@ export const EditScholarModal = ({ name, address }: EditScholarModalParams): JSX
         investor: data.shares.investor,
         scholar: 100 - (data.shares.manager + data.shares.investor),
       },
+      discordId: data.discordId,
     }));
 
     onClose();
@@ -88,33 +86,35 @@ export const EditScholarModal = ({ name, address }: EditScholarModalParams): JSX
           manager: scholar.shares?.manager ?? 50,
           investor: scholar.shares?.investor ?? 0,
         },
+        discordId: scholar.discordId,
         inactive: scholar.inactive,
       }}
+      validationSchema={validationSchema}
       onSubmit={handleUpdate}
     >
-      {({ values, handleChange, setFieldValue, submitForm }) => (
+      {({ values, handleChange, setFieldValue, submitForm, errors, touched }) => (
         <Stack spacing={5}>
-          <FormControl id="address">
+          <FormControl id="address" isRequired isInvalid={!!errors.address && touched.address}>
             <FormLabel>Address (Ronin)</FormLabel>
-
             <Text opacity={0.9}>{values.address}</Text>
+            <FormErrorMessage>{errors.address}</FormErrorMessage>
           </FormControl>
 
-          <FormControl id="name" isRequired>
+          <FormControl id="name" isRequired isInvalid={!!errors.name && touched.name}>
             <FormLabel>Name</FormLabel>
-
             <Input name="name" placeholder="Name" defaultValue={values.name} onChange={handleChange} />
+            <FormErrorMessage>{errors.name}</FormErrorMessage>
           </FormControl>
 
-          <FormControl id="paymentAddress">
+          <FormControl id="paymentAddress" isInvalid={!!errors.paymentAddress && touched.paymentAddress}>
             <FormLabel>Payment Address (Ronin)</FormLabel>
-
             <Input
               name="paymentAddress"
               placeholder="Payment Address (optional)"
               defaultValue={values.paymentAddress}
               onChange={handleChange}
             />
+            <FormErrorMessage>{errors.paymentAddress}</FormErrorMessage>
           </FormControl>
 
           <ScholarSharesForm
@@ -123,7 +123,18 @@ export const EditScholarModal = ({ name, address }: EditScholarModalParams): JSX
             setFieldValue={setFieldValue}
           />
 
-          <FormControl id="inactive">
+          <FormControl id="discordId" isInvalid={!!errors.discordId && touched.discordId}>
+            <FormLabel>Discord ID (optional)</FormLabel>
+            <Input
+              name="discordId"
+              placeholder="133630993356554240"
+              defaultValue={values.discordId}
+              onChange={handleChange}
+            />
+            <FormErrorMessage>{errors.discordId}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl id="inactive" isInvalid={!!errors.inactive && touched.inactive}>
             <HStack>
               <Checkbox
                 name="inactive"

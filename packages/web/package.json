@@ -51,7 +51,8 @@
     "recoil": "^0.5.2",
     "recoil-persist": "^2.9.0",
     "sharp": "^0.29.2",
-    "throat": "^6.0.1"
+    "throat": "^6.0.1",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.0.1",

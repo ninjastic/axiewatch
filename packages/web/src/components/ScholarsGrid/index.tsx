@@ -168,14 +168,14 @@ export const ScholarsGrid = ({ page, setPage }: ScholarsGridProps): JSX.Element 
       )}
 
       {!map.length && (
-        <Card py={8} px={2}>
+        <Card py={10} px={2}>
           <Stack>
             <Text fontSize="lg" textAlign="center" fontWeight="bold" variant="faded">
-              Oopss... there is nothing to see here
+              There is nothing to see here...
             </Text>
 
             <Text textAlign="center" variant="faded">
-              Try adding your first scholar!
+              Add your first scholar or sync your account
             </Text>
           </Stack>
         </Card>

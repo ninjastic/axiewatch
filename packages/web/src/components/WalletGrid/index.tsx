@@ -10,8 +10,8 @@ export const WalletGrid = (): JSX.Element => {
   const scholars = useRecoilValue(scholarsMap);
   const preferences = useRecoilValue(preferencesAtom);
 
-  const managerAddress = preferences.managerAddress.replace('ronin:', '0x');
   const addresses = scholars.map(scholar => scholar.address);
+  const managerAddress = preferences.managerAddress.replace('ronin:', '0x');
   const addressesWithManager = preferences.managerAddress
     ? lodash.uniqWith([managerAddress, ...addresses], (a, b) => a.toLowerCase() === b.toLowerCase())
     : addresses;

@@ -183,7 +183,7 @@ export const Axies = (): JSX.Element => {
         <PreferencesButton />
       </Flex>
 
-      {isLoading && !!scholars.length && (
+      {isLoading && !!addressesWithManager.length && (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} gap={3} pb={5} mt={5}>
           {lodash.times(4).map(x => (
             <AxieCardSkeleton key={x} />

@@ -1,11 +1,26 @@
-import { Text, Box, Flex, Stack, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
+import { Text, Box, Flex, Stack, FormControl, FormLabel, Input, Button, FormErrorMessage } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { useEffect } from 'react';
 import Router from 'next/router';
 import Link from 'next/link';
-import { toast } from 'react-toastify';
+import * as Yup from 'yup';
 
 import { useAuth } from '../services/hooks/useAuth';
+
+interface SignUpData {
+  email: string;
+  password: string;
+  repeatPassword: string;
+}
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email().required(),
+  password: Yup.string().min(4).required(),
+  repeatPassword: Yup.string()
+    .min(4)
+    .required()
+    .oneOf([Yup.ref('password')], 'Passwords do not match'),
+});
 
 export const SignUpPage = (): JSX.Element => {
   const { signUp, session, isLoading } = useAuth();
@@ -16,15 +31,7 @@ export const SignUpPage = (): JSX.Element => {
     }
   }, [session]);
 
-  const handleSubmit = async (data: any) => {
-    if (data.password !== data.repeatPassword) {
-      toast("Passwords don't match", {
-        type: 'error',
-      });
-
-      return;
-    }
-
+  const handleSubmit = async (data: SignUpData) => {
     await signUp({
       email: data.email,
       password: data.password,
@@ -38,16 +45,21 @@ export const SignUpPage = (): JSX.Element => {
       </Text>
 
       <Box w="100%" mt={5}>
-        <Formik initialValues={{ email: '', password: '', repeatPassword: '' }} onSubmit={handleSubmit}>
-          {({ handleChange, values }) => (
+        <Formik
+          initialValues={{ email: '', password: '', repeatPassword: '' }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ handleChange, values, errors, touched }) => (
             <Form>
               <Stack spacing={5}>
-                <FormControl id="email">
+                <FormControl id="email" isInvalid={!!errors.email && touched.email}>
                   <FormLabel>Email</FormLabel>
                   <Input name="email" placeholder="Email" type="email" value={values.email} onChange={handleChange} />
+                  <FormErrorMessage>{errors.email}</FormErrorMessage>
                 </FormControl>
 
-                <FormControl id="password">
+                <FormControl id="password" isInvalid={!!errors.password && touched.password}>
                   <FormLabel>Password</FormLabel>
                   <Input
                     name="password"
@@ -56,9 +68,10 @@ export const SignUpPage = (): JSX.Element => {
                     value={values.password}
                     onChange={handleChange}
                   />
+                  <FormErrorMessage>{errors.password}</FormErrorMessage>
                 </FormControl>
 
-                <FormControl id="repeat-password">
+                <FormControl id="repeatPassword" isInvalid={!!errors.repeatPassword && touched.repeatPassword}>
                   <FormLabel>Repeat Password</FormLabel>
                   <Input
                     name="repeatPassword"
@@ -67,6 +80,7 @@ export const SignUpPage = (): JSX.Element => {
                     value={values.repeatPassword}
                     onChange={handleChange}
                   />
+                  <FormErrorMessage>{errors.repeatPassword}</FormErrorMessage>
                 </FormControl>
 
                 <Button isLoading={isLoading} type="submit">

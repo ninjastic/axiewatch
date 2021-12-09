@@ -111,6 +111,7 @@ export const useBatchScholarAxie = ({ addresses, size = 200 }: UseBatchScholarAx
   }
 
   const { data, isLoading, isFetching, isRefetching } = useQuery(['batchScholarAxies', hashedKey], async () => load(), {
+    enabled: addresses.length > 0,
     staleTime: 1000 * 60 * 15,
   });
 

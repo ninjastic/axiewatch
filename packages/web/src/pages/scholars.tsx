@@ -32,9 +32,9 @@ import { ScholarsSorter } from '../components/ScholarsSorter';
 import { ScholarsFilterButton } from '../components/ScholarsFilter';
 import { useCreateModal } from '../services/hooks/useCreateModal';
 import { CloudSyncGroupButton } from '../components/CloudSyncGroupButton';
-import SignInPage from './signin';
 import { scholarFilter, scholarsPerPageAtom } from '@src/recoil/scholars';
 import { useDebounce } from '@src/services/hooks/useDebounce';
+import { SignInForm } from '@src/components/SignInForm';
 
 const PerPageSelector = (): JSX.Element => {
   const options = [20, 50, 100, 200];
@@ -85,7 +85,7 @@ const SearchInput = (): JSX.Element => {
 const SyncModalContent = (): JSX.Element => {
   const { session } = useAuth();
 
-  return <Box p={5}>{session ? <CloudSyncGroupButton /> : <SignInPage />}</Box>;
+  return <Box p={5}>{session ? <CloudSyncGroupButton /> : <SignInForm />}</Box>;
 };
 
 function SyncButton({ variant = 'ghost' }: ButtonProps) {

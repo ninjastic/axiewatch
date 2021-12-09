@@ -30,6 +30,7 @@ export const ExportFileModal = (): JSX.Element => {
     todaySlp: false,
     pvpElo: false,
     paymentAddress: false,
+    discordId: false,
     lastClaim: false,
     nextClaim: false,
   });
@@ -191,6 +192,10 @@ export const ExportFileModal = (): JSX.Element => {
 
           <Checkbox onChange={handleCheckboxChange} name="paymentAddress" isChecked={selected.paymentAddress}>
             Payment Address
+          </Checkbox>
+
+          <Checkbox onChange={handleCheckboxChange} name="discordId" isChecked={selected.discordId}>
+            Discord ID
           </Checkbox>
 
           <Checkbox onChange={handleCheckboxChange} name="lastClaim" isChecked={selected.lastClaim}>

@@ -25,6 +25,7 @@ import { DiscordIcon, AnalysisIcon, BagIcon, TrackerIcon } from './icons';
 import { NavbarContent } from './NavbarContent';
 import { ColorSwitchIcon } from './ColorSwitchIcon';
 import AlertsIcon from './icons/AlertsIcon';
+import { SignInButton } from '@src/components/SignInButton';
 
 interface LinkItemProps {
   name: string;
@@ -144,7 +145,7 @@ const Header = ({ currentTool }: HeaderProps): JSX.Element => {
         position: 'fixed',
         overflow: 'hidden',
         width: '100%',
-        zIndex: 'banner',
+        zIndex: '300',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -204,6 +205,10 @@ const Header = ({ currentTool }: HeaderProps): JSX.Element => {
       </DarkMode>
 
       <Flex sx={{ justifyContent: 'flex-end' }}>
+        <Box mr={{ base: 0, lg: 2 }}>
+          <SignInButton />
+        </Box>
+
         <IconButton
           aria-label="Discord"
           icon={<DiscordIcon />}

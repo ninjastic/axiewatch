@@ -1,4 +1,4 @@
-import { Button, IconButton } from '@chakra-ui/react';
+import { Button, IconButton, ButtonProps } from '@chakra-ui/react';
 import { BsPencilSquare } from 'react-icons/bs';
 import { useRecoilValue } from 'recoil';
 
@@ -6,13 +6,20 @@ import { scholarSelector } from '../../../../recoil/scholars';
 import { useCreateModal } from '../../../../services/hooks/useCreateModal';
 import { EditScholarModal } from './EditScholarModal';
 
-interface EditScholarButtonParams {
+interface EditScholarButtonParams extends ButtonProps {
   address: string;
   size?: string;
   onlyIcon?: boolean;
+  buttonText?: string;
 }
 
-export const EditScholarButton = ({ address, size = 'md', onlyIcon = false }: EditScholarButtonParams): JSX.Element => {
+export const EditScholarButton = ({
+  address,
+  size = 'md',
+  onlyIcon = false,
+  buttonText,
+  ...rest
+}: EditScholarButtonParams): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
 
   const editScholarModal = useCreateModal({
@@ -31,6 +38,7 @@ export const EditScholarButton = ({ address, size = 'md', onlyIcon = false }: Ed
         e.stopPropagation();
         editScholarModal.onOpen();
       }}
+      {...rest}
     />
   ) : (
     <Button
@@ -41,8 +49,9 @@ export const EditScholarButton = ({ address, size = 'md', onlyIcon = false }: Ed
         e.stopPropagation();
         editScholarModal.onOpen();
       }}
+      {...rest}
     >
-      Edit
+      {buttonText ?? 'Edit'}
     </Button>
   );
 };
