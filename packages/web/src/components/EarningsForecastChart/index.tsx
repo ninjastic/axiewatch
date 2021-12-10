@@ -35,7 +35,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<any, any>): JSX.
   const investor = Math.floor(payload.find(p => p.dataKey === 'investor')?.value);
 
   return (
-    <Card rounded="lg" shadow="lg" p={2}>
+    <Card rounded="lg" shadow="dark-lg" p={2}>
       <Text fontSize="sm" color={tooltipSecondaryColor} textAlign="center">
         {dayjs.utc(label).subtract(1, 'day').format('DD MMM YYYY')}
       </Text>

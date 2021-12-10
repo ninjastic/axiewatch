@@ -1,5 +1,15 @@
 import { Box, Text, Spinner, Button, HStack, useTheme, Flex, Stack, useColorModeValue } from '@chakra-ui/react';
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, LabelList } from 'recharts';
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  LabelList,
+  TooltipProps,
+} from 'recharts';
 import { RiExternalLinkFill } from 'react-icons/ri';
 import { BsArrowRepeat } from 'react-icons/bs';
 import { useQuery } from 'react-query';
@@ -21,11 +31,7 @@ interface ApiResponse {
   isTracking: boolean | null;
 }
 
-interface DailyChartProps {
-  address: string;
-}
-
-function CustomTooltip({ active, payload, label }: any) {
+function CustomTooltip({ active, payload }: TooltipProps<any, any>) {
   const price = usePrice();
   const { colors } = useTheme();
 
@@ -34,13 +40,12 @@ function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload) {
     return null;
   }
-
   const amount = payload[0].payload.slpAmount;
 
   return (
-    <Card rounded="lg" shadow="lg" p={2}>
+    <Card rounded="lg" shadow="dark-lg" p={2}>
       <Text color={tooltipSecondaryColor} fontSize="sm">
-        {dayjs.utc(label).format('DD MMM YYYY')}
+        {dayjs.utc(payload[0].payload.day).format('DD MMM YYYY')}
       </Text>
 
       <Stack spacing={0} textAlign="center">
@@ -54,13 +59,25 @@ function CustomTooltip({ active, payload, label }: any) {
   );
 }
 
-export const SlpTrackingChart = ({ address }: DailyChartProps): JSX.Element => {
+interface DailyChartProps {
+  address: string;
+  height?: number;
+  showYAxis?: boolean;
+  showXAxis?: boolean;
+}
+
+export const SlpTrackingChart = ({
+  address,
+  height = 240,
+  showYAxis = true,
+  showXAxis = true,
+}: DailyChartProps): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
 
   const { colors } = useTheme();
   const { session, isUserLoading } = useAuth();
 
-  const { data, isLoading, isError, refetch } = useQuery(
+  const { data, isLoading, isFetching, isRefetching, isError, refetch } = useQuery(
     ['daily', address],
     async () => {
       const response = await serverApi.get<ApiResponse>('/daily', {
@@ -77,7 +94,6 @@ export const SlpTrackingChart = ({ address }: DailyChartProps): JSX.Element => {
     {
       staleTime: 1000 * 60 * 15, // 15 minutes
       enabled: !isUserLoading,
-      retry: false,
     }
   );
 
@@ -123,9 +139,9 @@ export const SlpTrackingChart = ({ address }: DailyChartProps): JSX.Element => {
     if (!dates.length) refetch();
   }, [dates.length, refetch, session]);
 
-  if (isLoading) {
+  if (isLoading || isFetching || isRefetching) {
     return (
-      <Flex justify="center" h="50px">
+      <Flex justify="center" align="center" h="50px">
         <Spinner />
       </Flex>
     );
@@ -133,7 +149,7 @@ export const SlpTrackingChart = ({ address }: DailyChartProps): JSX.Element => {
 
   if (isError) {
     return (
-      <Flex justify="center" h="50px">
+      <Flex justify="center" align="center" h="50px">
         <Button leftIcon={<BsArrowRepeat />} onClick={() => refetch()}>
           Retry
         </Button>
@@ -143,9 +159,9 @@ export const SlpTrackingChart = ({ address }: DailyChartProps): JSX.Element => {
 
   if (dates.length === 0 && data?.isTracking === null) {
     return (
-      <Flex justify="center" h="50px">
+      <Flex justify="center" align="center" h="50px">
         <HStack>
-          <Text opacity={0.9}>Please, sign in and upload your scholars to the cloud to track.</Text>
+          <Text variant="faded">Sync -&gt; Upload your scholars to the cloud for their Daily SLP</Text>
 
           <Link href="/signin" passHref>
             <Box cursor="pointer">
@@ -159,9 +175,9 @@ export const SlpTrackingChart = ({ address }: DailyChartProps): JSX.Element => {
 
   if (dates.length === 0 && data?.isTracking === false) {
     return (
-      <Flex justify="center" h="50px">
+      <Flex justify="center" align="center" h="50px">
         <HStack>
-          <Text opacity={0.9}>Not tracked, please upload to the cloud on your profile</Text>
+          <Text variant="faded">Not tracked, please Sync -&gt; Upload for daily SLP</Text>
 
           <Link href="/profile" passHref>
             <Box cursor="pointer">
@@ -175,22 +191,32 @@ export const SlpTrackingChart = ({ address }: DailyChartProps): JSX.Element => {
 
   if (!dates.length) {
     return (
-      <Flex justify="center" h="50px">
-        <Text opacity={0.9}>No data yet, check back in 1-2 days.</Text>
+      <Flex justify="center" align="center" h="50px">
+        <Text variant="faded">No Daily SLP data yet, check back in 1-2 days</Text>
       </Flex>
     );
   }
 
   return (
-    <ResponsiveContainer width="100%" height={240}>
+    <ResponsiveContainer width="99%" height={height}>
       <BarChart data={dates} margin={{ top: 20 }}>
-        <XAxis
-          dataKey="day"
-          tickFormatter={date => dayjs.utc(date).format('DD/MM')}
-          tick={{ fill: colors.gray[500] }}
-        />
+        {showXAxis && (
+          <XAxis
+            dataKey="day"
+            tickFormatter={date => dayjs.utc(date).format('DD/MM')}
+            tick={{ fill: colors.gray[500], fontSize: 12 }}
+          />
+        )}
 
-        <YAxis dataKey="slpAmount" axisLine={false} tickLine={false} tickCount={8} tick={{ fill: colors.gray[500] }} />
+        {showYAxis && (
+          <YAxis
+            dataKey="slpAmount"
+            axisLine={false}
+            tickLine={false}
+            tickCount={8}
+            tick={{ fill: colors.gray[500] }}
+          />
+        )}
 
         <Bar dataKey="slpAmount" stroke={colors['gray.500']} fill="#ffa600">
           <LabelList dataKey="slpAmount" position="top" style={{ fontSize: '80%', fill: colors.darkGray[500] }} />

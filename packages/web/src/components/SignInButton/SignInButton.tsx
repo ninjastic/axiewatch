@@ -10,14 +10,14 @@ export const SignInButton = (): JSX.Element => {
 
   if (user) {
     return (
-      <Button leftIcon={<CgProfile />} onClick={() => Router.push('/profile')} variant="outline">
+      <Button leftIcon={<CgProfile />} onClick={() => Router.push('/profile')} variant="outline" color="white">
         {user.email.replace(/@.*/, '')}
       </Button>
     );
   }
 
   return (
-    <Button leftIcon={<FaSignInAlt />} onClick={() => Router.push('/signin')} variant="outline">
+    <Button leftIcon={<FaSignInAlt />} onClick={() => Router.push('/signin')} variant="outline" color="white">
       Sign In
     </Button>
   );

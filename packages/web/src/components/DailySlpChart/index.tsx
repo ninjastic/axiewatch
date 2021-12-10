@@ -24,7 +24,7 @@ const CustomTooltip = ({ active, payload, label }: any): JSX.Element => {
   const amount = Math.floor(payload.reduce((p, c) => p + c.payload[c.dataKey], 0));
 
   return (
-    <Card rounded="lg" shadow="lg" p={2}>
+    <Card rounded="lg" shadow="dark-lg" p={2}>
       <Text fontSize="sm" color={tooltipSecondaryColor} textAlign="center">
         {dayjs.utc(label).subtract(1, 'day').format('DD MMM YYYY')}
       </Text>
