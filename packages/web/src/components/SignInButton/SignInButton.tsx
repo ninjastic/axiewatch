@@ -1,4 +1,4 @@
-import { Button } from '@chakra-ui/react';
+import { Button, DarkMode } from '@chakra-ui/react';
 import { FaSignInAlt } from 'react-icons/fa';
 import { CgProfile } from 'react-icons/cg';
 import Router from 'next/router';
@@ -10,15 +10,19 @@ export const SignInButton = (): JSX.Element => {
 
   if (user) {
     return (
-      <Button leftIcon={<CgProfile />} onClick={() => Router.push('/profile')} variant="outline" color="white">
-        {user.email.replace(/@.*/, '')}
-      </Button>
+      <DarkMode>
+        <Button leftIcon={<CgProfile />} onClick={() => Router.push('/profile')} variant="outline">
+          {user.email.replace(/@.*/, '')}
+        </Button>
+      </DarkMode>
     );
   }
 
   return (
-    <Button leftIcon={<FaSignInAlt />} onClick={() => Router.push('/signin')} variant="outline" color="white">
-      Sign In
-    </Button>
+    <DarkMode>
+      <Button leftIcon={<FaSignInAlt />} onClick={() => Router.push('/signin')} variant="outline">
+        Sign In
+      </Button>
+    </DarkMode>
   );
 };
