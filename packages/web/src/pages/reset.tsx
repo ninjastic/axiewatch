@@ -1,14 +1,23 @@
-import { Text, Box, Flex, Stack, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
+import { Text, Box, Flex, Stack, FormControl, FormLabel, Input, Button, FormErrorMessage } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import * as Yup from 'yup';
 
 import { useAuth } from '../services/hooks/useAuth';
+
+interface ResetPasswordData {
+  email: string;
+}
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email().required(),
+});
 
 function ResetPasswordPage() {
   const { resetPassword, isLoading } = useAuth();
 
-  const handleSubmitReset = async (data: any) => {
+  const handleSubmitReset = async (data: ResetPasswordData) => {
     await resetPassword(data.email);
   };
 
@@ -19,13 +28,14 @@ function ResetPasswordPage() {
       </Text>
 
       <Box w="100%" mt={5}>
-        <Formik initialValues={{ email: '' }} onSubmit={handleSubmitReset}>
-          {({ handleChange, values }) => (
+        <Formik initialValues={{ email: '' }} validationSchema={validationSchema} onSubmit={handleSubmitReset}>
+          {({ handleChange, values, errors, touched }) => (
             <Form>
               <Stack spacing={5}>
-                <FormControl id="email">
+                <FormControl id="email" isInvalid={!!errors.email && touched.email}>
                   <FormLabel>Email</FormLabel>
                   <Input name="email" placeholder="Email" type="email" value={values.email} onChange={handleChange} />
+                  <FormErrorMessage>{errors.email}</FormErrorMessage>
                 </FormControl>
 
                 <Button isLoading={isLoading} type="submit">

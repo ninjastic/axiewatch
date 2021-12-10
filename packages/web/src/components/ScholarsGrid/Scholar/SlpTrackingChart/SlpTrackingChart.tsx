@@ -141,7 +141,7 @@ export const SlpTrackingChart = ({
 
   if (isLoading || isFetching || isRefetching) {
     return (
-      <Flex justify="center" align="center" h="50px">
+      <Flex justify="center" align="center" height={height}>
         <Spinner />
       </Flex>
     );
@@ -149,7 +149,7 @@ export const SlpTrackingChart = ({
 
   if (isError) {
     return (
-      <Flex justify="center" align="center" h="50px">
+      <Flex justify="center" align="center" height={height}>
         <Button leftIcon={<BsArrowRepeat />} onClick={() => refetch()}>
           Retry
         </Button>
@@ -159,7 +159,7 @@ export const SlpTrackingChart = ({
 
   if (dates.length === 0 && data?.isTracking === null) {
     return (
-      <Flex justify="center" align="center" h="50px">
+      <Flex justify="center" align="center" height={height}>
         <HStack>
           <Text variant="faded">Sync -&gt; Upload your scholars to the cloud for their Daily SLP</Text>
 
@@ -175,7 +175,7 @@ export const SlpTrackingChart = ({
 
   if (dates.length === 0 && data?.isTracking === false) {
     return (
-      <Flex justify="center" align="center" h="50px">
+      <Flex justify="center" align="center" height={height}>
         <HStack>
           <Text variant="faded">Not tracked, please Sync -&gt; Upload for daily SLP</Text>
 
@@ -191,7 +191,7 @@ export const SlpTrackingChart = ({
 
   if (!dates.length) {
     return (
-      <Flex justify="center" align="center" h="50px">
+      <Flex justify="center" align="center" height={height}>
         <Text variant="faded">No Daily SLP data yet, check back in 1-2 days</Text>
       </Flex>
     );

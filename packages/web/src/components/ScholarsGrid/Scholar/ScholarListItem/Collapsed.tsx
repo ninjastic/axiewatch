@@ -22,7 +22,7 @@ export const Collapsed = ({ address, show }: CollapsedProps): JSX.Element => {
     <Collapse in={show} animateOpacity>
       <Divider />
 
-      <Flex align="center" minH="80px" w="100%">
+      <Flex align="center" minH="120px" w="100%">
         <Stack px={5} w="100%">
           <Flex align="center" justify="space-between">
             {!scholarFields.includes('adventureSlp') && (
