@@ -108,7 +108,7 @@ export const AxieCard = ({ axie }: AxieCardProps): JSX.Element => {
     });
   };
 
-  console.log(!axie.class && axie);
+  const traitsBackground = useColorModeValue('white', 'gray.900');
 
   return (
     <Card
@@ -213,9 +213,17 @@ export const AxieCard = ({ axie }: AxieCardProps): JSX.Element => {
         )}
       </Box>
 
-      {!preferences.hideAxieTraits && axie.class && (
+      {!preferences.hideAxieTraits && (
         <Box py={2}>
-          <AxieTraits axieData={axie} />
+          {axie.class ? (
+            <AxieTraits axieData={axie} />
+          ) : (
+            <Box bg={traitsBackground} py={2} px={2} borderRadius={8} overflow="hidden">
+              <Text variant="faded" textAlign="center">
+                No traits
+              </Text>
+            </Box>
+          )}
         </Box>
       )}
 
