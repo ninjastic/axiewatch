@@ -15,7 +15,7 @@ import {
 import { MdChildFriendly } from 'react-icons/md';
 import { SiGooglescholar } from 'react-icons/si';
 import { useRecoilValue } from 'recoil';
-import { Fragment } from 'react';
+import { Fragment, useMemo } from 'react';
 import { HiPlus } from 'react-icons/hi';
 
 import { breedingStateAtom } from '@src/recoil/breeding';
@@ -34,18 +34,38 @@ export const BreedingResultCard = (): JSX.Element => {
   const scholars = useRecoilValue(scholarsMap);
   const preferences = useRecoilValue(preferencesAtom);
 
-  const result = getTraitProbabilities(breedingState[0].traits, breedingState[1].traits);
+  const result = useMemo(
+    () => getTraitProbabilities(breedingState[0].traits, breedingState[1].traits),
+    [breedingState]
+  );
 
-  const parts = Object.entries(result).reduce((_parts, [key, value]) => {
-    const draft = { ..._parts };
-    const part = key.match(/^(\w+)-/)[1];
-    if (draft[part]) {
-      draft[part][key] = value;
-    } else {
-      draft[part] = { [key]: value };
-    }
-    return draft;
-  }, {} as Record<string, Record<string, number>>);
+  const parts = useMemo(
+    () =>
+      Object.entries(result).reduce((_parts, [key, value]) => {
+        const draft = { ..._parts };
+        const part = key.match(/^(\w+)-/)[1];
+        if (draft[part]) {
+          draft[part][key] = value;
+        } else {
+          draft[part] = { [key]: value };
+        }
+        return draft;
+      }, {} as Record<string, Record<string, number>>),
+    [result]
+  );
+
+  const breedingCost = {
+    slp: [900, 1350, 2250, 3600, 5850, 9450, 15300],
+    axs: 0.5,
+  };
+
+  const pairBreedingSlpCost = useMemo(
+    () =>
+      breedingState.reduce((_cost, axie) => {
+        return _cost + breedingCost.slp[axie.breedCount];
+      }, 0),
+    [breedingCost.slp, breedingState]
+  );
 
   return (
     <Box>
@@ -92,7 +112,13 @@ export const BreedingResultCard = (): JSX.Element => {
                     <Tag>
                       <HStack spacing={1}>
                         <MdChildFriendly />
-                        <Text>{axie.breedCount}</Text>
+                        <Text>{axie.breedCount}/7</Text>
+                      </HStack>
+                    </Tag>
+
+                    <Tag>
+                      <HStack spacing={1}>
+                        <Text>{Math.round(axie.quality * 100)}%</Text>
                       </HStack>
                     </Tag>
 
@@ -124,7 +150,27 @@ export const BreedingResultCard = (): JSX.Element => {
         })}
       </HStack>
 
-      <Flex mt={8} mb={5} flexDirection="column">
+      <Divider my={5} />
+
+      <HStack align="center">
+        <Text>Cost:</Text>
+
+        <Card px={2} py={1} maxW="100px">
+          <HStack>
+            <Image src="/images/axies/slp.png" alt="slp" width="18px" />
+            <Text>{pairBreedingSlpCost}</Text>
+          </HStack>
+        </Card>
+
+        <Card px={2} py={1} maxW="100px">
+          <HStack>
+            <Image src="/images/axies/axs.png" alt="axs" width="18px" />
+            <Text>{breedingCost.axs}</Text>
+          </HStack>
+        </Card>
+      </HStack>
+
+      <Flex mt={5} mb={5} flexDirection="column">
         <SimpleGrid columns={{ base: 1, lg: 3 }} gap={3} w="100%">
           {Object.entries(parts).map(([part, partChances]) => {
             return (
@@ -134,9 +180,7 @@ export const BreedingResultCard = (): JSX.Element => {
                   <Text fontWeight="bold">{part.toUpperCase()}</Text>
                 </HStack>
 
-                <Divider my={2} />
-
-                <Stack spacing={0}>
+                <Stack spacing={0} mt={5}>
                   {Object.entries(partChances)
                     .sort((a, b) => {
                       if (a[1] > b[1]) return -1;
@@ -147,14 +191,14 @@ export const BreedingResultCard = (): JSX.Element => {
                       const { name, class: partClass } = bodyParts.find(bodyPart => partKey === bodyPart.partId);
 
                       return (
-                        <Box key={partKey}>
+                        <Flex key={partKey} align="center" justify="space-between" borderBottomWidth={1}>
                           <HStack>
                             <AxieIcon type={partClass as AxieClass} />
-                            <Text color={partClass}>
-                              {name}: {partPercentage * 100}%
-                            </Text>
+                            <Text color={partClass}>{name}</Text>
                           </HStack>
-                        </Box>
+
+                          <Text> {partPercentage * 100}%</Text>
+                        </Flex>
                       );
                     })}
                 </Stack>
