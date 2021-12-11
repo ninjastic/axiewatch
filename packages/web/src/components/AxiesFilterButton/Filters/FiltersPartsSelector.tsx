@@ -1,5 +1,5 @@
 import { FormControl, FormLabel, HStack, Text } from '@chakra-ui/react';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import { Select } from 'chakra-react-select';
 
@@ -15,50 +15,66 @@ interface FilterProps {
 export const FiltersPartsSelector = ({ setFilter, formValues }: FilterProps): JSX.Element => {
   const parts = useRecoilValue(axiePartsAtom);
 
-  const defaultValue = formValues.parts.map(part => {
-    const bodyPart = bodyParts.find(bp => bp.partId === part);
+  const defaultValue = useMemo(
+    () =>
+      formValues.parts
+        .map(part => {
+          const bodyPart = bodyParts.find(bp => bp.partId === part);
 
-    return {
-      label: (
-        <HStack>
-          <AxiePartIcon
-            type={bodyPart.type as AxiePartIconType}
-            bg={bodyPart.class as AxieClass}
-            borderRadius="sm"
-            fontSize="lg"
-          />
-          <Text>{part.replace(/\w+-/i, '').replace(/-/g, ' ')}</Text>
-        </HStack>
-      ),
-      value: part,
-    };
-  });
+          if (!bodyPart) return null;
 
-  const options = parts.map(part => {
-    const bodyPart = bodyParts.find(bp => bp.partId === part);
+          return {
+            label: (
+              <HStack>
+                <AxiePartIcon
+                  type={bodyPart.type as AxiePartIconType}
+                  bg={bodyPart.class as AxieClass}
+                  borderRadius="sm"
+                  fontSize="lg"
+                />
+                <Text>{part.replace(/\w+-/i, '').replace(/-/g, ' ')}</Text>
+              </HStack>
+            ),
+            value: part,
+          };
+        })
+        .filter(option => option),
+    [formValues.parts]
+  );
 
-    return {
-      label: (
-        <HStack>
-          <AxiePartIcon
-            type={bodyPart.type as AxiePartIconType}
-            bg={bodyPart.class as AxieClass}
-            borderRadius="sm"
-            fontSize="lg"
-          />
-          <Text>{part.replace(/\w+-/i, '').replace(/-/g, ' ')}</Text>
-        </HStack>
-      ),
-      value: part,
-    };
-  });
+  const options = useMemo(
+    () =>
+      parts
+        .map(part => {
+          const bodyPart = bodyParts.find(bp => bp.partId === part);
 
-  function handleChange(selected: string[]) {
+          if (!bodyPart) return null;
+
+          return {
+            label: (
+              <HStack>
+                <AxiePartIcon
+                  type={bodyPart.type as AxiePartIconType}
+                  bg={bodyPart.class as AxieClass}
+                  borderRadius="sm"
+                  fontSize="lg"
+                />
+                <Text>{part.replace(/\w+-/i, '').replace(/-/g, ' ')}</Text>
+              </HStack>
+            ),
+            value: part,
+          };
+        })
+        .filter(option => option),
+    [parts]
+  );
+
+  const handleChange = (selected: string[]) => {
     setFilter(old => ({
       ...old,
       parts: selected,
     }));
-  }
+  };
 
   return (
     <FormControl>

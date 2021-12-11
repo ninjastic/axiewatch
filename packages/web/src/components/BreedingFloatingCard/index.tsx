@@ -225,7 +225,8 @@ const SelectedAxieBreeding = ({ axie, id }: SelectedAxieBreedingProps): JSX.Elem
             })
           }
         >
-          <Image src={axieData.image} alt={`Axie ${axieData.id}`} fallback={<SkeletonCircle size="8" />} />
+          {axieData.image ? <Image src={axieData.image} alt={`Axie ${axieData.id}`} /> : <SkeletonCircle size="8" />}
+
           <Box position="relative" top="-45px" right="-20px">
             <MdClose />
           </Box>

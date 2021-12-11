@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 
 export const rpc = new ethers.providers.JsonRpcProvider(
   {
-    url: `${process.env.NEXT_PUBLIC_SERVER_URL}/rpc`,
+    url: `https://api.roninchain.com/rpc`,
   },
   { name: 'Ronin', chainId: 2020 }
 );

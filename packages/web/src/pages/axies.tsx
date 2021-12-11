@@ -112,6 +112,7 @@ export const Axies = (): JSX.Element => {
     () =>
       scholarAxies.reduce((classes, axie) => {
         const obj = { ...classes };
+        if (!axie.class) return obj;
 
         if (obj[axie.class] >= 1) {
           obj[axie.class] += 1;
