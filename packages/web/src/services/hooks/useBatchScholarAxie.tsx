@@ -45,7 +45,7 @@ export const useBatchScholarAxie = ({ addresses, size = 200 }: UseBatchScholarAx
             `${prev}
     
           r${index}: axies(
-            criteria: { stages: [4] }
+            criteria: { stages: [1,4] }
             size: ${size},
             owner: "${address}"
           ) {
@@ -92,6 +92,7 @@ export const useBatchScholarAxie = ({ addresses, size = 200 }: UseBatchScholarAx
             skill
             morale
           }
+          birthDate
         }
       `;
 

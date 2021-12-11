@@ -7,6 +7,10 @@ export interface ParsedAxieData extends Axie {
 }
 
 export function parseAxieData(data: Axie): ParsedAxieData {
+  if (!data.class) {
+    return data;
+  }
+
   const traits = getTraits(data.genes);
   const { quality } = getQualityAndPureness(traits, data.class);
 

@@ -75,8 +75,24 @@ export const ReptileIcon = ({ ...rest }: SVGProps<SVGSVGElement>): JSX.Element =
   );
 };
 
+export const EggIcon = ({ ...rest }: SVGProps<SVGSVGElement>): JSX.Element => {
+  return (
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      strokeWidth={0}
+      viewBox="0 0 384 512"
+      height="1em"
+      width="1em"
+      {...rest}
+    >
+      <path d="M192 0C86 0 0 214 0 320s86 192 192 192 192-86 192-192S298 0 192 0z" stroke="none" />
+    </svg>
+  );
+};
+
 interface AxieIconProps extends IconProps {
-  type: AxieClass;
+  type: AxieClass | 'egg';
 }
 
 export const AxieIcon = ({ type, ...rest }: AxieIconProps): JSX.Element => {
@@ -90,6 +106,7 @@ export const AxieIcon = ({ type, ...rest }: AxieIconProps): JSX.Element => {
     bird: BirdIcon,
     reptile: ReptileIcon,
     dawn: DawnIcon,
+    egg: EggIcon,
   };
 
   return <Icon as={icons[type]} {...rest} />;

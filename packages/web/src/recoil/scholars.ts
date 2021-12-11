@@ -73,6 +73,7 @@ export interface Axie {
     skill: number;
     speed: number;
   };
+  birthDate: number;
 }
 
 export interface ScholarAxies {

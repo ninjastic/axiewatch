@@ -19,6 +19,7 @@ import { useMemo } from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
 import lodash from 'lodash';
 
+import dayjs from '../../services/dayjs';
 import { Axie, AxieClass, scholarSelector } from '@src/recoil/scholars';
 import { preferencesAtom } from '@src/recoil/preferences';
 import { AxieIcon } from '../Icons/AxieIcon';
@@ -95,9 +96,8 @@ export const AxieCard = ({ axie }: AxieCardProps): JSX.Element => {
     [axie.parts, marketAllowedParts]
   );
 
-  const findSimilarUrl = `https://market.elitebreeders.club/?parts=${axieParts.join(
-    ','
-  )}&classes=${axie.class.toLowerCase()}`;
+  const findSimilarUrl =
+    axie.class && `https://market.elitebreeders.club/?parts=${axieParts.join(',')}&classes=${axie.class.toLowerCase()}`;
 
   const addAxieToBreeding = () => {
     setBreedingState(prev => {
@@ -108,6 +108,8 @@ export const AxieCard = ({ axie }: AxieCardProps): JSX.Element => {
     });
   };
 
+  console.log(!axie.class && axie);
+
   return (
     <Card
       px={3}
@@ -116,17 +118,18 @@ export const AxieCard = ({ axie }: AxieCardProps): JSX.Element => {
       overflow="hidden"
       borderWidth={1}
       bg={useColorModeValue('light.card', '#282b39')}
-      cursor={isBreedingMode ? 'pointer' : 'default'}
-      _hover={{ ...(isBreedingMode ? { borderColor: 'white', transform: 'scale(1.02)' } : {}) }}
-      onClick={isBreedingMode ? addAxieToBreeding : undefined}
+      cursor={isBreedingMode && axie.class ? 'pointer' : 'default'}
+      _hover={{ ...(isBreedingMode && axie.class ? { borderColor: 'white', transform: 'scale(1.02)' } : {}) }}
+      onClick={isBreedingMode && axie.class ? addAxieToBreeding : undefined}
+      opacity={isBreedingMode && !axie.class ? 0.5 : 1}
     >
       <Box py={2} display="flex" justifyContent="space-between" alignItems="center">
         <Box width="80%" display="flex" alignItems="center" overflow="hidden">
           <Avatar
             width="8"
             height="8"
-            bg={axie.class.toLowerCase()}
-            icon={<AxieIcon type={axie.class.toLowerCase() as AxieClass} fill="white" />}
+            bg={axie.class?.toLowerCase()}
+            icon={<AxieIcon type={(axie.class?.toLowerCase() as AxieClass) ?? 'egg'} fill="white" />}
           />
 
           <Stack spacing={1} ml="3">
@@ -137,14 +140,17 @@ export const AxieCard = ({ axie }: AxieCardProps): JSX.Element => {
             </Link>
           </Stack>
         </Box>
-        <Box width="30%" color="gray.400" fontSize="xs" display="flex" flexDirection="column" alignItems="flex-end">
-          <Text>
-            <b>{axie.breedCount}</b> Breeds
-          </Text>
-          <Text>
-            <b>{Math.round(axie.quality * 100)}%</b> Purity
-          </Text>
-        </Box>
+
+        {axie.class && (
+          <Box width="30%" color="gray.400" fontSize="xs" display="flex" flexDirection="column" alignItems="flex-end">
+            <Text>
+              <b>{axie.breedCount}</b> Breeds
+            </Text>
+            <Text>
+              <b>{Math.round(axie.quality * 100)}%</b> Purity
+            </Text>
+          </Box>
+        )}
       </Box>
 
       <HStack>
@@ -173,42 +179,58 @@ export const AxieCard = ({ axie }: AxieCardProps): JSX.Element => {
             </Box>
           }
           offset={[-4, 1]}
-          isDisabled={!preferences.hideAxieTraits}
+          isDisabled={!preferences.hideAxieTraits || !axie.class}
         >
           <Box display="flex" alignItems="center" justifyContent="center" width="55%" height="125px" overflow="hidden">
             <Image src={axie.image} fallback={<SkeletonCircle size="14" />} alt={`Axie ${axie.id}`} h="125px" />
           </Box>
         </Tooltip>
 
-        <Stack spacing="0" width="45%">
-          {Object.entries(axie.stats ?? {}).map(([stat, value]) => (
-            <Box key={stat} fontSize="sm" display="flex" alignItems="center">
-              <Box display="flex" alignItems="center" width="12" justifyContent="space-between" mr="2">
-                <StatusIcon borderRadius="8" type={stat as StatusIconType} />
-                <Text fontSize="12px">{axie.stats[stat]}</Text>
+        {axie.class && (
+          <Stack spacing="0" width="45%">
+            {Object.entries(axie.stats ?? {}).map(([stat, value]) => (
+              <Box key={stat} fontSize="sm" display="flex" alignItems="center">
+                <Box display="flex" alignItems="center" width="12" justifyContent="space-between" mr="2">
+                  <StatusIcon borderRadius="8" type={stat as StatusIconType} />
+                  <Text fontSize="12px">{axie.stats[stat]}</Text>
+                </Box>
+                <Progress min={27} max={61} value={value} size="sm" colorScheme={stat} width="100%" borderRadius="md" />
               </Box>
-              <Progress min={27} max={61} value={value} size="sm" colorScheme={stat} width="100%" borderRadius="md" />
-            </Box>
-          ))}
-        </Stack>
+            ))}
+          </Stack>
+        )}
+
+        {!axie.class && axie.birthDate && (
+          <Stack spacing="0" width="65%">
+            <Text>
+              Hatches <b>{dayjs.unix(axie.birthDate).add(5, 'days').fromNow()}</b>
+            </Text>
+
+            <Text fontSize="xs" variant="faded">
+              {dayjs.unix(axie.birthDate).add(5, 'days').format('MMMM DD, YYYY, h:MM A')}
+            </Text>
+          </Stack>
+        )}
       </Box>
 
-      {!preferences.hideAxieTraits && (
+      {!preferences.hideAxieTraits && axie.class && (
         <Box py={2}>
           <AxieTraits axieData={axie} />
         </Box>
       )}
 
-      <Flex justify="flex-end" align="center">
-        <Tag size="sm" fontWeight="bold" bg="transparent">
-          <HStack spacing={1}>
-            <Link href={findSimilarUrl} target="_blank">
-              Find similar
-            </Link>
-            <BiLinkExternal />
-          </HStack>
-        </Tag>
-      </Flex>
+      {axie.class && (
+        <Flex justify="flex-end" align="center">
+          <Tag size="sm" fontWeight="bold" bg="transparent">
+            <HStack spacing={1}>
+              <Link href={findSimilarUrl} target="_blank">
+                Find similar
+              </Link>
+              <BiLinkExternal />
+            </HStack>
+          </Tag>
+        </Flex>
+      )}
     </Card>
   );
 };
