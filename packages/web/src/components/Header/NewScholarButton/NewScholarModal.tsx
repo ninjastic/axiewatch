@@ -2,6 +2,7 @@ import { Tabs, Tab, TabList, TabPanels, TabPanel, Box } from '@chakra-ui/react';
 
 import { ManualForm } from './ManualForm';
 import { ListForm } from './ListForm';
+import { OtherImportForm } from './OtherImportForm';
 
 export const NewScholarModal = (): JSX.Element => {
   return (
@@ -10,6 +11,7 @@ export const NewScholarModal = (): JSX.Element => {
         <TabList mb={3}>
           <Tab>Manual</Tab>
           <Tab>Bulk Import</Tab>
+          <Tab>Others</Tab>
         </TabList>
 
         <TabPanels>
@@ -19,6 +21,10 @@ export const NewScholarModal = (): JSX.Element => {
 
           <TabPanel>
             <ListForm />
+          </TabPanel>
+
+          <TabPanel>
+            <OtherImportForm />
           </TabPanel>
         </TabPanels>
       </Tabs>

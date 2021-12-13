@@ -129,10 +129,12 @@ interface ScholarsGridProps {
 export const ScholarsGrid = ({ page, setPage }: ScholarsGridProps): JSX.Element => {
   const map = useRecoilValue(scholarsMap);
   const addresses = useMemo(() => map.map(scholar => scholar.address), [map]);
+
   const filters = useRecoilValue(scholarFilter);
   const perPage = useRecoilValue(scholarsPerPageAtom);
 
   const { isLoading, data, refetch, isRefetching, isFetching } = useBatchScholar({ addresses });
+
   const filteredScholars = useFilterScholars(map);
   const erroredScholars = useMemo(
     () => (!isLoading ? data.filter(scholar => scholar.errored || scholar.pvpErrored) : []),

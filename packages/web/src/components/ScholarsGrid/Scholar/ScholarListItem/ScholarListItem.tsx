@@ -96,6 +96,18 @@ export const ScholarListItem = ({ address, isLoading = false }: ItemParams): JSX
     [address, shouldSkeletonLoading]
   );
 
+  const renderFields = useMemo(
+    () =>
+      scholarFields.map(field =>
+        fields[field] ? (
+          <GridItem key={field} colSpan={fields[field].size}>
+            {fields[field].element}
+          </GridItem>
+        ) : null
+      ),
+    [fields, scholarFields]
+  );
+
   const columns = useMemo(
     () =>
       scholarFields.reduce((prev, field) => {
@@ -121,13 +133,7 @@ export const ScholarListItem = ({ address, isLoading = false }: ItemParams): JSX
         gap={5}
         px={5}
       >
-        {scholarFields.map(field =>
-          fields[field] ? (
-            <GridItem key={field} colSpan={fields[field].size}>
-              {fields[field].element}
-            </GridItem>
-          ) : null
-        )}
+        {renderFields}
 
         {!isLoading && scholar.loaded ? (
           <GridItem ml={-5} colSpan={1}>

@@ -304,9 +304,6 @@ export const totalSlpSelector = selector({
       { total: 0, manager: 0, scholars: 0, investor: 0 }
     );
   },
-  cachePolicy_UNSTABLE: {
-    eviction: 'most-recent',
-  },
 });
 
 export const totalSlpDaySelector = selector({

@@ -24,9 +24,8 @@ export class DailyController {
 
     if (user) {
       isTracking = !!(await Sync.query()
-        .select('id')
-        .where('user_id', user.id)
-        .then(response => response));
+        .findOne('user_id', user.id)
+        .then(response => response?.data.find(scholar => scholar.address === address)));
     }
 
     const { dates } = await getScholarHistoricalSlp(address);

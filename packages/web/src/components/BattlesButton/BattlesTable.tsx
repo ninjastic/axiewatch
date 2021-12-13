@@ -39,7 +39,6 @@ export const BattlesTable = ({ data, address, type, perPage }: BattlesTableProps
   }, [type, perPage]);
 
   const pageData = filteredData.slice((page - 1) * perPage, page * perPage);
-
   const numberOfPages = Math.ceil(filteredData.length / perPage);
 
   return (

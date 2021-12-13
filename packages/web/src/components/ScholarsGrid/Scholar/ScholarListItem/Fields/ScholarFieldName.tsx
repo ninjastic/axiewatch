@@ -2,7 +2,7 @@ import { HStack, Text, Tooltip, SkeletonText } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 
 import { ScholarAddress } from '../../ScholarAddress';
-import { scholarsMap } from '../../../../../recoil/scholars';
+import { scholarSelector } from '../../../../../recoil/scholars';
 
 interface ScholarFieldNameProps {
   address: string;
@@ -10,7 +10,7 @@ interface ScholarFieldNameProps {
 }
 
 export const ScholarFieldName = ({ address, isLoading }: ScholarFieldNameProps): JSX.Element => {
-  const scholar = useRecoilValue(scholarsMap).find(map => map.address === address);
+  const scholar = useRecoilValue(scholarSelector(address));
 
   return (
     <SkeletonText isLoaded={!isLoading} noOfLines={1} maxW={isLoading ? '100px' : '200px'}>

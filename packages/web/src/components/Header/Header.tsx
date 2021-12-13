@@ -3,7 +3,7 @@ import { Stack, HStack } from '@chakra-ui/react';
 import { PriceTicker } from './PriceTicker';
 import { ExportButton } from './ExportButton';
 import { PreferencesButton } from './PreferencesButton';
-import { NewScholarButton } from './NewScholarButton/NewScholarButton';
+import { NewScholarButton } from './NewScholarButton';
 import { SlpOverview } from './SlpOverview/SlpOverview';
 
 export const Header = (): JSX.Element => {
