@@ -6,6 +6,7 @@ import produce from 'immer';
 import abi from '../../constants/abi/SLP.json';
 import { skyMavisApi } from '../api';
 import { authenticateFromSignature } from '../utils/authenticateFromSignature';
+import { rpcWrite } from '../rpc';
 
 interface ClaimResponse {
   tx: { hash: string };
@@ -38,14 +39,8 @@ export async function ClaimTransaction({
   setStatus,
 }: ClaimTransactionProps): Promise<ClaimResponse> {
   const wallet = new ethers.Wallet(privateKey);
-  const provider = new ethers.providers.JsonRpcProvider(
-    {
-      url: `${process.env.NEXT_PUBLIC_SERVER_URL}/rpc`,
-    },
-    { name: 'Ronin', chainId: 2020 }
-  );
 
-  const signer = wallet.connect(provider);
+  const signer = wallet.connect(rpcWrite);
   const address = await wallet.getAddress();
 
   setStatus(oldStatus =>

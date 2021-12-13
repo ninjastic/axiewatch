@@ -6,3 +6,10 @@ export const rpc = new ethers.providers.JsonRpcProvider(
   },
   { name: 'Ronin', chainId: 2020 }
 );
+
+export const rpcWrite = new ethers.providers.JsonRpcProvider(
+  {
+    url: `https://proxy.roninchain.com/free-gas-rpc`,
+  },
+  { name: 'Ronin', chainId: 2020 }
+);
