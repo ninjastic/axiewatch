@@ -12,7 +12,7 @@ export const skyMavisApi = axios.create({
   timeout: 1000 * 15, // 15 seconds
 });
 
-export const axieInfinityGraphQl = new GraphQLClient('https://axieinfinity.com/graphql-server-v2/graphql', {
+export const axieInfinityGraphQl = new GraphQLClient(`${process.env.NEXT_PUBLIC_SERVER_URL}/graphql`, {
   fetch: throttle(fetch, 5, 1000),
   timeout: 1000 * 20, // 20 seconds
 });

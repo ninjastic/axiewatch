@@ -12,6 +12,7 @@ import { SyncController } from '../controllers/SyncController';
 import { DashboardController } from '../controllers/DashboardController';
 import { MatchesController } from '../controllers/MatchesController';
 import { StatusController } from '../controllers/StatusController';
+import { GraphQLController } from '../controllers/GraphQLController';
 
 const router = Router();
 
@@ -27,6 +28,7 @@ const syncController = new SyncController();
 const dashboardController = new DashboardController();
 const matchesController = new MatchesController();
 const statusController = new StatusController();
+const graphQLController = new GraphQLController();
 
 router.get('/scholar', scholarController.get);
 router.post('/batch-scholar', batchScholarController.post);
@@ -42,5 +44,6 @@ router.get('/dashboard', dashboardController.get);
 router.post('/dashboard', dashboardController.post);
 router.get('/matches', matchesController.get);
 router.get('/status', statusController.get);
+router.post('/graphql', graphQLController.post);
 
 export { router };
