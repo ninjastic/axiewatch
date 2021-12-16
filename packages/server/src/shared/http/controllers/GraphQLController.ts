@@ -8,7 +8,7 @@ export class GraphQLController {
     const url = 'https://axieinfinity.com/graphql-server-v2/graphql';
 
     return proxiedApi
-      .post(url, { data: req.body })
+      .post(url, req.body)
       .then(response => res.json(response.data))
       .catch(err => {
         throw new AppError(err.message, err.statusCode ?? 500);
