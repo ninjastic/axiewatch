@@ -1,7 +1,7 @@
 export const colors = {
   light: {
     bgLevel1: '#FFF',
-    bgLevel2: '#EDF2F7',
+    bgLevel2: '#E3F2FD',
     bgLevel3: '#BBDEFB',
     card: '#FFFFFF',
     faded: '#3C3C3C',

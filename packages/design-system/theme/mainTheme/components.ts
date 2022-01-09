@@ -1,5 +1,7 @@
+/* eslint-disable import/no-named-default */
+import { default as Container } from './components/Container';
+import { default as Button } from './components/Button';
 import { CardStyles as Card } from './components/Card';
-import { ButtonStyles as Button } from './components/Button';
 import { ModalStyles as Modal } from './components/Modal';
 import { MenuStyles as Menu } from './components/Menu';
 import { DrawerStyles as Drawer } from './components/Drawer';
@@ -13,6 +15,7 @@ import { TextStyles as Text } from './components/Text';
 import { PopoverStyles as Popover } from './components/Popover';
 
 export const components = {
+  Container,
   Card,
   Button,
   Modal,

@@ -5,6 +5,7 @@ import { SidebarContent } from './SidebarContent';
 
 const SidebarComponent = (): JSX.Element => (
   <Box
+    px={4}
     w="235px"
     h="100%"
     pos="fixed"

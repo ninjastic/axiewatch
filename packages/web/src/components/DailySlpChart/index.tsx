@@ -69,6 +69,11 @@ const DailySlpChartComponent = (): JSX.Element => {
   const { colors } = useTheme();
   const { data, isLoading } = useBatchScholar({ addresses });
 
+  const managerColor = useColorModeValue(colors.purple[700], colors.purple[400]);
+  const scholarsColor = useColorModeValue(colors.blue[700], colors.blue[400]);
+  const investorColor = useColorModeValue(colors.indigo[700], colors.indigo[400]);
+  const infoColor = useColorModeValue(colors.gray[700], colors.gray[100]);
+
   const chartData = useMemo(() => {
     return data
       .reduce((prevResult, currResult) => {
@@ -146,18 +151,22 @@ const DailySlpChartComponent = (): JSX.Element => {
           dataKey="day"
           tickFormatter={date => dayjs.utc(date).subtract(1, 'day').format('DD/MM')}
           tick={{
-            fill: colors.darkGray[500],
+            fill: infoColor,
           }}
         />
-        <YAxis />
+        <YAxis
+          tick={{
+            fill: infoColor,
+          }}
+        />
 
-        <Bar dataKey="investor" fill="#58508d" stackId="1" />
-        <Bar dataKey="manager" fill="#bc5090" stackId="1" />
-        <Bar dataKey="scholars" fill="#ffa600" stackId="1">
-          <LabelList dataKey="total" position="top" style={{ fontSize: '80%', fill: colors.darkGray[500] }} />
+        <Bar dataKey="investor" fill={investorColor} stackId="1" />
+        <Bar dataKey="manager" fill={managerColor} stackId="1" />
+        <Bar dataKey="scholars" fill={scholarsColor} stackId="1">
+          <LabelList dataKey="total" position="top" style={{ fontSize: '80%', fill: infoColor }} />
         </Bar>
 
-        <Tooltip content={<CustomTooltip />} />
+        <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(103, 58, 183, 0.2' }} />
         <CartesianGrid strokeDasharray="3 3" opacity={0.15} vertical={false} />
         <Legend />
       </BarChart>

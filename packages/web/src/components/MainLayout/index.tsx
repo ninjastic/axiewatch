@@ -94,7 +94,7 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
       {isLoading && <LoadingScreen />}
 
       <Header currentTool="Tracker" />
-      <Flex pt="65px" h="full" id="mainLayout">
+      <Flex pt="80px" h="full" id="mainLayout">
         <Sidebar />
 
         {shouldShowMaintenance && <MaintenanceScreen />}

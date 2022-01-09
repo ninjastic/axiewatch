@@ -19,15 +19,28 @@ import { usePrice } from '@src/services/hooks/usePrice';
 import { formatter } from '@src/services/formatter';
 import { Card } from '@components/Card';
 
-const CustomTooltip = ({ active, payload, label }: TooltipProps<any, any>): JSX.Element => {
-  const price = usePrice();
-  const { colors } = useTheme();
+interface CustomTooltip {
+  detailColors: {
+    infoColor: string;
+    scholarsColor: string;
+    managerColor: string;
+    investorColor: string;
+  };
+}
 
-  const tooltipSecondaryColor = useColorModeValue(colors.darkGray[700], colors.darkGray[200]);
+const CustomTooltip = ({
+  active,
+  payload,
+  label,
+  detailColors,
+}: TooltipProps<any, any> & CustomTooltip): JSX.Element => {
+  const price = usePrice();
 
   if (!active || !payload) {
     return null;
   }
+
+  console.log(detailColors);
 
   const total = Math.floor(payload.reduce((p, c) => p + c.value, 0));
   const scholars = Math.floor(payload.find(p => p.dataKey === 'scholars')?.value);
@@ -36,7 +49,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<any, any>): JSX.
 
   return (
     <Card rounded="lg" shadow="dark-lg" p={2}>
-      <Text fontSize="sm" color={tooltipSecondaryColor} textAlign="center">
+      <Text fontSize="sm" color={detailColors.infoColor} textAlign="center">
         {dayjs.utc(label).subtract(1, 'day').format('DD MMM YYYY')}
       </Text>
 
@@ -45,7 +58,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<any, any>): JSX.
       <Stack spacing={0} textAlign="center">
         <Text fontWeight="bold">{total} SLP</Text>
 
-        <Text fontSize="sm" color={tooltipSecondaryColor}>
+        <Text fontSize="sm" color={detailColors.infoColor}>
           {formatter(total * price.values.slp, price.locale)}
         </Text>
       </Stack>
@@ -53,19 +66,19 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<any, any>): JSX.
       <Divider my={1} />
 
       <HStack>
-        <Stack spacing={0} color="#58508d" fontSize="xs">
-          <Text fontWeight="bold">INVESTOR</Text>
-          <Text>{investor} SLP</Text>
+        <Stack spacing={0} color={detailColors.scholarsColor} fontSize="xs">
+          <Text fontWeight="bold">SCHOLARS</Text>
+          <Text>{scholars} SLP</Text>
         </Stack>
 
-        <Stack spacing={0} color="#bc5090" fontSize="xs">
+        <Stack spacing={0} color={detailColors.managerColor} fontSize="xs">
           <Text fontWeight="bold">MANAGER</Text>
           <Text>{manager} SLP</Text>
         </Stack>
 
-        <Stack spacing={0} color="#ffa600" fontSize="xs">
-          <Text fontWeight="bold">SCHOLARS</Text>
-          <Text>{scholars} SLP</Text>
+        <Stack spacing={0} color={detailColors.investorColor} fontSize="xs">
+          <Text fontWeight="bold">INVESTOR</Text>
+          <Text>{investor} SLP</Text>
         </Stack>
       </HStack>
     </Card>
@@ -76,6 +89,11 @@ export const EarningsForecastChart = (): JSX.Element => {
   const scholars = useRecoilValue(scholarsMap);
   const addresses = scholars.map(scholar => scholar.address);
   const { colors } = useTheme();
+
+  const managerColor = useColorModeValue(colors.purple[700], colors.purple[400]);
+  const scholarsColor = useColorModeValue(colors.blue[700], colors.blue[400]);
+  const investorColor = useColorModeValue(colors.indigo[700], colors.indigo[400]);
+  const infoColor = useColorModeValue(colors.gray[700], colors.gray[100]);
 
   const { data, isLoading, isError } = useBatchScholar({ addresses });
 
@@ -148,18 +166,23 @@ export const EarningsForecastChart = (): JSX.Element => {
           bottom: 5,
         }}
       >
-        <YAxis dataKey="total" />
+        <YAxis
+          dataKey="total"
+          tick={{
+            fill: infoColor,
+          }}
+        />
         <XAxis
           dataKey="day"
           tickFormatter={date => dayjs.utc(date).subtract(1, 'day').format('DD/MM')}
           tick={{
-            fill: colors.darkGray[500],
+            fill: infoColor,
           }}
         />
-        <Area type="monotone" stackId="1" dataKey="investor" stroke="#58508d" fill="#58508d" />
-        <Area type="monotone" stackId="1" dataKey="manager" stroke="#bc5090" fill="#bc5090" />
-        <Area type="monotone" stackId="1" dataKey="scholars" stroke="#ffa600" fill="#ffa600" />
-        <Tooltip content={<CustomTooltip />} />
+        <Area type="monotone" stackId="1" dataKey="investor" stroke={investorColor} fill={investorColor} />
+        <Area type="monotone" stackId="1" dataKey="manager" stroke={managerColor} fill={managerColor} />
+        <Area type="monotone" stackId="1" dataKey="scholars" stroke={scholarsColor} fill={scholarsColor} />
+        <Tooltip content={<CustomTooltip detailColors={{ infoColor, investorColor, managerColor, scholarsColor }} />} />
         <Legend />
       </AreaChart>
     </ResponsiveContainer>

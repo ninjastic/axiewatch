@@ -17,6 +17,7 @@ export const PreferencesButton = ({ ...rest }: Omit<IconButtonProps, 'aria-label
       icon={<AiOutlineSetting />}
       onClick={preferencesModal.onOpen}
       variant="ghost"
+      colorMode="light"
       aria-label="Preferences"
       {...rest}
     />

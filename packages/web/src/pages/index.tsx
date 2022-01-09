@@ -11,6 +11,7 @@ import {
   Image,
   Divider,
   useBreakpointValue,
+  Container,
 } from '@chakra-ui/react';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import dynamic from 'next/dynamic';
@@ -60,16 +61,16 @@ function DashboardPage() {
   }, [addresses]);
 
   return (
-    <Box h="full" maxW="1450px" margin="auto" p={3}>
-      <Flex justify="space-between" direction={{ base: 'column', lg: 'row' }}>
-        <Text fontSize="3xl" fontWeight="bold">
-          Dashboard
-        </Text>
-
-        <HStack>
-          <PreferencesButton variant="solid" />
-        </HStack>
-      </Flex>
+    <Container variant="body">
+      <PreferencesButton
+        display="flex"
+        position="fixed"
+        top="7.3%"
+        right={5}
+        variant="solid"
+        colorScheme="purple"
+        borderRadius="50% 50% 4px 50%"
+      />
 
       {!scholars.length && (
         <Box position="absolute" zIndex={200} w="100%" h="100%" top={0} left={0} backdropFilter="blur(15px)">
@@ -114,7 +115,7 @@ function DashboardPage() {
       )}
 
       {!isError && (
-        <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)' }} mt={10} gap={8} pb={5}>
+        <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)' }} gap={8} pb={5}>
           <GridItem colSpan={1}>
             <SummaryCards />
           </GridItem>
@@ -180,7 +181,7 @@ function DashboardPage() {
         isFetching={isRefetching || isFetching}
         refetch={refetch}
       />
-    </Box>
+    </Container>
   );
 }
 

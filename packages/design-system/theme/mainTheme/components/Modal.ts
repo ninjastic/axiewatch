@@ -5,7 +5,7 @@ export const ModalStyles = {
   parts: ['dialog'],
   baseStyle: (props: Dict[]): any => ({
     dialog: {
-      bg: mode('light.bgLevel1', 'dark.bgLevel4')(props),
+      bg: mode('light.bgLevel1', 'dark.bgLevel2')(props),
     },
   }),
 };

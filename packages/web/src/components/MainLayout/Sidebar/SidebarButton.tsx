@@ -13,25 +13,17 @@ interface SidebarButtonProps extends ButtonProps {
 export const SidebarButton = ({ name, path, disabled = false, ...rest }: SidebarButtonProps): JSX.Element => (
   <ChakraLink href={path}>
     <Button
-      w="100%"
       h="50px"
-      rounded="none"
-      variant="ghost"
+      rounded="xl"
       justifyContent="flex-start"
+      colorScheme="purple"
+      variant="navigation"
       px={10}
+      my={1}
+      pl={6}
+      iconSpacing={4}
       disabled={disabled}
-      _before={
-        Router.asPath === path
-          ? {
-              content: '""',
-              width: '4px',
-              height: '100%',
-              position: 'absolute',
-              left: '0px',
-              bg: 'white',
-            }
-          : {}
-      }
+      isActive={Router.asPath === path}
       {...rest}
     >
       {name}

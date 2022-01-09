@@ -77,6 +77,9 @@ export const SlpTrackingChart = ({
   const { colors } = useTheme();
   const { session, isUserLoading } = useAuth();
 
+  const scholarsColor = useColorModeValue(colors.blue[700], colors.blue[400]);
+  const infoColor = useColorModeValue(colors.gray[700], colors.gray[100]);
+
   const { data, isLoading, isFetching, isRefetching, isError, refetch } = useQuery(
     ['daily', address],
     async () => {
@@ -204,25 +207,19 @@ export const SlpTrackingChart = ({
           <XAxis
             dataKey="day"
             tickFormatter={date => dayjs.utc(date).format('DD/MM')}
-            tick={{ fill: colors.gray[500], fontSize: 12 }}
+            tick={{ fill: infoColor, fontSize: 12 }}
           />
         )}
 
         {showYAxis && (
-          <YAxis
-            dataKey="slpAmount"
-            axisLine={false}
-            tickLine={false}
-            tickCount={8}
-            tick={{ fill: colors.gray[500] }}
-          />
+          <YAxis dataKey="slpAmount" axisLine={false} tickLine={false} tickCount={8} tick={{ fill: infoColor }} />
         )}
 
-        <Bar dataKey="slpAmount" stroke={colors['gray.500']} fill="#ffa600">
+        <Bar dataKey="slpAmount" stroke={colors['gray.500']} fill={scholarsColor}>
           <LabelList dataKey="slpAmount" position="top" style={{ fontSize: '80%', fill: colors.darkGray[500] }} />
         </Bar>
 
-        <Tooltip content={<CustomTooltip />} />
+        <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(103, 58, 183, 0.2' }} />
 
         <CartesianGrid strokeDasharray="3 3" opacity={0.15} vertical={false} />
       </BarChart>

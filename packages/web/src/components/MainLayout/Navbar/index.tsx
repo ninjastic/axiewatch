@@ -4,7 +4,6 @@ import { Icon, HamburgerIcon } from '@chakra-ui/icons';
 import { IoLogoYoutube } from 'react-icons/io';
 import {
   Grid,
-  Text,
   Flex,
   IconButton,
   Box,
@@ -18,7 +17,8 @@ import {
   Link,
   DrawerOverlay,
   Divider,
-  DarkMode,
+  useColorModeValue,
+  Heading,
 } from '@chakra-ui/react';
 
 import { DiscordIcon, AnalysisIcon, BagIcon, TrackerIcon } from './icons';
@@ -73,9 +73,9 @@ const NavItem = ({ icon, children, link, isActive, target }: NavItemProps) => (
       borderRadius="lg"
       role="group"
       cursor="pointer"
-      bg={isActive ? 'whiteAlpha.200' : ''}
+      bg={isActive ? 'purple.200' : ''}
       _hover={{
-        bg: 'whiteAlpha.300',
+        bg: 'purple.300',
       }}
     >
       {icon && <Icon mr="4" fontSize="16" as={icon} />}
@@ -88,12 +88,11 @@ const NavButton = ({ icon, link, name, currentTool }: NavButtonProps) => (
   <Link href={link} style={{ textDecoration: 'none' }}>
     <Button
       isActive={name === currentTool}
-      variant="ghost"
+      variant="navigation"
+      colorScheme="purple"
       leftIcon={<Icon as={icon} />}
       mr={2}
-      fontFamily={
-        '-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";'
-      }
+      size="md"
     >
       {name}
     </Button>
@@ -105,9 +104,9 @@ const SidebarContent = ({ onClose, currentTool }: SidebarProps) => (
     <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
       <Flex alignItems="center">
         <Image mr={3} width="38px" height="38px" borderRadius="full" src="/images/ebc-small-logo.jpeg" alt="ebc" />
-        <Text fontSize="lg" fontFamily="Bowlby One SC" fontWeight="bold">
+        <Heading fontSize="lg" fontWeight="bold">
           {currentTool}
-        </Text>
+        </Heading>
       </Flex>
 
       <CloseButton display="flex" onClick={onClose} />
@@ -133,22 +132,23 @@ const Header = ({ currentTool }: HeaderProps): JSX.Element => {
   const { isOpen: isNavOpen, onOpen: onNavOpen, onClose: onNavClose } = useDisclosure();
   const [imageLoaded, setImageLoaded] = useState(false);
 
+  const bg = useColorModeValue('light.bgLevel1', 'dark.bgLevel4');
+
   Router.events.on('routeChangeStart', () => onNavClose());
 
   return (
     <Grid
       sx={{
         p: 3,
-        h: '65px',
-        background: '#11151d',
-        boxShadow: 'md',
+        h: '80px',
+        gridTemplateColumns: { base: 'repeat(2, 50%)', lg: 'repeat(3, 33.33%)' },
+        background: bg,
         position: 'fixed',
         overflow: 'hidden',
         width: '100%',
-        zIndex: '300',
-        display: 'flex',
+        zIndex: 'banner',
+        display: 'grid',
         alignItems: 'center',
-        justifyContent: 'space-between',
       }}
     >
       <Drawer
@@ -184,59 +184,50 @@ const Header = ({ currentTool }: HeaderProps): JSX.Element => {
           <SkeletonCircle isLoaded={imageLoaded} startColor="white" endColor="gray" width="38px" height="38px" />
         </Box>
 
-        <Text
+        <Heading
           sx={{
             ml: 3,
             fontSize: { base: 'lg', lg: 'xl' },
-            fontFamily: 'Bowlby One SC',
-            color: 'white',
           }}
         >
           {currentTool}
-        </Text>
+        </Heading>
       </Flex>
 
-      <DarkMode>
-        <Flex sx={{ display: { base: 'none', lg: 'flex' } }}>
-          {LinkItems.map(item => (
-            <NavButton key={item.name} icon={item.icon} currentTool={currentTool} link={item.link} name={item.name} />
-          ))}
-        </Flex>
-      </DarkMode>
+      <Flex sx={{ display: { base: 'none', lg: 'flex' }, justifyContent: 'center' }}>
+        {LinkItems.map(item => (
+          <NavButton key={item.name} icon={item.icon} currentTool={currentTool} link={item.link} name={item.name} />
+        ))}
+      </Flex>
 
       <Flex sx={{ justifyContent: 'flex-end' }}>
-        <Box mr={{ base: 0, lg: 2 }}>
-          <SignInButton />
-        </Box>
-
         <IconButton
           aria-label="Discord"
+          alignSelf="center"
           icon={<DiscordIcon />}
-          variant="ghost"
+          variant="accent"
           onClick={() => window.open('https://discord.gg/bRV67Kc77u', '_blank')}
-          color="white"
-          _hover={{
-            bg: 'whiteAlpha.200',
-          }}
+          size="sm"
+          fontSize="lg"
+          colorScheme="purple"
           sx={{
             display: { base: 'none', '2xl': 'block' },
-            mr: 1,
+            mr: 3,
           }}
         />
 
         <IconButton
           aria-label="Youtube"
+          alignSelf="center"
           icon={<IoLogoYoutube />}
-          variant="ghost"
+          variant="accent"
           onClick={() => window.open('https://www.youtube.com/watch?v=EecgUWIX-8k', '_blank')}
-          color="white"
-          _hover={{
-            bg: 'whiteAlpha.200',
-          }}
+          size="sm"
+          fontSize="lg"
+          colorScheme="red"
           sx={{
             display: { base: 'none', '2xl': 'flex' },
-            pt: 0,
-            mr: 1,
+            mr: 3,
           }}
         />
 
@@ -246,20 +237,24 @@ const Header = ({ currentTool }: HeaderProps): JSX.Element => {
             position: 'relative',
           }}
           alignSelf="center"
-          mr={1}
+          mr={3}
         >
           <ColorSwitchIcon />
         </Box>
 
+        <Box mr={{ base: 0, lg: 2 }}>
+          <SignInButton />
+        </Box>
+
         <IconButton
-          variant="outline"
+          variant="accent"
+          alignSelf="center"
           aria-label="Menu"
           icon={<HamburgerIcon />}
           onClick={onNavOpen}
-          color="white"
-          _hover={{
-            bg: 'whiteAlpha.200',
-          }}
+          size="sm"
+          fontSize="lg"
+          colorScheme="purple"
           sx={{
             display: { base: 'block', '2xl': 'none' },
             ml: 3,
