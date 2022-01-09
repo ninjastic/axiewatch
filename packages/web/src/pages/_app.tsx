@@ -1,5 +1,5 @@
 import { AppProps } from 'next/app';
-import { ChakraProvider } from '@chakra-ui/react';
+import { EBCProvider, theme } from '@axiewatch/design-system';
 import { RecoilRoot } from 'recoil';
 import { DefaultSeo } from 'next-seo';
 import { ToastContainer, cssTransition } from 'react-toastify';
@@ -7,13 +7,9 @@ import { QueryClientProvider, QueryClient } from 'react-query';
 import { persistQueryClient } from 'react-query/persistQueryClient-experimental';
 import { createWebStoragePersistor } from 'react-query/createWebStoragePersistor-experimental';
 import Head from 'next/head';
-import '@fontsource/inter';
-import '@fontsource/bowlby-one-sc';
-import 'react-toastify/dist/ReactToastify.css';
 
-import '../styles/global.css';
+import '@axiewatch/design-system/css';
 
-import { mainTheme } from '../theme';
 import { MainLayout } from '../components/MainLayout';
 import { ModalController } from '../components/ModalController';
 import { TrackingScripts } from '../components/TrackingScripts';
@@ -33,7 +29,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
-        <ChakraProvider theme={mainTheme}>
+        <EBCProvider theme={theme}>
           <DefaultSeo
             title="Scholarship Tracker"
             titleTemplate="EBC Tracker | %s"
@@ -87,7 +83,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
             />
             <TrackingScripts />
           </MainLayout>
-        </ChakraProvider>
+        </EBCProvider>
       </RecoilRoot>
     </QueryClientProvider>
   );

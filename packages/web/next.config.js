@@ -1,10 +1,5 @@
-module.exports = {
-  webpack: config => {
-    config.module.rules.push({
-      test: /\.md$/,
-      use: 'raw-loader',
-    });
+/* eslint-disable @typescript-eslint/no-var-requires */
+const withPlugins = require('next-compose-plugins');
+const withTM = require('next-transpile-modules')(['@axiewatch/design-system']);
 
-    return config;
-  },
-};
+module.exports = withPlugins([withTM]);

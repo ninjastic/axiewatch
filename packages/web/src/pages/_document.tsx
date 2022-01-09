@@ -1,7 +1,6 @@
 import NextDocument, { Html, Head, Main, NextScript } from 'next/document';
 import { ColorModeScript } from '@chakra-ui/react';
-
-import { mainTheme } from '../theme/index';
+import { theme } from '@axiewatch/design-system';
 
 export default class Document extends NextDocument {
   render(): JSX.Element {
@@ -9,7 +8,7 @@ export default class Document extends NextDocument {
       <Html>
         <Head />
         <body>
-          <ColorModeScript initialColorMode={mainTheme.config.initialColorMode} />
+          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />
           <NextScript />
         </body>

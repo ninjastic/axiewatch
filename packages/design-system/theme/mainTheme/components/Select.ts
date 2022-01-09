@@ -6,7 +6,7 @@ export const SelectStyles = {
   baseStyle: (props: Dict[]): any => ({
     field: {
       '> option, > optgroup': {
-        bg: mode('light.background', 'dark.background')(props),
+        bg: mode('light.bgLevel1', 'dark.bgLevel4')(props),
       },
     },
   }),

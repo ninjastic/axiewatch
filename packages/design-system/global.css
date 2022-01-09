@@ -34,5 +34,5 @@ body,
 
 :root {
   --toastify-color-dark: #1e1e1e;
-  --toastify-font-family: Inter;
+  --toastify-font-family: InterVariable;
 }

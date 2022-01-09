@@ -1,11 +1,11 @@
 import { mode } from '@chakra-ui/theme-tools';
 import { Dict } from '@chakra-ui/utils';
 
-export const DrawerStyles = {
+export const ModalStyles = {
   parts: ['dialog'],
   baseStyle: (props: Dict[]): any => ({
     dialog: {
-      bg: mode('light.background', 'dark.background')(props),
+      bg: mode('light.bgLevel1', 'dark.bgLevel4')(props),
     },
   }),
 };

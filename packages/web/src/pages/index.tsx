@@ -73,43 +73,43 @@ function DashboardPage() {
 
       {!scholars.length && (
         <Box position="absolute" zIndex={200} w="100%" h="100%" top={0} left={0} backdropFilter="blur(15px)">
-          <HStack
-            justify="center"
-            align="center"
-            w="100%"
-            h="100%"
-            spacing={{ base: 0, lg: 10 }}
-            px={{ base: 1, lg: 0 }}
-            flexDir={{ base: 'column', lg: 'row' }}
-          >
-            <Stack textAlign="center" spacing={3} mt={{ base: 5, lg: 0 }}>
-              <Text fontSize="30px" fontWeight="bold">
-                Welcome 👋
-              </Text>
+          <Box justify="center" display="flex" align="center" w="full" h="full">
+            <HStack
+              justify="center"
+              align="center"
+              spacing={{ base: 0, lg: 10 }}
+              px={{ base: 1, lg: 0 }}
+              flexDir={{ base: 'column', lg: 'row' }}
+            >
+              <Stack textAlign="center" spacing={3} mt={{ base: 5, lg: 0 }}>
+                <Text fontSize="30px" fontWeight="bold">
+                  Welcome 👋
+                </Text>
 
-              <Text maxW="500px">
-                Looks like you don&apos;t have any added scholar. Head over to{' '}
-                <b>
-                  <Link href="/scholars">Scholars</Link>
-                </b>{' '}
-                to add your first or login to sync your existent account.
-              </Text>
+                <Text maxW="500px">
+                  Looks like you don&apos;t have any added scholar. Head over to{' '}
+                  <b>
+                    <Link href="/scholars">Scholars</Link>
+                  </b>{' '}
+                  to add your first or login to sync your existent account.
+                </Text>
 
-              <Box>
-                <NewScholarButton />
+                <Box>
+                  <NewScholarButton />
+                </Box>
+              </Stack>
+
+              <Divider
+                orientation={dividerOrientation}
+                h={{ base: '10px', lg: '250px' }}
+                w={{ base: '250px', lg: '10px' }}
+              />
+
+              <Box w="100%" maxW={{ base: '300px', lg: '350px' }} py={{ base: 5, lg: 0 }}>
+                {session ? <CloudSyncGroupButton /> : <SignInForm />}
               </Box>
-            </Stack>
-
-            <Divider
-              orientation={dividerOrientation}
-              h={{ base: '10px', lg: '250px' }}
-              w={{ base: '250px', lg: '10px' }}
-            />
-
-            <Box w="100%" maxW={{ base: '300px', lg: '350px' }} py={{ base: 5, lg: 0 }}>
-              {session ? <CloudSyncGroupButton /> : <SignInForm />}
-            </Box>
-          </HStack>
+            </HStack>
+          </Box>
         </Box>
       )}
 

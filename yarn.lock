@@ -2035,10 +2035,15 @@
   resolved "https://registry.yarnpkg.com/@fontsource/bowlby-one-sc/-/bowlby-one-sc-4.5.0.tgz#8566fbbee6c564cbc8a3deb52e8ac569e38d4cad"
   integrity sha512-iQ6Lfws+t/frn6fonPowA+K25GBkmC+vJA1V0EAmZaN2EC+QWZhd3l00V08JFXMQNXywebaQk7jYWjNb2uvBPA==
 
-"@fontsource/inter@^4.5.0":
+"@fontsource/inter@^4.5.0", "@fontsource/inter@^4.5.1":
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/@fontsource/inter/-/inter-4.5.1.tgz#058d8a02354f3c78e369d452c15d33557ec1b705"
   integrity sha512-mvtOvXNNVLlF1p/UbLgLrmz2RCOl6Ow+TqyiK10SosoLKX7edsXYiHFHb7XIZdjII6F2sJVPPsJXWhBnbXT2DQ==
+
+"@fontsource/poppins@^4.5.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/poppins/-/poppins-4.5.0.tgz#a419697b85864afbf8363f5c247b1e9d1f117564"
+  integrity sha512-RqgMIQqKHWNH3IUj+a0MAhlb4g5fftsXRTJ2bauefBmfM8Ja5q+qQZjKwyB/iCc+paJD320zFnLJ8G+y1ZyemQ==
 
 "@hapi/accept@5.0.2":
   version "5.0.2"
@@ -4297,6 +4302,14 @@ end-of-stream@^1.1.0, end-of-stream@^1.4.1:
   dependencies:
     once "^1.4.0"
 
+enhanced-resolve@^5.7.0:
+  version "5.8.3"
+  resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.8.3.tgz#6d552d465cce0423f5b3d718511ea53826a7b2f0"
+  integrity sha512-EGAbGvH7j7Xt2nc0E7D99La1OiEs8LnyimkRgwExpUMScN6O+3x9tIWs7PLQZVNx4YD+00skHXPXi1yQHpAmZA==
+  dependencies:
+    graceful-fs "^4.2.4"
+    tapable "^2.2.0"
+
 enquirer@^2.3.5:
   version "2.3.6"
   resolved "https://registry.yarnpkg.com/enquirer/-/enquirer-2.3.6.tgz#2a7fe5dd634a1e4125a975ec994ff5456dc3734d"
@@ -5278,6 +5291,11 @@ graceful-fs@^4.1.2, graceful-fs@^4.1.6:
   version "4.2.8"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.8.tgz#e412b8d33f5e006593cbd3cee6df9f2cebbe802a"
   integrity sha512-qkIilPUYcNhJpd33n0GBXTB1MMPp14TxEsEs0pTrsSVucApsYzW5V+Q8Qxhik6KU3evy+qkAAowTByymK0avdg==
+
+graceful-fs@^4.2.4:
+  version "4.2.9"
+  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.9.tgz#041b05df45755e587a24942279b9d113146e1c96"
+  integrity sha512-NtNxqUcXgpW2iMrfqSfR73Glt39K+BLwWsPs94yR63v45T0Wbej7eRmL5cWfwEgqXnmjQp3zaJTshdRW/qC2ZQ==
 
 graphql-request@^3.4.0:
   version "3.7.0"
@@ -6437,6 +6455,11 @@ negotiator@0.6.2:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.2.tgz#feacf7ccf525a77ae9634436a64883ffeca346fb"
   integrity sha512-hZXc7K2e+PgeI1eDBe/10Ard4ekbfrrqG8Ep+8Jmf4JID2bNg7NvCPOZN+kfF574pFQI7mum2AUqDidoKqcTOw==
 
+next-compose-plugins@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/next-compose-plugins/-/next-compose-plugins-2.2.1.tgz#020fc53f275a7e719d62521bef4300fbb6fde5ab"
+  integrity sha512-OjJ+fV15FXO2uQXQagLD4C0abYErBjyjE0I0FHpOEIB8upw0hg1ldFP6cqHTJBH1cZqy96OeR3u1dJ+Ez2D4Bg==
+
 next-images@^1.8.1:
   version "1.8.4"
   resolved "https://registry.yarnpkg.com/next-images/-/next-images-1.8.4.tgz#3b3d4840dae50893fc2a15906266532ec5fa58f0"
@@ -6454,6 +6477,14 @@ next-tick@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
+
+next-transpile-modules@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/next-transpile-modules/-/next-transpile-modules-9.0.0.tgz#133b1742af082e61cc76b02a0f12ffd40ce2bf90"
+  integrity sha512-VCNFOazIAnXn1hvgYYSTYMnoWgKgwlYh4lm1pKbSfiB3kj5ZYLcKVhfh3jkPOg1cnd9DP+pte9yCUocdPEUBTQ==
+  dependencies:
+    enhanced-resolve "^5.7.0"
+    escalade "^3.1.1"
 
 next@12:
   version "12.0.7"
@@ -8353,6 +8384,11 @@ table@^6.0.9:
     slice-ansi "^4.0.0"
     string-width "^4.2.3"
     strip-ansi "^6.0.1"
+
+tapable@^2.2.0:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/tapable/-/tapable-2.2.1.tgz#1967a73ef4060a82f12ab96af86d52fdb76eeca0"
+  integrity sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==
 
 tar-fs@^2.0.0, tar-fs@^2.1.1:
   version "2.1.1"

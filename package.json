@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "server": "yarn workspace @axiewatch/server",
-    "web": "yarn workspace @axiewatch/web"
+    "web": "yarn workspace @axiewatch/web dev"
   },
   "workspaces": {
     "packages": [
