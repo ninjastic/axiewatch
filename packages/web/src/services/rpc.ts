@@ -13,3 +13,10 @@ export const rpcWrite = new ethers.providers.JsonRpcProvider(
   },
   { name: 'Ronin', chainId: 2020 }
 );
+
+export const proxiedRpc = new ethers.providers.JsonRpcProvider(
+  {
+    url: `${process.env.NEXT_PUBLIC_SERVER_URL}/rpc`,
+  },
+  { name: 'Ronin', chainId: 2020 }
+);

@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import produce from 'immer';
 
 import abi from '../../constants/abi/SLP.json';
-import { rpcWrite } from '../rpc';
+import { proxiedRpc } from '../rpc';
 
 interface TransferResponse {
   tx: { hash: string };
@@ -47,7 +47,7 @@ export async function TransferTransaction({
   const checksumToAddress = ethers.utils.getAddress(to);
 
   const wallet = new ethers.Wallet(privateKey);
-  const signer = wallet.connect(rpcWrite);
+  const signer = wallet.connect(proxiedRpc);
 
   const contract = new ethers.Contract(
     '0xa8754b9fa15fc18bb59458815510e40a12cd2014', // axie SLP contract (ronin)
