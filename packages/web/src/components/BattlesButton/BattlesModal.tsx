@@ -1,26 +1,26 @@
-import { Box, Spinner, Text, Flex, HStack, Alert, AlertDescription, AlertIcon } from '@chakra-ui/react';
+import { Box, Spinner, Text, Flex, HStack } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { useState } from 'react';
 
 import { APIBattlesResponse } from '../../types/api';
 import { serverApi } from '../../services/api';
 import { BattlesTable } from './BattlesTable';
-import { BattleTypeSelector } from './BattleTypeSelector';
+// import { BattleTypeSelector } from './BattleTypeSelector';
 import { BattleRowsPerPageSelector } from './BattleRowsPerPageSelector';
 import { BattlesWinrate } from './BattlesWinrate';
 
-type BattleType = 'All' | 'PVP' | 'PVE';
+// type BattleType = 'All' | 'PVP' | 'PVE';
 
 interface BattlesModalProps {
   address: string;
 }
 
 export const BattlesModal = ({ address }: BattlesModalProps): JSX.Element => {
-  const [type, setType] = useState<BattleType>('All');
+  // const [type, setType] = useState<BattleType>('All');
   const [perPage, setPerPage] = useState(10);
 
   const { data, isLoading, isError } = useQuery(
-    ['matches', address],
+    ['matches', address, 'pvp'],
     async () => {
       const response = await serverApi.get<APIBattlesResponse>('/matches', {
         params: {
@@ -51,27 +51,19 @@ export const BattlesModal = ({ address }: BattlesModalProps): JSX.Element => {
 
   return (
     <Box minH="240px">
-      <Alert status="warning">
-        <AlertIcon />
-        <AlertDescription>
-          The recent update broke this feature. Since 28th October, you can&apos;t watch matches and the list won&apos;t
-          be updated anymore.
-        </AlertDescription>
-      </Alert>
-
       <Flex align="center" justify="space-between" my={3}>
-        <Text fontSize="lg">Total of {data.items.length} battles</Text>
+        <Text fontSize="lg">Total of {data.battles.length} battles</Text>
 
         <HStack spacing={3}>
           <BattlesWinrate address={address} data={data} />
 
           <BattleRowsPerPageSelector value={perPage} onChange={setPerPage} />
 
-          <BattleTypeSelector value={type} onChange={selected => setType((selected as BattleType) ?? 'All')} />
+          {/* <BattleTypeSelector value={type} onChange={selected => setType((selected as BattleType) ?? 'All')} /> */}
         </HStack>
       </Flex>
 
-      <BattlesTable data={data?.items} address={address} type={type} perPage={perPage} />
+      <BattlesTable data={data?.battles} address={address} type="PVP" perPage={perPage} />
     </Box>
   );
 };

@@ -1,35 +1,50 @@
 import { cache } from '@src/services/cache';
-import dayjs from '@src/services/dayjs';
 import { proxiedApi } from '@src/services/api';
 
 interface APIScholarResponse {
-  items: Array<{
-    id: string;
-    first_cliend_id: string;
-    first_team_id: string;
-    second_client_id: string;
-    second_team_id: string;
-    winner: number;
-    created_at: string;
+  battles: Array<{
     battle_uuid: string;
-    battle_type: string;
+    game_started: string;
+    game_ended: string;
+    winner: string;
+    client_id: string;
+    team_id: string;
     fighters: Array<{
-      team_id: string;
-      fighter_id: number;
-      fighter_class: string;
-      fighter_level: number;
+      id: number;
+      level: number;
+    }>;
+    stage_index: number;
+    total_scenes: number;
+    last_scene_index: number;
+    exp: number;
+    _items: Array<{
+      item_id: number;
+      amount: number;
+      flag: number;
+    }>;
+    first_client_id: string;
+    second_client_id: string;
+    eloAndItem: Array<{
+      player_id: string;
+      new_elo: number;
+      old_elo: number;
+      result_type: string;
+      _items: Array<{
+        item_id: number;
+        amount: number;
+        flag: number;
+      }>;
     }>;
   }>;
 }
 
 export const getScholarBattles = async (address: string): Promise<APIScholarResponse> => {
-  const day = dayjs().day();
-  const cacheKey = `v1:scholarBattles:${address}:${day}`;
+  const cacheKey = `v1:scholarBattles:${address}:pvp`;
   const cacheTime = 1000 * 60 * 15; // 15 minutes
-  const apiUrl = `https://game-api.skymavis.com/game-api/clients/${address}/battles`;
+  const apiUrl = `https://tracking.skymavis.com/battle-history`;
   const apiParams = {
-    offset: 0,
-    limit: 0,
+    player_id: address,
+    type: 'pvp',
   };
 
   const cached = await cache.get(cacheKey);

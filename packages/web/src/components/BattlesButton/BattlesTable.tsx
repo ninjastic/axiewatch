@@ -20,12 +20,12 @@ export const BattlesTable = ({ data, address, type, perPage }: BattlesTableProps
     () =>
       data.filter(battle => {
         if (type === 'PVE') {
-          if (battle.battle_type === 1) return true;
+          if (battle.eloAndItem === undefined) return true;
           return false;
         }
 
         if (type === 'PVP') {
-          if (battle.battle_type === 0) return true;
+          if (battle.eloAndItem !== undefined) return true;
           return false;
         }
 

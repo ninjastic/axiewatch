@@ -2,25 +2,45 @@
 
 export type AxieClass = 'Aquatic' | 'Reptile' | 'Plant' | 'Bird' | 'Beast' | 'Bug' | 'Dusk' | 'Mech' | 'Dawn';
 
-export type APIBattlesResponseItemFighter = {
-  team_id: string;
-  fighter_id: number;
-  fighter_class: AxieClass;
-  fighter_level: number;
-};
-
 export type APIBattlesResponseItem = {
-  first_client_id: string;
-  second_client_id: string;
-  winner: number;
-  created_at: string;
   battle_uuid: string;
-  battle_type: number;
-  fighters: APIBattlesResponseItemFighter[];
+  game_started: string;
+  game_ended: string;
+  winner: string;
+  client_id: string;
+  team_id: string;
+  fighters: Array<{
+    id: number;
+    level: number;
+  }>;
+  stage_index: number;
+  total_scenes: number;
+  last_scene_index: number;
+  exp: number;
+  _items: Array<{
+    item_id: number;
+    amount: number;
+    flag: number;
+  }>;
+  first_client_id: string;
+  first_team_fighters: Array<number>;
+  second_client_id: string;
+  second_team_fighters: Array<number>;
+  eloAndItem: Array<{
+    player_id: string;
+    new_elo: number;
+    old_elo: number;
+    result_type: string;
+    _items: Array<{
+      item_id: number;
+      amount: number;
+      flag: number;
+    }>;
+  }>;
 };
 
 export interface APIBattlesResponse {
-  items: APIBattlesResponseItem[];
+  battles: APIBattlesResponseItem[];
 }
 
 // scholar

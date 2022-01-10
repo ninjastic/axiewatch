@@ -8,18 +8,19 @@ interface BattlesWinrateProps {
 }
 
 export const BattlesWinrate = ({ address, data }: BattlesWinrateProps): JSX.Element => {
-  const [win, draw, lose, total] = data.items.reduce(
+  const [win, draw, lose, total] = data.battles.reduce(
     (rate, battle) => {
-      const type = battle.battle_type === 1 ? 'PVE' : 'PVP';
-      if (type === 'PVE') return rate;
+      if (battle.eloAndItem === undefined) return rate;
 
-      const scholarTeamNumber = battle.first_client_id === address ? 0 : 1;
-      const scholarResult = battle.winner === scholarTeamNumber ? 'Win' : 'Lose';
-      const result = battle.winner === 2 ? 'Draw' : scholarResult;
+      const isWin = battle.winner === address;
+      const isLose =
+        battle.winner !== address &&
+        (battle.winner === battle.first_client_id || battle.winner === battle.second_client_id);
+      const isDraw = !isWin && !isLose;
 
-      if (result === 'Win') return [rate[0] + 1, rate[1], rate[2], rate[3] + 1];
-      if (result === 'Draw') return [rate[0], rate[1] + 1, rate[2], rate[3] + 1];
-      if (result === 'Lose') return [rate[0], rate[1], rate[2] + 1, rate[3] + 1];
+      if (isWin) return [rate[0] + 1, rate[1], rate[2], rate[3] + 1];
+      if (isDraw) return [rate[0], rate[1] + 1, rate[2], rate[3] + 1];
+      if (isLose) return [rate[0], rate[1], rate[2] + 1, rate[3] + 1];
       return rate;
     },
     [0, 0, 0, 0]
