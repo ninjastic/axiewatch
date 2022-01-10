@@ -96,9 +96,7 @@ export const BattleTableEntry = ({ battle, address }: BattleCardProps): JSX.Elem
       </Td>
 
       <Td>
-        <Button onClick={() => window.open(replayUrl, '_blank')} isDisabled>
-          Watch
-        </Button>
+        <Button onClick={() => window.open(replayUrl, '_blank')}>Watch</Button>
       </Td>
     </Tr>
   );
