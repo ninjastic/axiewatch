@@ -5,7 +5,7 @@ import { ProfileButton } from '../ProfileButton';
 import { PveStats } from '../PveStats';
 import { ScholarAxies } from '../ScholarAxies';
 import { SlpTrackingButton } from '../SlpTrackingButton';
-// import { BattlesButton } from '../../../BattlesButton';
+import { BattlesButton } from '../../../BattlesButton';
 
 interface ScholarDetailsProps {
   address: string;
@@ -25,7 +25,7 @@ export const ScholarDetails = ({ address }: ScholarDetailsProps): JSX.Element =>
 
       <Stack>
         <SlpTrackingButton address={address} />
-        {/* <BattlesButton address={scholar.address} /> */}
+        <BattlesButton address={address} />
         <ProfileButton address={address} />
         <EditScholarButton address={address} />
       </Stack>

@@ -8,7 +8,7 @@ import { PveStats } from '../PveStats';
 import { ScholarAxies } from '../ScholarAxies';
 // import { SlpTrackingButton } from '../SlpTrackingButton';
 import { SlpTrackingChart } from '../SlpTrackingChart';
-// import { BattlesButton } from '../../../BattlesButton';
+import { BattlesButton } from '../../../BattlesButton';
 
 interface CollapsedProps {
   address: string;
@@ -41,7 +41,7 @@ export const Collapsed = ({ address, show }: CollapsedProps): JSX.Element => {
             <Box w="500px">{show && <SlpTrackingChart address={address} height={120} showYAxis={false} />}</Box>
 
             <HStack>
-              {/* <BattlesButton address={scholar.address} /> */}
+              <BattlesButton address={address} />
               <ProfileButton address={address} />
               <EditScholarButton address={address} />
             </HStack>
