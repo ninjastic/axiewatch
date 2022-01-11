@@ -54,19 +54,19 @@ function DashboardPage() {
 
   useEffect(() => {
     if (addresses.length) {
-      document.getElementById('mainLayout').style.overflow = 'auto';
+      document.getElementById('mainLayout').style.overflow = 'initial';
     } else {
       document.getElementById('mainLayout').style.overflow = 'hidden';
     }
   }, [addresses]);
 
   return (
-    <Container variant="body">
+    <Box>
       <PreferencesButton
         display="flex"
         position="fixed"
-        top="7.3%"
-        right={5}
+        top={24}
+        right={2}
         variant="solid"
         colorScheme="purple"
         borderRadius="50% 50% 4px 50%"
@@ -181,7 +181,7 @@ function DashboardPage() {
         isFetching={isRefetching || isFetching}
         refetch={refetch}
       />
-    </Container>
+    </Box>
   );
 }
 

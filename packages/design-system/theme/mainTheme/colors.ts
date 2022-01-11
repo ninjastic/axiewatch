@@ -1,17 +1,16 @@
 export const colors = {
   light: {
     bgLevel1: '#FFF',
-    bgLevel2: '#E3F2FD',
-    bgLevel3: '#BBDEFB',
+    bgLevel2: '#f4f4fa',
+    bgLevel3: '#f0f0fa',
     card: '#FFFFFF',
     faded: '#3C3C3C',
   },
 
   dark: {
-    bgLevel1: '#29314F',
-    bgLevel2: '#212946',
-    bgLevel3: '#1A223F',
-    bgLevel4: '#111936',
+    bgLevel1: '#272b30',
+    bgLevel2: '#1a1d1f',
+    bgLevel3: '#111315',
     card: '#282B39',
     faded: '#67697a',
   },

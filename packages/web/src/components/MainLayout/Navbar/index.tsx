@@ -132,7 +132,7 @@ const Header = ({ currentTool }: HeaderProps): JSX.Element => {
   const { isOpen: isNavOpen, onOpen: onNavOpen, onClose: onNavClose } = useDisclosure();
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const bg = useColorModeValue('light.bgLevel1', 'dark.bgLevel4');
+  const bg = useColorModeValue('light.bgLevel1', 'dark.bgLevel2');
 
   Router.events.on('routeChangeStart', () => onNavClose());
 

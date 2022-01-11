@@ -9,7 +9,7 @@ const SidebarComponent = (): JSX.Element => (
     w="235px"
     h="100%"
     pos="fixed"
-    zIndex={9998}
+    zIndex="banner"
     sx={{
       display: { base: 'none', '2xl': 'block' },
     }}

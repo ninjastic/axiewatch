@@ -1,4 +1,4 @@
-import { Flex, chakra } from '@chakra-ui/react';
+import { Flex, chakra, Container } from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
@@ -55,7 +55,7 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
     if (isLoading) {
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = 'initial';
     }
   }, [isLoading]);
 
@@ -100,8 +100,21 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
         {shouldShowMaintenance && <MaintenanceScreen />}
 
         {!shouldShowMaintenance && (
+          // <chakra.div w="full" h="full" position="fixed" pl={{ md: '0px', '2xl': '235px' }}>
+          //   <Container
+          //     h="calc(100vh - 80px)"
+          //     overflowY="auto"
+          //     variant="body"
+          //     mr={{ base: 5, xl: 5 }}
+          //     ml={{ base: 5, '2xl': 0 }}
+          //   >
+          //     {children}
+          //   </Container>
+          // </chakra.div>
           <chakra.div w="full" h="full" pl={{ md: '0px', '2xl': '235px' }}>
-            {children}
+            <Container variant="body" minHeight="100%" mr={{ base: 5, xl: 5 }} ml={{ base: 5, '2xl': 0 }}>
+              {children}
+            </Container>
           </chakra.div>
         )}
       </Flex>

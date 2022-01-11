@@ -3,7 +3,7 @@ import { Dict } from '@chakra-ui/utils';
 
 export const LoadingScreenStyles = {
   baseStyle: (props: Dict[]): any => ({
-    bg: mode('light.bgLevel1', 'dark.bgLevel4')(props),
+    bg: mode('light.bgLevel1', 'dark.bgLevel3')(props),
     d: 'flex',
     w: '100%',
     h: '100%',
