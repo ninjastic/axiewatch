@@ -5,18 +5,18 @@ import { useState } from 'react';
 import { APIBattlesResponse } from '../../types/api';
 import { serverApi } from '../../services/api';
 import { BattlesTable } from './BattlesTable';
-// import { BattleTypeSelector } from './BattleTypeSelector';
+import { BattleTypeSelector } from './BattleTypeSelector';
 import { BattleRowsPerPageSelector } from './BattleRowsPerPageSelector';
 import { BattlesWinrate } from './BattlesWinrate';
 
-// type BattleType = 'All' | 'PVP' | 'PVE';
+type BattleType = 'All' | 'PVP' | 'PVE';
 
 interface BattlesModalProps {
   address: string;
 }
 
 export const BattlesModal = ({ address }: BattlesModalProps): JSX.Element => {
-  // const [type, setType] = useState<BattleType>('All');
+  const [type, setType] = useState<BattleType>('All');
   const [perPage, setPerPage] = useState(10);
 
   const { data, isLoading, isError } = useQuery(
@@ -59,11 +59,11 @@ export const BattlesModal = ({ address }: BattlesModalProps): JSX.Element => {
 
           <BattleRowsPerPageSelector value={perPage} onChange={setPerPage} />
 
-          {/* <BattleTypeSelector value={type} onChange={selected => setType((selected as BattleType) ?? 'All')} /> */}
+          <BattleTypeSelector value={type} onChange={selected => setType((selected as BattleType) ?? 'All')} />
         </HStack>
       </Flex>
 
-      <BattlesTable data={data?.battles} address={address} type="PVP" perPage={perPage} />
+      <BattlesTable data={data?.battles} address={address} type={type} perPage={perPage} />
     </Box>
   );
 };

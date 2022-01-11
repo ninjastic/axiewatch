@@ -39,6 +39,44 @@ export const BattleTableEntry = ({ battle, address }: BattleCardProps): JSX.Elem
     return '';
   };
 
+  const getEloChanges = () => {
+    if (type === 'PVP') {
+      const result = battle.eloAndItem.find(eloAndItem => eloAndItem.player_id === address);
+
+      if (result.new_elo > result.old_elo) {
+        return (
+          <Text fontSize="sm">
+            {result.old_elo} -&gt; {result.new_elo} (+{result.new_elo - result.old_elo})
+          </Text>
+        );
+      }
+
+      if (result.new_elo < result.old_elo) {
+        return (
+          <Text fontSize="sm">
+            {result.old_elo} -&gt; {result.new_elo} ({result.new_elo - result.old_elo})
+          </Text>
+        );
+      }
+    }
+
+    return null;
+  };
+
+  const getSlpChanges = () => {
+    if (type === 'PVP' && isWin) {
+      const result = battle.eloAndItem.find(eloAndItem => eloAndItem.player_id === address);
+
+      return <Text>+{result._items[0].amount} SLP</Text>;
+    }
+
+    if (type === 'PVE' && battle._items) {
+      return <Text>+{battle._items[0].amount} SLP</Text>;
+    }
+
+    return null;
+  };
+
   const getAxieImage = (id: number) =>
     `https://storage.googleapis.com/assets.axieinfinity.com/axies/${id}/axie/axie-full-transparent.png`;
 
@@ -68,8 +106,20 @@ export const BattleTableEntry = ({ battle, address }: BattleCardProps): JSX.Elem
         </Text>
       </Td>
 
-      <Td w="40">
-        <HStack h="30px" w="80">
+      <Td>
+        <Text color={getResultColor()} fontWeight="bold">
+          {getEloChanges()}
+        </Text>
+      </Td>
+
+      <Td>
+        <Text color={getResultColor()} fontWeight="bold">
+          {getSlpChanges()}
+        </Text>
+      </Td>
+
+      <Td w="30">
+        <HStack h="30px" w="50">
           {type === 'PVP' ? (
             oponentAxies.map(oponentAxie => (
               <Link href={`https://marketplace.axieinfinity.com/axie/${oponentAxie}`} target="_blank" key={oponentAxie}>

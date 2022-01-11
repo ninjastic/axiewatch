@@ -39,20 +39,33 @@ interface APIScholarResponse {
 }
 
 export const getScholarBattles = async (address: string): Promise<APIScholarResponse> => {
-  const cacheKey = `v1:scholarBattles:${address}:pvp`;
+  const cacheKey = `v1:scholarBattles:${address}`;
   const cacheTime = 1000 * 60 * 15; // 15 minutes
-  const apiUrl = `https://tracking.skymavis.com/battle-history`;
-  const apiParams = {
-    player_id: address,
-    type: 'pvp',
-  };
 
   const cached = await cache.get(cacheKey);
   if (cached) return JSON.parse(cached);
 
-  const { data } = await proxiedApi
-    .get<APIScholarResponse>(apiUrl, { params: apiParams })
+  const apiUrl = `https://tracking.skymavis.com/battle-history`;
+
+  const apiBaseParams = {
+    player_id: address,
+  };
+
+  const { data: pvp } = await proxiedApi
+    .get<APIScholarResponse>(apiUrl, { params: { ...apiBaseParams, type: 'pvp' } })
     .catch(error => error.message);
+
+  const { data: pve } = await proxiedApi
+    .get<APIScholarResponse>(apiUrl, { params: { ...apiBaseParams, type: 'pve' } })
+    .catch(error => error.message);
+
+  const data = {
+    battles: [...pve.battles, ...pvp.battles].sort((a, b) => {
+      if (a.game_started > b.game_started) return -1;
+      if (a.game_started < b.game_started) return 1;
+      return 0;
+    }),
+  };
 
   await cache.set(cacheKey, JSON.stringify(data), 'PX', cacheTime);
   return data;

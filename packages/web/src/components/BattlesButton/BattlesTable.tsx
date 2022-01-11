@@ -49,6 +49,8 @@ export const BattlesTable = ({ data, address, type, perPage }: BattlesTableProps
             <Th>Date</Th>
             <Th>Type</Th>
             <Th>Result</Th>
+            <Th>ELO</Th>
+            <Th>SLP</Th>
             <Th>Opponent</Th>
             <Th>
               <HStack>
