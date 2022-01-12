@@ -43,7 +43,7 @@ export const BattleTableEntry = ({ battle, address }: BattleCardProps): JSX.Elem
     if (type === 'PVP') {
       const result = battle.eloAndItem.find(eloAndItem => eloAndItem.player_id === address);
 
-      if (result.new_elo > result.old_elo) {
+      if (result && result.new_elo > result.old_elo) {
         return (
           <Text fontSize="sm">
             {result.old_elo} -&gt; {result.new_elo} (+{result.new_elo - result.old_elo})
@@ -51,7 +51,7 @@ export const BattleTableEntry = ({ battle, address }: BattleCardProps): JSX.Elem
         );
       }
 
-      if (result.new_elo < result.old_elo) {
+      if (result && result.new_elo < result.old_elo) {
         return (
           <Text fontSize="sm">
             {result.old_elo} -&gt; {result.new_elo} ({result.new_elo - result.old_elo})
@@ -64,13 +64,12 @@ export const BattleTableEntry = ({ battle, address }: BattleCardProps): JSX.Elem
   };
 
   const getSlpChanges = () => {
-    if (type === 'PVP' && battle._items) {
+    if (type === 'PVP' && isWin) {
       const result = battle.eloAndItem.find(eloAndItem => eloAndItem.player_id === address);
-
-      return <Text>+{result._items[0].amount} SLP</Text>;
+      if (result?._items?.length) return <Text>+{result._items[0].amount} SLP</Text>;
     }
 
-    if (type === 'PVE' && battle._items) {
+    if (type === 'PVE' && battle._items?.length) {
       return <Text>+{battle._items[0].amount} SLP</Text>;
     }
 
