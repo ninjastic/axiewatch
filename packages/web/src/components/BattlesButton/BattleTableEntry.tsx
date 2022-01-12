@@ -64,7 +64,7 @@ export const BattleTableEntry = ({ battle, address }: BattleCardProps): JSX.Elem
   };
 
   const getSlpChanges = () => {
-    if (type === 'PVP' && isWin) {
+    if (type === 'PVP' && battle._items) {
       const result = battle.eloAndItem.find(eloAndItem => eloAndItem.player_id === address);
 
       return <Text>+{result._items[0].amount} SLP</Text>;
