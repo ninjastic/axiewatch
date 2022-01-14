@@ -99,7 +99,7 @@ const variantNavigation: SystemStyleFunction = props => {
       },
     },
     _active: {
-      bg: mode(`${c}.50`, 'rgba(124, 77, 255, 0.082)')(props),
+      bg: mode(`${c}.50`, 'rgba(123, 81, 238, 0.2)')(props),
       color: mode(`${c}.600`, '#7c4dff')(props),
       fontWeight: 'bold',
     },

@@ -1,30 +1,11 @@
-import {
-  Box,
-  Flex,
-  Grid,
-  GridItem,
-  Text,
-  HStack,
-  Stack,
-  Tooltip,
-  Button,
-  Image,
-  Divider,
-  useBreakpointValue,
-  Container,
-} from '@chakra-ui/react';
-import { AiOutlineInfoCircle } from 'react-icons/ai';
+import { Box, Flex, Text, HStack, Stack, Button, Image, Divider, useBreakpointValue } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import { useRecoilValue } from 'recoil';
 import { useEffect, useMemo } from 'react';
 import Link from 'next/link';
 
-import { SummaryCards } from '../components/SummaryCards';
-import { DailySlpChart } from '../components/DailySlpChart';
-import { Card } from '../components/Card';
+import { OverviewGrid } from '../components/OverviewGrid';
 import { PreferencesButton } from '@src/components/Header/PreferencesButton';
-import { NotablePerformersTable } from '@src/components/NotablePerformersTable';
-import { EarningsForecastChart } from '@src/components/EarningsForecastChart';
 import { scholarsMap } from '@src/recoil/scholars';
 import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
 import { RequestStatusFloatingButton } from '@src/components/RequestStatusFloatingButton';
@@ -70,6 +51,7 @@ function DashboardPage() {
         variant="solid"
         colorScheme="purple"
         borderRadius="50% 50% 4px 50%"
+        zIndex={5}
       />
 
       {!scholars.length && (
@@ -114,47 +96,7 @@ function DashboardPage() {
         </Box>
       )}
 
-      {!isError && (
-        <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)' }} gap={8} pb={5}>
-          <GridItem colSpan={1}>
-            <SummaryCards />
-          </GridItem>
-
-          <GridItem colSpan={1}>
-            <Stack h="100%">
-              <HStack>
-                <Text fontWeight="bold" fontSize="lg">
-                  Earnings Forecast
-                </Text>
-
-                <Tooltip label="How much should be your total accumulated value assuming your scholars daily average is constant and you make no claims.">
-                  <Box>
-                    <AiOutlineInfoCircle />
-                  </Box>
-                </Tooltip>
-              </HStack>
-
-              <Card p={5} h="100%">
-                <EarningsForecastChart />
-              </Card>
-            </Stack>
-          </GridItem>
-
-          <GridItem colSpan={{ base: 1, lg: 2 }}>
-            <NotablePerformersTable />
-          </GridItem>
-
-          <GridItem colSpan={{ base: 1, lg: 2 }}>
-            <Card p={5}>
-              <Text fontWeight="bold" fontSize="lg">
-                Daily SLP
-              </Text>
-
-              <DailySlpChart />
-            </Card>
-          </GridItem>
-        </Grid>
-      )}
+      {!isError && <OverviewGrid />}
 
       {isError && (
         <Flex align="center" direction="column" w="100%" px={{ base: 1, lg: 0 }} mt={24}>
@@ -186,3 +128,45 @@ function DashboardPage() {
 }
 
 export default dynamic(() => Promise.resolve(DashboardPage), { ssr: false });
+
+// <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)' }} gap={8} pb={5}>
+//   <GridItem colSpan={1}>
+//     <SummaryCards />
+//   </GridItem>
+
+// {
+/* <GridItem colSpan={1}>
+            <Stack h="100%">
+              <HStack>
+                <Text fontWeight="bold" fontSize="lg">
+                  Earnings Forecast
+                </Text>
+
+                <Tooltip label="How much should be your total accumulated value assuming your scholars daily average is constant and you make no claims.">
+                  <Box>
+                    <AiOutlineInfoCircle />
+                  </Box>
+                </Tooltip>
+              </HStack>
+
+              <Card p={5} h="100%">
+                <EarningsForecastChart />
+              </Card>
+            </Stack>
+          </GridItem> */
+// }
+
+//   <GridItem colSpan={{ base: 1, lg: 2 }}>
+//     <NotablePerformersTable />
+//   </GridItem>
+
+//   <GridItem colSpan={{ base: 1, lg: 2 }}>
+//     <Card p={5}>
+//       <Text fontWeight="bold" fontSize="lg">
+//         Daily SLP
+//       </Text>
+
+//       <DailySlpChart />
+//     </Card>
+//   </GridItem>
+// </Grid>

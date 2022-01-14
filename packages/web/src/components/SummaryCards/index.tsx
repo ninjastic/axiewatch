@@ -1,6 +1,7 @@
-import { Stack, Text, SimpleGrid, Button } from '@chakra-ui/react';
+import { Stack, Text, SimpleGrid, Button, Heading } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 import { useMemo } from 'react';
+import StatCard from '@axiewatch/design-system/components/molecules/StatCard';
 
 import { useBatchScholar } from '../../services/hooks/useBatchScholar';
 import { scholarsMap } from '../../recoil/scholars';
@@ -56,10 +57,20 @@ export const SummaryCards = (): JSX.Element => {
 
       {!isError && (
         <SimpleGrid columns={1} gap={2}>
-          <TotalScholarsCard data={data} isLoading={isLoading} />
+          {/* <TotalScholarsCard data={data} isLoading={isLoading} /> */}
 
           <SimpleGrid columns={{ base: 1, lg: 2 }} gap={2}>
-            <AccumulatedSlpCard data={data} isLoading={isLoading} />
+            <StatCard cardColor="purple">
+              <Heading size="md" fontWeight="semibold">
+                Performance
+              </Heading>
+              <Text fontSize="3xl" fontWeight="bold" color="white" mt={4}>
+                356
+              </Text>
+              <Text fontSize="xs" fontWeight="semibold" color="whiteAlpha.700">
+                AVERAGE SLP
+              </Text>
+            </StatCard>
             <NextClaimCard data={data} isLoading={isLoading} />
           </SimpleGrid>
 
@@ -73,7 +84,9 @@ export const SummaryCards = (): JSX.Element => {
       {isError && (
         <Card p={3} h="100%">
           <Stack align="center" justify="center" h="100%">
-            <Text fontWeight="bold">Something went wrong...</Text>
+            <Text fontWeight="bold" mb={10}>
+              Something went wrong...
+            </Text>
             <Button onClick={() => undefined}>Retry</Button>
           </Stack>
         </Card>
