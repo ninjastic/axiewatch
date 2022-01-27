@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import axios from 'axios';
 
+import { proxiedApi } from '@src/services/api';
 import AppError from '@src/shared/errors/AppError';
 
 export class RpcController {
@@ -19,7 +19,7 @@ export class RpcController {
       endpoint = process.env.RONIN_RPC_URL as string;
     }
 
-    return axios
+    return proxiedApi
       .post(endpoint, req.body)
       .then(response => res.setHeader('endpoint', endpoint).json(response.data))
       .catch(err => {
