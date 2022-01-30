@@ -123,7 +123,7 @@ const StartPaymentsPage = (): JSX.Element => {
 
     await Promise.all(
       selectedScholars.map(
-        throat(1, async (scholar, index) => {
+        throat(2, async (scholar, index) => {
           const scholarWallet = allWallets.find(wallet => wallet.address === scholar.address);
 
           const scholarStatus = status.find(stat => stat.address === scholar.address);
@@ -159,8 +159,8 @@ const StartPaymentsPage = (): JSX.Element => {
             })
           );
 
-          const managerAmount = Math.floor((claim.amount * scholar.shares.manager) / 100);
           const scholarAmount = Math.floor((claim.amount * scholar.shares.scholar) / 100);
+          const managerAmount = claim.amount - scholarAmount;
 
           const managerAddress = preferences.managerAddress?.replace('ronin:', '0x').toLowerCase();
           const paymentAddress = scholar.paymentAddress?.replace('ronin:', '0x').toLowerCase();

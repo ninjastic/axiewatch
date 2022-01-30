@@ -72,7 +72,7 @@ export const ScholarAxies = ({ address, shouldLoad = true }: ScholarAxiesProps):
   });
 
   return (
-    <HStack>
+    <HStack justify="center">
       {isLoading &&
         [...Array(3)].map((value, index) => (
           <Box
@@ -127,6 +127,12 @@ export const ScholarAxies = ({ address, shouldLoad = true }: ScholarAxiesProps):
       {!isLoading && data?.results.length > 3 && (
         <Box cursor="pointer" onClick={otherAxiesModal.onOpen}>
           <Tag rounded="3xl">+{data.results.length - 3}</Tag>
+        </Box>
+      )}
+
+      {!isLoading && data?.results.length === 0 && (
+        <Box>
+          <Tag rounded="3xl">No axies</Tag>
         </Box>
       )}
     </HStack>
