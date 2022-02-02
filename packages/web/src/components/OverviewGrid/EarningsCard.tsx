@@ -40,7 +40,11 @@ interface HistoricalSlpDate {
   investor: number;
 }
 
-export const EarningsCard = (): JSX.Element => {
+interface EarningsCardProps {
+  averageSlp: number;
+}
+
+export const EarningsCard = ({ averageSlp }: EarningsCardProps): JSX.Element => {
   const price = usePrice();
   const { colorMode } = useColorMode();
   const { colors } = useTheme();
@@ -199,12 +203,13 @@ export const EarningsCard = (): JSX.Element => {
     [data]
   );
 
-  const textColor = useColorModeValue('gray.200', 'darkGray.300');
-  const infoColor = useColorModeValue('gray.200', 'darkGray.300');
+  const infoColor = useColorModeValue('gray.500', 'darkGray.300');
+  const cardBg = useColorModeValue('light.bgLevel3', 'dark.bgLevel3');
+  const insideCardBg = useColorModeValue('light.bgLevel', 'dark.bgLevel2');
 
   return (
     <StatCard h="100%" p={6}>
-      <Heading size="sm" fontWeight="bold" pb={4}>
+      <Heading size="md" fontWeight="bold" pb={4}>
         Earnings
       </Heading>
 
@@ -213,12 +218,19 @@ export const EarningsCard = (): JSX.Element => {
           <Text fontSize="sm" fontWeight="semibold" color="purple.400">
             Daily SLP
           </Text>
+
           <Box textAlign="right">
-            <Heading size="md" fontWeight="bold" color="purple.400">
-              {chartData.reduce((prevResult, currResult) => prevResult + currResult.total, 0)}
+            <Text fontSize="md" fontWeight="semibold" color="purple.300" display="inline-block" pr={2}>
+              Average
+            </Text>
+            <Heading size="lg" fontWeight="bold" color="purple.400" display="inline-block">
+              {averageSlp}
             </Heading>
-            <Text fontSize="xs" fontWeight="semibold" color="purple.300">
+            <Text fontSize="md" fontWeight="semibold" color="purple.300" display="inline-block" pl={2}>
               SLP
+            </Text>
+            <Text fontSize="sm" fontWeight="semibold" color="purple.200">
+              {formatter(averageSlp * price.values.slp, price.locale)}
             </Text>
           </Box>
         </Box>
@@ -228,18 +240,18 @@ export const EarningsCard = (): JSX.Element => {
 
       <StatCard
         mt={6}
-        bgColor="dark.bgLevel3"
+        bgColor={cardBg}
         accentColor="yellow"
-        boxShadow="2xl"
+        boxShadow="xl"
         display="flex"
         alignItems="center"
         justifyContent="space-between"
       >
         <Box>
-          <Text size="md" fontWeight="semibold" color={textColor}>
+          <Text size="md" fontWeight="semibold">
             Yesterday Total
           </Text>
-          <Text fontSize="3xl" fontWeight="bold" color={textColor} mt={1}>
+          <Text fontSize="3xl" fontWeight="bold" mt={1}>
             {farmedYesterday}
           </Text>
           <Text fontSize="sm" fontWeight="semibold" color={infoColor}>
@@ -247,11 +259,11 @@ export const EarningsCard = (): JSX.Element => {
           </Text>
         </Box>
 
-        <StatCard bgColor="dark.bgLevel2" zIndex={2}>
-          <Text size="md" fontWeight="semibold" color={textColor}>
+        <StatCard bgColor={insideCardBg} zIndex={2}>
+          <Text size="md" fontWeight="semibold">
             Today Parcial
           </Text>
-          <Text fontSize="3xl" fontWeight="bold" color={textColor} mt={1}>
+          <Text fontSize="3xl" fontWeight="bold" mt={1}>
             {farmedToday}
           </Text>
           <Text fontSize="sm" fontWeight="semibold" color={infoColor}>

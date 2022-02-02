@@ -1,4 +1,16 @@
-import { Box, Flex, Text, HStack, Stack, Button, Image, Divider, useBreakpointValue } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Text,
+  HStack,
+  Stack,
+  Button,
+  Image,
+  Divider,
+  useBreakpointValue,
+  Grid,
+  GridItem,
+} from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import { useRecoilValue } from 'recoil';
 import { useEffect, useMemo } from 'react';
@@ -13,6 +25,7 @@ import { SignInForm } from '@src/components/SignInForm';
 import { useAuth } from '@src/services/hooks/useAuth';
 import { CloudSyncGroupButton } from '@src/components/CloudSyncGroupButton';
 import { NewScholarButton } from '@src/components/Header/NewScholarButton';
+import { NotablePerformersTable } from '@src/components/NotablePerformersTable';
 
 function DashboardPage() {
   const scholars = useRecoilValue(scholarsMap);
@@ -96,7 +109,14 @@ function DashboardPage() {
         </Box>
       )}
 
-      {!isError && <OverviewGrid />}
+      {!isError && (
+        <>
+          <OverviewGrid />
+          <Box mt={6}>
+            <NotablePerformersTable />
+          </Box>
+        </>
+      )}
 
       {isError && (
         <Flex align="center" direction="column" w="100%" px={{ base: 1, lg: 0 }} mt={24}>

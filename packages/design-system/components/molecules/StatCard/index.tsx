@@ -98,6 +98,8 @@ const StatCard = ({
       position="relative"
       overflow="hidden"
       sx={accentColor ? sx : null}
+      border="none"
+      zIndex={2}
       {...props}
     >
       {children}

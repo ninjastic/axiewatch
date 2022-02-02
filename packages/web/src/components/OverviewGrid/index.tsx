@@ -1,4 +1,15 @@
-import { Stack, Text, SimpleGrid, Button, Heading, Box, useColorModeValue, Grid, GridItem } from '@chakra-ui/react';
+import {
+  Stack,
+  Text,
+  SimpleGrid,
+  Button,
+  Heading,
+  Box,
+  useColorModeValue,
+  Grid,
+  GridItem,
+  VStack,
+} from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 import { useMemo } from 'react';
 import StatCard from '@axiewatch/design-system/components/molecules/StatCard';
@@ -10,7 +21,9 @@ import { usePrice } from '@src/services/hooks/usePrice';
 import EarningsCard from './EarningsCard';
 
 export const OverviewGrid = (): JSX.Element => {
-  const infoColor = useColorModeValue('blackAlpha.700', 'whiteAlpha.700');
+  const textColor = useColorModeValue('gray.500', 'darkGray.300');
+  const insideCardBg = useColorModeValue('light.bgLevel1', 'dark.bgLevel2');
+  const insideCardTotalBg = useColorModeValue('light.bgLevel3', 'dark.bgLevel3');
 
   const scholars = useRecoilValue(scholarsMap);
   const addresses = scholars.filter(scholar => !scholar.inactive).map(scholar => scholar.address);
@@ -29,7 +42,7 @@ export const OverviewGrid = (): JSX.Element => {
     [activeScholars, data]
   );
 
-  const lifetimeSlp = data.reduce(
+  const unclaimedSlp = data.reduce(
     (prev, currResult) => {
       const state = scholars.find(scholar => scholar.address === currResult.address);
 
@@ -52,38 +65,6 @@ export const OverviewGrid = (): JSX.Element => {
     [activeScholars.length, totalSlpDay]
   );
 
-  const farmedYesterday = useMemo(
-    () =>
-      data.reduce((prev, currResult) => {
-        const { historical, totalSlp } = currResult;
-
-        const yesterday = historical?.yesterday?.totalSlp;
-        const today = historical?.today?.totalSlp;
-
-        if (!yesterday) return prev;
-
-        if (!today) {
-          return prev + (totalSlp - yesterday);
-        }
-
-        return prev + (today - yesterday);
-      }, 0),
-    [data]
-  );
-
-  const farmedToday = useMemo(
-    () =>
-      data.reduce((prev, currResult) => {
-        const { historical, totalSlp } = currResult;
-        const todayStart = historical?.today?.totalSlp;
-
-        if (!todayStart) return prev;
-
-        return prev + (totalSlp - todayStart);
-      }, 0),
-    [data]
-  );
-
   return (
     <Stack h="100%">
       {!isError && (
@@ -94,53 +75,124 @@ export const OverviewGrid = (): JSX.Element => {
             templateColumns={{ base: 'repeat(1, 1fr)', lg: 'repeat(5, 1fr)' }}
             gap={6}
           >
-            <GridItem colSpan={1}>
-              <StatCard cardColor="purple">
+            <GridItem colSpan={1} rowSpan={3}>
+              <StatCard cardColor="purple" h="full">
                 <Heading size="md" fontWeight="semibold">
-                  Today
+                  Unclaimed SLP
                 </Heading>
-                <Text fontSize="3xl" fontWeight="bold" color="white" mt={4}>
-                  {farmedToday}
-                </Text>
-                <Text fontSize="sm" fontWeight="semibold" color="whiteAlpha.700">
-                  {formatter(farmedToday * price.values.slp, price.locale)}
-                </Text>
+                <StatCard mt={6} bg={insideCardBg}>
+                  <Heading size="sm" fontWeight="semibold">
+                    Manager
+                  </Heading>
+                  <Text fontSize="3xl" fontWeight="bold" mt={1}>
+                    {unclaimedSlp.manager}
+                  </Text>
+                  <Text fontSize="sm" fontWeight="semibold" color={textColor}>
+                    {formatter(unclaimedSlp.manager * price.values.slp, price.locale)}
+                  </Text>
+                </StatCard>
+                <StatCard mt={4} bg={insideCardBg}>
+                  <Heading size="sm" fontWeight="semibold">
+                    Scholars
+                  </Heading>
+                  <Text fontSize="3xl" fontWeight="bold" mt={1}>
+                    {unclaimedSlp.scholars}
+                  </Text>
+                  <Text fontSize="sm" fontWeight="semibold" color={textColor}>
+                    {formatter(unclaimedSlp.scholars * price.values.slp, price.locale)}
+                  </Text>
+                </StatCard>
+                <StatCard mt={4} bg={insideCardTotalBg} accentColor="purple">
+                  <Heading size="sm" fontWeight="semibold">
+                    Total
+                  </Heading>
+                  <Text fontSize="3xl" fontWeight="bold" mt={1}>
+                    {unclaimedSlp.total}
+                  </Text>
+                  <Text fontSize="sm" fontWeight="semibold" color={textColor}>
+                    {formatter(unclaimedSlp.total * price.values.slp, price.locale)}
+                  </Text>
+                </StatCard>
               </StatCard>
             </GridItem>
 
-            <GridItem colSpan={1}>
-              <StatCard cardColor="blue">
+            <GridItem rowSpan={3} colSpan={1}>
+              <VStack spacing={6}>
+                <StatCard cardColor="blue" h="full" w="full">
+                  <Heading size="md" fontWeight="semibold">
+                    Balance
+                  </Heading>
+                  <StatCard mt={6} bg={insideCardBg}>
+                    <Heading size="sm" fontWeight="semibold">
+                      Ronin
+                    </Heading>
+                    <Text fontSize="3xl" fontWeight="bold" mt={1}>
+                      {unclaimedSlp.scholars}
+                    </Text>
+                    <Text fontSize="sm" fontWeight="semibold" color={textColor}>
+                      {formatter(unclaimedSlp.scholars * price.values.slp, price.locale)}
+                    </Text>
+                  </StatCard>
+                  <StatCard mt={6} bg={insideCardBg}>
+                    <Heading size="sm" fontWeight="semibold">
+                      Total
+                    </Heading>
+                    <Text fontSize="3xl" fontWeight="bold" mt={1}>
+                      {unclaimedSlp.scholars}
+                    </Text>
+                    <Text fontSize="sm" fontWeight="semibold" color={textColor}>
+                      {formatter(unclaimedSlp.scholars * price.values.slp, price.locale)}
+                    </Text>
+                  </StatCard>
+                </StatCard>
+                <StatCard accentColor="red" w="full">
+                  <Heading size="sm" fontWeight="semibold">
+                    Next SLP Claim
+                  </Heading>
+                  <Text fontSize="3xl" fontWeight="bold" mt={1}>
+                    {unclaimedSlp.total}
+                  </Text>
+                  <Text fontSize="sm" fontWeight="semibold" color={textColor}>
+                    {formatter(unclaimedSlp.total * price.values.slp, price.locale)}
+                  </Text>
+                </StatCard>
+              </VStack>
+            </GridItem>
+
+            <GridItem colSpan={1} rowSpan={3}>
+              <StatCard cardColor="teal" h="full">
                 <Heading size="md" fontWeight="semibold">
-                  Yesterday
+                  Accounts Summary
                 </Heading>
-                <Text fontSize="3xl" fontWeight="bold" color="white" mt={4}>
-                  {farmedYesterday}
-                </Text>
-                <Text fontSize="sm" fontWeight="semibold" color="whiteAlpha.700">
-                  {formatter(farmedYesterday * price.values.slp, price.locale)}
-                </Text>
+                <StatCard mt={6} bg={insideCardBg}>
+                  <Heading size="sm" fontWeight="semibold">
+                    Number
+                  </Heading>
+                  <Text fontSize="3xl" fontWeight="bold" mt={1}>
+                    {scholars.length}
+                  </Text>
+                </StatCard>
+                <StatCard mt={4} bg={insideCardBg}>
+                  <Heading size="sm" fontWeight="semibold">
+                    Average MMR
+                  </Heading>
+                  <Text fontSize="3xl" fontWeight="bold" mt={1}>
+                    {unclaimedSlp.scholars}
+                  </Text>
+                </StatCard>
+                <StatCard mt={4} bg={insideCardBg}>
+                  <Heading size="sm" fontWeight="semibold">
+                    Axies
+                  </Heading>
+                  <Text fontSize="3xl" fontWeight="bold" mt={1}>
+                    {unclaimedSlp.scholars}
+                  </Text>
+                </StatCard>
               </StatCard>
             </GridItem>
 
-            <GridItem colSpan={1}>
-              <StatCard cardColor="teal">
-                <Heading size="md" fontWeight="semibold">
-                  Average SLP
-                </Heading>
-                <Text fontSize="3xl" fontWeight="bold" color="white" mt={4} display="inline-block">
-                  {averageSlp}
-                </Text>
-                <Text ml={2} fontSize="xs" fontWeight="semibold" color="whiteAlpha.700" display="inline-block">
-                  /day
-                </Text>
-
-                <Text fontSize="sm" fontWeight="semibold" color="whiteAlpha.700">
-                  {formatter(averageSlp * price.values.slp, price.locale)}
-                </Text>
-              </StatCard>
-            </GridItem>
             <GridItem colSpan={{ base: 1, lg: 2 }} rowSpan={3}>
-              <EarningsCard />
+              <EarningsCard averageSlp={averageSlp} />
             </GridItem>
           </Grid>
         </>
@@ -161,18 +213,3 @@ export const OverviewGrid = (): JSX.Element => {
     </Stack>
   );
 };
-
-{
-  /* <StatCard accentColor="yellow">
-              <Heading size="md" fontWeight="semibold">
-                Lifetime SLP
-              </Heading>
-
-              <Text fontSize="3xl" fontWeight="bold" mt={4}>
-                {Math.floor(lifetimeSlp.total)}
-              </Text>
-              <Text fontSize="sm" fontWeight="semibold" color={infoColor}>
-                {formatter(Math.floor(lifetimeSlp.total) * price.values.slp, price.locale)}
-              </Text>
-            </StatCard> */
-}
