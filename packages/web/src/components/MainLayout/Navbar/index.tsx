@@ -213,7 +213,7 @@ const Header = ({ currentTool }: HeaderProps): JSX.Element => {
           aria-label="Discord"
           icon={<DiscordIcon />}
           variant="ghost"
-          onClick={() => window.open('https://discord.gg/bRV67Kc77u', '_blank')}
+          onClick={() => window.open('https://discord.com/invite/mAHcqzmt8h', '_blank')}
           color="white"
           _hover={{
             bg: 'whiteAlpha.200',

@@ -51,7 +51,7 @@ export const NavbarContent = (): JSX.Element => {
 
       <Box p={8}>
         <Flex justify="space-between" align="center">
-          <Link href="https://discord.gg/bRV67Kc77u" target="_blank">
+          <Link href="https://discord.com/invite/mAHcqzmt8h" target="_blank">
             <FaDiscord size={20} />
           </Link>
 
