@@ -11,10 +11,6 @@ class Proxies {
   private async load() {
     const file = path.resolve(__dirname, '..', '..', 'proxies.json');
     this.proxies = jsonfile.readFileSync(file);
-
-    if (this.proxies.length <= 0) {
-      throw new Error('proxies.json file is empty');
-    }
   }
 }
 

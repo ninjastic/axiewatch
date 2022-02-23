@@ -10,8 +10,10 @@ interface Proxy {
   password: string;
 }
 
-const getRandomProxy = (): Proxy => {
+const getRandomProxy = (): Proxy | null => {
   const proxy = lodash.sample(proxies) as string;
+  if (!proxy) return null;
+
   const [ip, port, username, password] = proxy.split(':');
 
   return {
@@ -27,7 +29,7 @@ const proxiedApi = axios.create();
 proxiedApi.interceptors.request.use(request => {
   const proxy = getRandomProxy();
 
-  if (!proxy.ip || !proxy.port) {
+  if (!proxy?.ip || !proxy?.port) {
     return request;
   }
 

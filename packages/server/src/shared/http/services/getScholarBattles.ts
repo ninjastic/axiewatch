@@ -59,8 +59,18 @@ export const getScholarBattles = async (address: string): Promise<APIScholarResp
     .get<APIScholarResponse>(apiUrl, { params: { ...apiBaseParams, type: 'pve' } })
     .catch(error => error.message);
 
+  const battles = [];
+
+  if (pve?.battles) {
+    battles.push(...pve.battles);
+  }
+
+  if (pvp?.battles) {
+    battles.push(...pvp.battles);
+  }
+
   const data = {
-    battles: [...pve.battles, ...pvp.battles].sort((a, b) => {
+    battles: battles.sort((a, b) => {
       if (a.game_started > b.game_started) return -1;
       if (a.game_started < b.game_started) return 1;
       return 0;
