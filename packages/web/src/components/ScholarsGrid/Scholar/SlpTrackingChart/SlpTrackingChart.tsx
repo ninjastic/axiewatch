@@ -18,8 +18,8 @@ import { useRecoilValue } from 'recoil';
 import Link from 'next/link';
 
 import dayjs from '../../../../services/dayjs';
-import { formatter } from '@src/services/formatter';
-import { usePrice } from '@src/services/hooks/usePrice';
+import { formatter } from 'src/services/formatter';
+import { usePrice } from 'src/services/hooks/usePrice';
 import { ScholarHistoricalDate } from '../../../../types/api';
 import { serverApi } from '../../../../services/api';
 import { useAuth } from '../../../../services/hooks/useAuth';

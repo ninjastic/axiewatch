@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 
 import { useCreateModal } from '../../services/hooks/useCreateModal';
-import { useGameStatus } from '@src/services/hooks/useGameStatus';
+import { useGameStatus } from 'src/services/hooks/useGameStatus';
 import { LoadingScreen } from './LoadingScreen';
 import { ResetPasswordModal } from './ResetPasswordModal';
 import { Sidebar } from './Sidebar';

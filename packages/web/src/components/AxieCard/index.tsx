@@ -20,13 +20,13 @@ import { BiLinkExternal } from 'react-icons/bi';
 import lodash from 'lodash';
 
 import dayjs from '../../services/dayjs';
-import { Axie, AxieClass, scholarSelector } from '@src/recoil/scholars';
-import { preferencesAtom } from '@src/recoil/preferences';
+import { Axie, AxieClass, scholarSelector } from 'src/recoil/scholars';
+import { preferencesAtom } from 'src/recoil/preferences';
 import { AxieIcon } from '../Icons/AxieIcon';
 import { StatusIcon, StatusIconType } from '../Icons/StatusIcon';
 import { AxieTraits } from '../AxieTraits';
 import { Card } from '../Card';
-import { breedingStateAtom, isBreedingModeAtom } from '@src/recoil/breeding';
+import { breedingStateAtom, isBreedingModeAtom } from 'src/recoil/breeding';
 
 export const AxieCardSkeleton = (): JSX.Element => {
   return (

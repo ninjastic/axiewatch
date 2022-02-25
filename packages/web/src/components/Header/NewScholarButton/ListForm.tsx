@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { scholarsMap, ScholarMap } from '../../../recoil/scholars';
 import { preferencesAtom } from '../../../recoil/preferences';
 import { modalSelector } from '../../../recoil/modal';
-import { checkValidAddress } from '@src/services/utils/checkValidAddress';
+import { checkValidAddress } from 'src/services/utils/checkValidAddress';
 
 interface HandleSaveData {
   addresses: string;

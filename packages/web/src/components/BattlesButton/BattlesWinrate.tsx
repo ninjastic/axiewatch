@@ -1,6 +1,6 @@
 import { HStack, Text } from '@chakra-ui/react';
 
-import { APIBattlesResponse } from '@src/types/api';
+import { APIBattlesResponse } from 'src/types/api';
 
 interface BattlesWinrateProps {
   address: string;

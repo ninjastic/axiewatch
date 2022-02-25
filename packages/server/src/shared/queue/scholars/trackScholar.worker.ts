@@ -1,6 +1,6 @@
 import { Job, Worker } from 'bullmq';
 
-import { cache } from '@src/services/cache';
+import { cache } from 'src/services/cache';
 import { trackScholarJob } from './trackScholar.job';
 
 const worker = new Worker('trackScholarQueue', async (job: Job) => trackScholarJob(job.data.address), {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { cache } from '@src/services/cache';
+import { cache } from 'src/services/cache';
 
 interface APIGameStatusResponse {
   sm: {

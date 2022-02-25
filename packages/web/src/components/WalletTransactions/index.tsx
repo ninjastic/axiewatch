@@ -18,7 +18,7 @@ import { AiOutlineInfoCircle } from 'react-icons/ai';
 import lodash from 'lodash';
 
 import { scholarsMap } from '../../recoil/scholars';
-import { preferencesAtom } from '@src/recoil/preferences';
+import { preferencesAtom } from 'src/recoil/preferences';
 import { useBatchWalletTransactions } from '../../services/hooks/useBatchWalletTransactions';
 import { TransactionsTable } from './TransactionsTable';
 import { Pagination } from '../Pagination';

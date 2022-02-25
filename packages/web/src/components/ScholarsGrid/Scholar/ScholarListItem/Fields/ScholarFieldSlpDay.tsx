@@ -5,6 +5,7 @@ import { useCallback } from 'react';
 import { formatter } from '../../../../../services/formatter';
 import { scholarSelector } from '../../../../../recoil/scholars';
 import { priceAtom } from '../../../../../recoil/price';
+import { averageRangeAtom } from 'src/recoil/preferences';
 
 interface ScholarFieldSlpDayProps {
   address: string;
@@ -38,13 +39,15 @@ const TooltipScholarSLP = ({ address }: { address: string }): JSX.Element => {
 
 export const ScholarFieldSlpDay = ({ address, isLoading }: ScholarFieldSlpDayProps): JSX.Element => {
   const scholar = useRecoilValue(scholarSelector(address));
+  const averageRange = useRecoilValue(averageRangeAtom);
 
   const getSlpDayColor = useCallback(() => {
-    if (scholar.slpDay >= 120) return 'green.200';
-    if (scholar.slpDay >= 90 && scholar.slpDay < 120) return 'red.200';
-    if (scholar.slpDay < 90) return 'red.300';
+    if (scholar.slpDay >= (averageRange?.top ?? 120)) return 'green.200';
+    if (scholar.slpDay >= (averageRange?.bottom ?? 120) && scholar.slpDay < (averageRange?.top ?? 120))
+      return 'red.200';
+    if (scholar.slpDay < (averageRange?.bottom ?? 120)) return 'red.300';
     return 'white';
-  }, [scholar.slpDay]);
+  }, [averageRange?.bottom, averageRange?.top, scholar.slpDay]);
 
   return (
     <SkeletonText isLoaded={!isLoading} noOfLines={2}>

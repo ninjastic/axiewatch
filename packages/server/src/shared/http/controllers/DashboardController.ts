@@ -2,9 +2,9 @@ import { Request, Response } from 'express';
 import { randomBytes } from 'crypto';
 
 import { supabase } from '../../../services/supabase';
-import AppError from '@src/shared/errors/AppError';
-import Dashboard from '@models/Dashboard';
-import Sync from '@models/Sync';
+import AppError from 'src/shared/errors/AppError';
+import Dashboard from 'models/Dashboard';
+import Sync from 'models/Sync';
 
 export class DashboardController {
   async get(req: Request, res: Response): Promise<Response> {

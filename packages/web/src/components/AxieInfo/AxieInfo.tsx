@@ -2,7 +2,7 @@ import { Stack, HStack, Tag, Text, Icon } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 import { useMemo } from 'react';
 
-import { parseAxieData } from '@src/services/utils/parseAxieData';
+import { parseAxieData } from 'src/services/utils/parseAxieData';
 import { Axie, scholarSelector } from '../../recoil/scholars';
 import {
   AquaticIcon,

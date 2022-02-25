@@ -1,7 +1,7 @@
 import { useQueries, UseQueryOptions, UseQueryResult } from 'react-query';
 import { ethers } from 'ethers';
 
-import { rpc } from '@src/services/rpc';
+import { rpc } from 'src/services/rpc';
 import slpAbi from '../../constants/abi/SLP.json';
 
 interface UseBatchWalletData {

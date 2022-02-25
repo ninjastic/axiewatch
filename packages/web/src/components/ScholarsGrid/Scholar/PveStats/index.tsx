@@ -1,7 +1,7 @@
 import { Box, Text, Spinner } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 
-import { scholarSelector } from '@src/recoil/scholars';
+import { scholarSelector } from 'src/recoil/scholars';
 
 interface PveStatsProps {
   address: string;

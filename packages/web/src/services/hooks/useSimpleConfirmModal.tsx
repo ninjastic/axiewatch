@@ -1,7 +1,7 @@
 import { Button } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 
-import { modalSelector } from '@src/recoil/modal';
+import { modalSelector } from 'src/recoil/modal';
 import { useCreateModal, UseCreateModalData } from './useCreateModal';
 
 interface SimpleConfirmModalFooterProps {

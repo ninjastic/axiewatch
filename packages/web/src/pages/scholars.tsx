@@ -32,9 +32,9 @@ import { ScholarsSorter } from '../components/ScholarsSorter';
 import { ScholarsFilterButton } from '../components/ScholarsFilter';
 import { useCreateModal } from '../services/hooks/useCreateModal';
 import { CloudSyncGroupButton } from '../components/CloudSyncGroupButton';
-import { scholarFilter, scholarsPerPageAtom } from '@src/recoil/scholars';
-import { useDebounce } from '@src/services/hooks/useDebounce';
-import { SignInForm } from '@src/components/SignInForm';
+import { scholarFilter, scholarsPerPageAtom } from 'src/recoil/scholars';
+import { useDebounce } from 'src/services/hooks/useDebounce';
+import { SignInForm } from 'src/components/SignInForm';
 
 const PerPageSelector = (): JSX.Element => {
   const options = [20, 50, 100, 200];

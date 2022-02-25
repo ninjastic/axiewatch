@@ -1,6 +1,6 @@
-import { cache } from '@src/services/cache';
-import { proxiedApi } from '@src/services/api';
-import AppError from '@src/shared/errors/AppError';
+import { cache } from 'src/services/cache';
+import { proxiedApi } from 'src/services/api';
+import AppError from 'src/shared/errors/AppError';
 
 interface APIScholarResponse {
   client_id: string;

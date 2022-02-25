@@ -5,8 +5,8 @@ import { WalletOverview } from '../components/WalletOverview';
 import { PreferencesButton } from '../components/Header/PreferencesButton';
 import { PriceTicker } from '../components/Header/PriceTicker';
 import { WalletTransactions } from '../components/WalletTransactions';
-import { WalletSales } from '@src/components/WalletSales';
-import { WalletGrid } from '@src/components/WalletGrid';
+import { WalletSales } from 'src/components/WalletSales';
+import { WalletGrid } from 'src/components/WalletGrid';
 
 export const WalletPage = (): JSX.Element => {
   return (

@@ -37,12 +37,12 @@ import {
 import { preferencesAtom } from '../recoil/preferences';
 import { useBatchScholarAxie } from '../services/hooks/useBatchScholarAxie';
 import { AxiesFilterButton } from '../components/AxiesFilterButton';
-import { AxieCard, AxieCardSkeleton } from '@src/components/AxieCard';
-import { PreferencesButton } from '@src/components/Header/PreferencesButton';
-import { Pagination } from '@src/components/Pagination';
-import { RequestStatusFloatingButton } from '@src/components/RequestStatusFloatingButton';
-import { isBreedingModeAtom } from '@src/recoil/breeding';
-import { BreedingFloatingCard } from '@src/components/BreedingFloatingCard';
+import { AxieCard, AxieCardSkeleton } from 'src/components/AxieCard';
+import { PreferencesButton } from 'src/components/Header/PreferencesButton';
+import { Pagination } from 'src/components/Pagination';
+import { RequestStatusFloatingButton } from 'src/components/RequestStatusFloatingButton';
+import { isBreedingModeAtom } from 'src/recoil/breeding';
+import { BreedingFloatingCard } from 'src/components/BreedingFloatingCard';
 
 interface PerPageSelectorSelectorProps {
   value: number;

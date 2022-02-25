@@ -2,8 +2,8 @@ import { Stat, StatLabel, StatNumber, StatHelpText, Skeleton } from '@chakra-ui/
 import { Dayjs } from 'dayjs';
 
 import dayjs from '../../services/dayjs';
-import { Card } from '@components/Card';
-import { ScholarState } from '@src/recoil/scholars';
+import { Card } from 'components/Card';
+import { ScholarState } from 'src/recoil/scholars';
 
 interface NextClaimCardProps {
   data: ScholarState[];

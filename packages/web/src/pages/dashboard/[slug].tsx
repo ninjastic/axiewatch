@@ -30,7 +30,7 @@ import { serverApi } from '../../services/api';
 import { useBatchScholar } from '../../services/hooks/useBatchScholar';
 import { Card } from '../../components/Card';
 import { LoadingScreen } from '../../components/MainLayout/LoadingScreen';
-import { BallScaleLoading } from '@src/components/BallScaleLoading';
+import { BallScaleLoading } from 'src/components/BallScaleLoading';
 
 export const DashboardSlug = (): JSX.Element => {
   const slug = window.location.pathname.replace('/dashboard/', '');

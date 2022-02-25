@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import AppError from '@src/shared/errors/AppError';
+import AppError from 'src/shared/errors/AppError';
 import { getScholar } from '../services/getScholar';
 import { getScholarPvp } from '../services/getScholarPvp';
 import { getScholarHistoricalSlp } from '../services/getScholarHistoricalSlp';

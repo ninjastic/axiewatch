@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import AppError from '@src/shared/errors/AppError';
+import AppError from 'src/shared/errors/AppError';
 import { getExplorerTx } from '../services/getExplorerTx';
 
 export class BatchExplorerController {

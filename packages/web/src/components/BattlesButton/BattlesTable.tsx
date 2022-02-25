@@ -4,7 +4,7 @@ import { AiOutlineInfoCircle } from 'react-icons/ai';
 
 import { APIBattlesResponseItem } from '../../types/api';
 import { BattleTableEntry } from './BattleTableEntry';
-import { Pagination } from '@src/components/Pagination';
+import { Pagination } from 'src/components/Pagination';
 
 interface BattlesTableProps {
   data: APIBattlesResponseItem[];

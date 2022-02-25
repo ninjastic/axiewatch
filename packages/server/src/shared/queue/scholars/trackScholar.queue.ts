@@ -1,6 +1,6 @@
 import { Queue, QueueScheduler } from 'bullmq';
 
-import { cache } from '@src/services/cache';
+import { cache } from 'src/services/cache';
 
 import '../../database';
 

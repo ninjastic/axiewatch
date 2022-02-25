@@ -28,9 +28,9 @@ import { useRecoilValue } from 'recoil';
 import { useMemo, useState } from 'react';
 
 import dayjs from '../../services/dayjs';
-import { ScholarState, scholarsMap } from '@src/recoil/scholars';
-import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
-import { Card } from '@components/Card';
+import { ScholarState, scholarsMap } from 'src/recoil/scholars';
+import { useBatchScholar } from 'src/services/hooks/useBatchScholar';
+import { Card } from 'components/Card';
 import { SlpTrackingButton } from '../ScholarsGrid/Scholar/SlpTrackingButton';
 
 interface NumberMenuProps {

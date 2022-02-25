@@ -26,15 +26,15 @@ import { useEffect, useState } from 'react';
 import lodash from 'lodash';
 
 import dayjs from '../../services/dayjs';
-import { preferencesAtom } from '@src/recoil/preferences';
-import { useBatchWalletSales, WalletTransactionSale } from '@src/services/hooks/useBatchWalletSales';
-import { scholarsMap } from '@src/recoil/scholars';
+import { preferencesAtom } from 'src/recoil/preferences';
+import { useBatchWalletSales, WalletTransactionSale } from 'src/services/hooks/useBatchWalletSales';
+import { scholarsMap } from 'src/recoil/scholars';
 import { AxieTag } from '../WalletTransactions/AxieTag';
 import { Card } from '../Card';
 import { Pagination } from '../Pagination';
 import { RequestStatusFloatingButton } from '../RequestStatusFloatingButton';
-import { usePrice } from '@src/services/hooks/usePrice';
-import { formatter } from '@src/services/formatter';
+import { usePrice } from 'src/services/hooks/usePrice';
+import { formatter } from 'src/services/formatter';
 
 interface SaleEntryProps {
   transaction: WalletTransactionSale;

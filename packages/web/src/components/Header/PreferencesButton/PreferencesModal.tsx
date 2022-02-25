@@ -10,14 +10,17 @@ import {
   Text,
   HStack,
   useMediaQuery,
+  Flex,
+  Icon,
 } from '@chakra-ui/react';
 import { Formik } from 'formik';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { BiCheckCircle } from 'react-icons/bi';
+import { FiInfo } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
 import { modalSelector } from '../../../recoil/modal';
-import { preferencesAtom } from '../../../recoil/preferences';
+import { averageRangeAtom, preferencesAtom } from '../../../recoil/preferences';
 import { scholarFieldsAtom, scholarParseOptionsAtom } from '../../../recoil/scholars';
 import { checkValidAddress } from '../../../services/utils/checkValidAddress';
 import { ScholarSharesForm } from '../../ScholarSharesForm';
@@ -31,6 +34,7 @@ export const PreferencesModal = (): JSX.Element => {
   const [preferences, setPreferences] = useRecoilState(preferencesAtom);
   const [scholarFields, setScholarFields] = useRecoilState(scholarFieldsAtom);
   const [scholarParseOptions, setScholarParseOptions] = useRecoilState(scholarParseOptionsAtom);
+  const [averageRange, setAverageRange] = useRecoilState(averageRangeAtom);
 
   const [isWideVersion] = useMediaQuery('(min-width: 750px)');
 
@@ -71,6 +75,8 @@ export const PreferencesModal = (): JSX.Element => {
 
     setScholarFields(data.scholarFields);
 
+    setAverageRange(data.averageRange);
+
     onClose();
   };
 
@@ -83,6 +89,10 @@ export const PreferencesModal = (): JSX.Element => {
             manager: preferences.shares.manager,
             investor: preferences.shares.investor,
           },
+          averageRange: {
+            top: averageRange.top,
+            bottom: averageRange.bottom,
+          },
           managerAddress: preferences.managerAddress ? preferences.managerAddress.replace('0x', 'ronin:') : '',
           currency: preferences.currency,
           includeRoninBalance: preferences.includeRoninBalance,
@@ -91,7 +101,7 @@ export const PreferencesModal = (): JSX.Element => {
         }}
         onSubmit={handleSave}
       >
-        {({ setFieldValue, values, submitForm }) => (
+        {({ setFieldValue, values, submitForm, handleChange }) => (
           <Stack spacing={6}>
             <FormControl id="currency" maxW={600}>
               <FormLabel>Currency</FormLabel>
@@ -146,6 +156,43 @@ export const PreferencesModal = (): JSX.Element => {
                 </FormControl>
               </Stack>
             )}
+
+            <FormControl id="averageColors">
+              <FormLabel fontWeight="bold">Average SLP color</FormLabel>
+
+              <Stack>
+                <Flex align="center">
+                  <Icon as={FiInfo} mr={1} />
+                  <Text>Green if the value is above</Text>
+                  <Input
+                    value={values.averageRange.top}
+                    name="averageRange.top"
+                    onChange={handleChange}
+                    maxW="75px"
+                    mx={3}
+                  />
+                </Flex>
+
+                <Flex align="center">
+                  <Icon as={FiInfo} mr={1} />
+                  <Text>
+                    Orange if in the <b>{values.averageRange.top}</b> ~ <b>{values.averageRange.bottom}</b> range
+                  </Text>
+                </Flex>
+
+                <Flex align="center">
+                  <Icon as={FiInfo} mr={1} />
+                  <Text>Red if the value is under</Text>
+                  <Input
+                    value={values.averageRange.bottom}
+                    name="averageRange.bottom"
+                    onChange={handleChange}
+                    maxW="75px"
+                    ml={3}
+                  />
+                </Flex>
+              </Stack>
+            </FormControl>
 
             <FormControl id="shares" maxW={600}>
               <ScholarSharesForm

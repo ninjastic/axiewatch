@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
-import { proxiedApi } from '@src/services/api';
-import AppError from '@src/shared/errors/AppError';
+import { proxiedApi } from 'src/services/api';
+import AppError from 'src/shared/errors/AppError';
 
 export class RpcController {
   async post(req: Request, res: Response): Promise<Response> {

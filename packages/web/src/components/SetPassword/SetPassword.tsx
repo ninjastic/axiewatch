@@ -6,7 +6,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { useCreateModal } from '../../services/hooks/useCreateModal';
 import { hasPasswordAtom, passwordAtom, resetPasswordAndPrivateKeysSelector } from '../../recoil/wallets';
-import { modalSelector } from '@src/recoil/modal';
+import { modalSelector } from 'src/recoil/modal';
 
 const SetPasswordFooter = (): JSX.Element => {
   const resetPasswordAndPrivateKeys = useSetRecoilState(resetPasswordAndPrivateKeysSelector);

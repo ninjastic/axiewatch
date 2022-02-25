@@ -25,11 +25,11 @@ import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import produce from 'immer';
 
-import { scholarsMap } from '@src/recoil/scholars';
-import { Card } from '@components/Card';
-import { EditScholarButton } from '@src/components/ScholarsGrid/Scholar/EditScholarButton';
-import { Pagination } from '@src/components/Pagination';
-import { useDebounce } from '@src/services/hooks/useDebounce';
+import { scholarsMap } from 'src/recoil/scholars';
+import { Card } from 'components/Card';
+import { EditScholarButton } from 'src/components/ScholarsGrid/Scholar/EditScholarButton';
+import { Pagination } from 'src/components/Pagination';
+import { useDebounce } from 'src/services/hooks/useDebounce';
 
 const exportBotScholarNameSearchAtom = atom<string>({
   key: 'exportBotScholarNameSearchAtom',

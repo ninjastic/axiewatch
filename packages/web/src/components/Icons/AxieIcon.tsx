@@ -1,7 +1,7 @@
 import { Icon, IconProps } from '@chakra-ui/react';
 import { SVGProps } from 'react';
 
-import { AxieClass } from '@src/recoil/scholars';
+import { AxieClass } from 'src/recoil/scholars';
 
 export const BirdIcon = ({ ...rest }: SVGProps<SVGSVGElement>): JSX.Element => {
   return (

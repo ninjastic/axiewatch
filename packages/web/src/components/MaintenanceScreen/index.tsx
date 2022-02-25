@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import dayjs from '../../services/dayjs';
-import { useGameStatus } from '@src/services/hooks/useGameStatus';
+import { useGameStatus } from 'src/services/hooks/useGameStatus';
 
 const MaintenanceScreenComponent = (): JSX.Element => {
   const { data } = useGameStatus();

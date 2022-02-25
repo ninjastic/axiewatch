@@ -1,6 +1,6 @@
 import dayjs from '../dayjs';
 import { APIScholarResponse } from '../../types/api';
-import { ScholarState } from '@src/recoil/scholars';
+import { ScholarState } from 'src/recoil/scholars';
 
 type ParseScholarDataOptions = {
   includeTodayOnAverageSlp: boolean;

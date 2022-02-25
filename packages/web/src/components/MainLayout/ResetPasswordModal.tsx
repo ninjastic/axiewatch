@@ -3,7 +3,7 @@ import { Form, Formik } from 'formik';
 import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 
-import { modalSelector } from '@src/recoil/modal';
+import { modalSelector } from 'src/recoil/modal';
 import { useAuth } from '../../services/hooks/useAuth';
 
 export const ResetPasswordModal = (): JSX.Element => {

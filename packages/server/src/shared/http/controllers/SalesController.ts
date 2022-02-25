@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
 
-import AppError from '@src/shared/errors/AppError';
+import AppError from 'src/shared/errors/AppError';
 
 export class SalesController {
   async post(req: Request, res: Response): Promise<Response> {

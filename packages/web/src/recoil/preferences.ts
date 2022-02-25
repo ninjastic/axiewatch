@@ -60,3 +60,17 @@ export const preferencesAtom = atom<Preferences>({
   },
   effects_UNSTABLE: [persistAtom],
 });
+
+interface AverageRange {
+  top: number;
+  bottom: number;
+}
+
+export const averageRangeAtom = atom<AverageRange>({
+  key: 'averageRangeAtom',
+  default: {
+    top: 120,
+    bottom: 90,
+  },
+  effects_UNSTABLE: [persistAtom],
+});

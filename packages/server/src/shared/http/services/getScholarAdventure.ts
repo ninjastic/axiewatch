@@ -1,5 +1,5 @@
-import { cache } from '@src/services/cache';
-import { proxiedApi } from '@src/services/api';
+import { cache } from 'src/services/cache';
+import { proxiedApi } from 'src/services/api';
 
 interface ApiScholarAdventureResponse {
   gained_slp_response: {

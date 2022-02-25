@@ -1,6 +1,6 @@
 import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 
-import { WalletTransaction } from '@src/services/hooks/useBatchWalletTransactions';
+import { WalletTransaction } from 'src/services/hooks/useBatchWalletTransactions';
 import { Card } from '../Card';
 import { TransactionTableEntry } from './TransactionTableEntry';
 

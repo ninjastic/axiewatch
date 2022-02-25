@@ -14,13 +14,13 @@ import {
 import { useMemo } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { preferencesAtom } from '@src/recoil/preferences';
-import { useScholarAxie } from '@src/services/hooks/useScholarAxie';
-import { useCreateModal } from '@src/services/hooks/useCreateModal';
+import { preferencesAtom } from 'src/recoil/preferences';
+import { useScholarAxie } from 'src/services/hooks/useScholarAxie';
+import { useCreateModal } from 'src/services/hooks/useCreateModal';
 import { AxieInfo } from '../../../AxieInfo';
 import { AxieTraits } from '../../../AxieTraits';
-import { Axie } from '@src/recoil/scholars';
-import { AxieCard } from '@src/components/AxieCard';
+import { Axie } from 'src/recoil/scholars';
+import { AxieCard } from 'src/components/AxieCard';
 
 interface OtherScholarAxiesModalProps {
   data: Axie[];
@@ -72,7 +72,7 @@ export const ScholarAxies = ({ address, shouldLoad = true }: ScholarAxiesProps):
   });
 
   return (
-    <HStack justify="center">
+    <Flex justify="center">
       {isLoading &&
         [...Array(3)].map((value, index) => (
           <Box
@@ -88,41 +88,44 @@ export const ScholarAxies = ({ address, shouldLoad = true }: ScholarAxiesProps):
           </Box>
         ))}
 
-      {!isLoading &&
-        firstThreeAxies?.map(axie => (
-          <Link
-            href={`https://marketplace.axieinfinity.com/axie/${axie.id}/?referrer=axie.watch`}
-            target="_blank"
-            key={axie.id}
-          >
-            <Tooltip
-              label={
-                <Box w="300px">
-                  <Stack>
-                    <AxieInfo axieData={axie} />
-                    <AxieTraits axieData={axie} />
-                  </Stack>
-                </Box>
-              }
-              p={3}
+      {!isLoading && firstThreeAxies?.length > 0 && (
+        <HStack>
+          {firstThreeAxies?.map(axie => (
+            <Link
+              href={`https://marketplace.axieinfinity.com/axie/${axie.id}/?referrer=axie.watch`}
+              target="_blank"
+              key={axie.id}
             >
-              <Image
-                src={axie.image}
-                w="96px"
-                h={{ lg: '72px' }}
-                cursor="pointer"
-                alt={`Axie ${axie.id}`}
-                fallback={
-                  <Box d="flex" alignItems="center" justifyContent="center" w="96px" h={{ lg: '72px' }}>
-                    <SkeletonCircle />
+              <Tooltip
+                label={
+                  <Box w="300px">
+                    <Stack>
+                      <AxieInfo axieData={axie} />
+                      <AxieTraits axieData={axie} />
+                    </Stack>
                   </Box>
                 }
-                transition="all .2s ease-out"
-                _hover={{ transform: 'translateY(-4px)', opacity: 0.9 }}
-              />
-            </Tooltip>
-          </Link>
-        ))}
+                p={3}
+              >
+                <Image
+                  src={axie.image}
+                  w="96px"
+                  h={{ lg: '72px' }}
+                  cursor="pointer"
+                  alt={`Axie ${axie.id}`}
+                  fallback={
+                    <Box d="flex" alignItems="center" justifyContent="center" w="96px" h={{ lg: '72px' }}>
+                      <SkeletonCircle />
+                    </Box>
+                  }
+                  transition="all .2s ease-out"
+                  _hover={{ transform: 'translateY(-4px)', opacity: 0.9 }}
+                />
+              </Tooltip>
+            </Link>
+          ))}
+        </HStack>
+      )}
 
       {!isLoading && data?.results.length > 3 && (
         <Box cursor="pointer" onClick={otherAxiesModal.onOpen}>
@@ -132,9 +135,11 @@ export const ScholarAxies = ({ address, shouldLoad = true }: ScholarAxiesProps):
 
       {!isLoading && data?.results.length === 0 && (
         <Box>
-          <Tag rounded="3xl">No axies</Tag>
+          <Tag rounded="3xl" opacity={0.9}>
+            No axies
+          </Tag>
         </Box>
       )}
-    </HStack>
+    </Flex>
   );
 };

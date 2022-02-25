@@ -4,10 +4,10 @@ import { useQuery } from 'react-query';
 import { useMemo } from 'react';
 
 import { axieInfinityGraphQl } from '../../services/api';
-import { Axie, AxieClass } from '@src/recoil/scholars';
+import { Axie, AxieClass } from 'src/recoil/scholars';
 import { AxieIcon } from '../Icons/AxieIcon';
 import { AxieTraits } from '../AxieTraits';
-import { parseAxieData } from '@src/services/utils/parseAxieData';
+import { parseAxieData } from 'src/services/utils/parseAxieData';
 import { AxieInfo } from '../AxieInfo';
 
 const query = gql`

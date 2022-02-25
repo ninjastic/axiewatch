@@ -7,7 +7,7 @@ import { scholarSelector } from '../../recoil/scholars';
 import { usePrice } from '../../services/hooks/usePrice';
 import { Card } from '../Card';
 import { ScholarAddress } from '../ScholarsGrid/Scholar/ScholarAddress';
-import { useWallet } from '@src/services/hooks/useWallet';
+import { useWallet } from 'src/services/hooks/useWallet';
 
 interface WalletCardProps {
   address: string;

@@ -8,7 +8,7 @@ import { formatter } from '../../services/formatter';
 import { scholarsMap } from '../../recoil/scholars';
 import { usePrice } from '../../services/hooks/usePrice';
 import { useBatchWallet } from '../../services/hooks/useBatchWallet';
-import { preferencesAtom } from '@src/recoil/preferences';
+import { preferencesAtom } from 'src/recoil/preferences';
 import { RequestStatusFloatingButton } from '../RequestStatusFloatingButton';
 
 export const WalletOverview = (): JSX.Element => {

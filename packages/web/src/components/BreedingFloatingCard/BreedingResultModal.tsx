@@ -18,16 +18,16 @@ import { useRecoilValue } from 'recoil';
 import { Fragment, useMemo } from 'react';
 import { HiPlus } from 'react-icons/hi';
 
-import { breedingStateAtom } from '@src/recoil/breeding';
-import { getTraitProbabilities } from '@src/services/utils/axieUtils';
+import { breedingStateAtom } from 'src/recoil/breeding';
+import { getTraitProbabilities } from 'src/services/utils/axieUtils';
 import { AxiePartIcon, AxiePartIconType } from '../Icons/AxiePartIcon';
 import bodyParts from '../../constants/body-parts.json';
 import { AxieIcon } from '../Icons/AxieIcon';
 import { Card } from '../Card';
-import { AxieClass } from '@src/types/api';
+import { AxieClass } from 'src/types/api';
 import { AxieTraits } from '../AxieTraits';
-import { scholarsMap } from '@src/recoil/scholars';
-import { preferencesAtom } from '@src/recoil/preferences';
+import { scholarsMap } from 'src/recoil/scholars';
+import { preferencesAtom } from 'src/recoil/preferences';
 
 export const BreedingResultCard = (): JSX.Element => {
   const breedingState = useRecoilValue(breedingStateAtom);

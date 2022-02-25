@@ -2,10 +2,10 @@ import { Box, Text, Button, Stack, SimpleGrid } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { ScholarMap, scholarsMap } from '@src/recoil/scholars';
+import { ScholarMap, scholarsMap } from 'src/recoil/scholars';
 import { serverApi } from '../../services/api';
 import { useAuth } from '../../services/hooks/useAuth';
-import { modalSelector } from '@src/recoil/modal';
+import { modalSelector } from 'src/recoil/modal';
 
 interface UploadScholarsModalProps {
   uploadedScholars: ScholarMap[];

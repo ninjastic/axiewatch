@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import { useAuth } from '../services/hooks/useAuth';
-import { SignInForm } from '@src/components/SignInForm';
+import { SignInForm } from 'src/components/SignInForm';
 
 const SignInPage = (): JSX.Element => {
   const { session } = useAuth();

@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react';
 import lodash from 'lodash';
 
 import dayjs from '../../services/dayjs';
-import { preferencesAtom } from '@src/recoil/preferences';
+import { preferencesAtom } from 'src/recoil/preferences';
 import {
   scholarFilter,
   ScholarMap,
@@ -13,7 +13,7 @@ import {
   scholarSort,
   scholarsPerPageAtom,
 } from '../../recoil/scholars';
-import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
+import { useBatchScholar } from 'src/services/hooks/useBatchScholar';
 import { Scholar } from './Scholar';
 import { Card } from '../Card';
 import { Pagination } from '../Pagination';

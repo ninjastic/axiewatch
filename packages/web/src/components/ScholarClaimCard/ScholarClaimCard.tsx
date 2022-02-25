@@ -8,7 +8,7 @@ import { ScholarPrivateKeyInput } from '../ScholarsGrid/Scholar/ScholarPaymentsB
 import { ScholarPaymentsAddressInput } from '../ScholarsGrid/Scholar/ScholarPaymentsButton/ScholarPaymentsAddressInput';
 import { EditScholarButton } from '../ScholarsGrid/Scholar/EditScholarButton';
 import { ScholarAddress } from '../ScholarsGrid/Scholar/ScholarAddress';
-import { modalSelector } from '@src/recoil/modal';
+import { modalSelector } from 'src/recoil/modal';
 
 interface SetPrivateKeyModalProps {
   address: string;

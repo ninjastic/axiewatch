@@ -1,9 +1,9 @@
 import { Stat, HStack, StatLabel, Tooltip, Box, StatNumber, Skeleton, StatHelpText } from '@chakra-ui/react';
 import { BiInfoCircle } from 'react-icons/bi';
 
-import { formatter } from '@src/services/formatter';
-import { usePrice } from '@src/services/hooks/usePrice';
-import { Card } from '@components/Card';
+import { formatter } from 'src/services/formatter';
+import { usePrice } from 'src/services/hooks/usePrice';
+import { Card } from 'components/Card';
 
 interface SlpAmountCardProps {
   label: string;

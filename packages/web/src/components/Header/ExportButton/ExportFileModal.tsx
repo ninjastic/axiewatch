@@ -6,7 +6,7 @@ import { Select } from 'chakra-react-select';
 
 import dayjs from '../../../services/dayjs';
 import { allScholarsSelector } from '../../../recoil/scholars';
-import { preferencesAtom } from '@src/recoil/preferences';
+import { preferencesAtom } from 'src/recoil/preferences';
 
 interface SelectedType {
   [field: string]: boolean;

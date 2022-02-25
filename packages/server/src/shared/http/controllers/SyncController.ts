@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
 import { supabase } from '../../../services/supabase';
-import AppError from '@src/shared/errors/AppError';
-import Sync from '@models/Sync';
+import AppError from 'src/shared/errors/AppError';
+import Sync from 'models/Sync';
 
 export class SyncController {
   async get(req: Request, res: Response): Promise<Response> {

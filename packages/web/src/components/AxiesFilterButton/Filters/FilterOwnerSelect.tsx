@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { Select } from 'chakra-react-select';
 
 import { ScholarAxiesFilter, scholarsMap } from '../../../recoil/scholars';
-import { preferencesAtom } from '@src/recoil/preferences';
+import { preferencesAtom } from 'src/recoil/preferences';
 
 interface FilterProps {
   setFilter: Dispatch<SetStateAction<ScholarAxiesFilter>>;

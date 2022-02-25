@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 
-import { APIBatchExplorerResponse, ExplorerTransaction } from '@src/types/api';
+import { APIBatchExplorerResponse, ExplorerTransaction } from 'src/types/api';
 import { serverApi } from '../api';
 
 export type WalletTransaction = ExplorerTransaction & {

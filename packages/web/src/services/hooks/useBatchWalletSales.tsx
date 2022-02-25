@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 
-import { AxieClass } from '@src/types/api';
+import { AxieClass } from 'src/types/api';
 import { serverApi } from '../api';
 
 export type AxieGeneType = 'd' | 'r2' | 'r1';

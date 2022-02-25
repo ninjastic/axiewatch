@@ -1,8 +1,8 @@
 import { ethers } from 'ethers';
 
-import Sync from '@models/Sync';
-import Tracking from '@src/models/Tracking';
-import { proxiedApi } from '@src/services/api';
+import Sync from 'models/Sync';
+import Tracking from 'src/models/Tracking';
+import { proxiedApi } from 'src/services/api';
 
 interface ApiResponse {
   client_id: string;

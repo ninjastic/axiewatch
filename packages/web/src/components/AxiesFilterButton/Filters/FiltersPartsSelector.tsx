@@ -5,7 +5,7 @@ import { Select } from 'chakra-react-select';
 
 import bodyParts from '../../../constants/body-parts.json';
 import { AxieClass, axiePartsAtom, ScholarAxiesFilter } from '../../../recoil/scholars';
-import { AxiePartIcon, AxiePartIconType } from '@src/components/Icons/AxiePartIcon';
+import { AxiePartIcon, AxiePartIconType } from 'src/components/Icons/AxiePartIcon';
 
 interface FilterProps {
   setFilter: Dispatch<SetStateAction<ScholarAxiesFilter>>;

@@ -21,16 +21,16 @@ import Link from 'next/link';
 import { SummaryCards } from '../components/SummaryCards';
 import { DailySlpChart } from '../components/DailySlpChart';
 import { Card } from '../components/Card';
-import { PreferencesButton } from '@src/components/Header/PreferencesButton';
-import { NotablePerformersTable } from '@src/components/NotablePerformersTable';
-import { EarningsForecastChart } from '@src/components/EarningsForecastChart';
-import { scholarsMap } from '@src/recoil/scholars';
-import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
-import { RequestStatusFloatingButton } from '@src/components/RequestStatusFloatingButton';
-import { SignInForm } from '@src/components/SignInForm';
-import { useAuth } from '@src/services/hooks/useAuth';
-import { CloudSyncGroupButton } from '@src/components/CloudSyncGroupButton';
-import { NewScholarButton } from '@src/components/Header/NewScholarButton';
+import { PreferencesButton } from 'src/components/Header/PreferencesButton';
+import { NotablePerformersTable } from 'src/components/NotablePerformersTable';
+import { EarningsForecastChart } from 'src/components/EarningsForecastChart';
+import { scholarsMap } from 'src/recoil/scholars';
+import { useBatchScholar } from 'src/services/hooks/useBatchScholar';
+import { RequestStatusFloatingButton } from 'src/components/RequestStatusFloatingButton';
+import { SignInForm } from 'src/components/SignInForm';
+import { useAuth } from 'src/services/hooks/useAuth';
+import { CloudSyncGroupButton } from 'src/components/CloudSyncGroupButton';
+import { NewScholarButton } from 'src/components/Header/NewScholarButton';
 
 function DashboardPage() {
   const scholars = useRecoilValue(scholarsMap);

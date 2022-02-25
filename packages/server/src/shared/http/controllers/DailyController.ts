@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
-import { supabase } from '@src/services/supabase';
-import AppError from '@src/shared/errors/AppError';
-import Sync from '@src/models/Sync';
+import { supabase } from 'src/services/supabase';
+import AppError from 'src/shared/errors/AppError';
+import Sync from 'src/models/Sync';
 import { getScholarHistoricalSlp } from '../services/getScholarHistoricalSlp';
 
 export class DailyController {

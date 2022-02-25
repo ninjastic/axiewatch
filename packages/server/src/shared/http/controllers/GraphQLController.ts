@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
-import AppError from '@src/shared/errors/AppError';
-import { proxiedApi } from '@src/services/api';
+import AppError from 'src/shared/errors/AppError';
+import { proxiedApi } from 'src/services/api';
 
 export class GraphQLController {
   async post(req: Request, res: Response): Promise<Response> {

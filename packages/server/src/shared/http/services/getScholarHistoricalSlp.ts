@@ -1,6 +1,6 @@
-import { cache } from '@src/services/cache';
-import Tracking from '@src/models/Tracking';
-import dayjs from '@src/services/dayjs';
+import { cache } from 'src/services/cache';
+import Tracking from 'src/models/Tracking';
+import dayjs from 'src/services/dayjs';
 
 interface ScholarHistoricalDate {
   day: string;

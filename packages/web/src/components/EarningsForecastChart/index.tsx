@@ -13,11 +13,11 @@ import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, TooltipPro
 import { useRecoilValue } from 'recoil';
 
 import dayjs from '../../services/dayjs';
-import { scholarsMap } from '@src/recoil/scholars';
-import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
-import { usePrice } from '@src/services/hooks/usePrice';
-import { formatter } from '@src/services/formatter';
-import { Card } from '@components/Card';
+import { scholarsMap } from 'src/recoil/scholars';
+import { useBatchScholar } from 'src/services/hooks/useBatchScholar';
+import { usePrice } from 'src/services/hooks/usePrice';
+import { formatter } from 'src/services/formatter';
+import { Card } from 'components/Card';
 
 const CustomTooltip = ({ active, payload, label }: TooltipProps<any, any>): JSX.Element => {
   const price = usePrice();

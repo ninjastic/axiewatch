@@ -1,5 +1,5 @@
-import { cache } from '@src/services/cache';
-import { proxiedApi } from '@src/services/api';
+import { cache } from 'src/services/cache';
+import { proxiedApi } from 'src/services/api';
 
 export const getExplorerTx = async (address: string): Promise<any> => {
   const cacheKey = `v1:explorer:${address}`;

@@ -7,7 +7,7 @@ import { AiOutlineClockCircle } from 'react-icons/ai';
 import { RiSwordLine } from 'react-icons/ri';
 import { useCallback } from 'react';
 
-import { Card } from '@src/components/Card';
+import { Card } from 'src/components/Card';
 import { ScholarFields } from '../../../../recoil/scholars';
 
 const NameFieldPlaceholder = (): JSX.Element => {

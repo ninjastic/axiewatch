@@ -22,12 +22,12 @@ import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
 import { MdClose } from 'react-icons/md';
 
 import { axieInfinityGraphQl } from '../../services/api';
-import { breedingStateAtom, isBreedingModeAtom } from '@src/recoil/breeding';
+import { breedingStateAtom, isBreedingModeAtom } from 'src/recoil/breeding';
 import { Card } from '../Card';
-import { useCreateModal } from '@src/services/hooks/useCreateModal';
+import { useCreateModal } from 'src/services/hooks/useCreateModal';
 import { BreedingResultCard } from './BreedingResultModal';
-import { Axie } from '@src/recoil/scholars';
-import { parseAxieData } from '@src/services/utils/parseAxieData';
+import { Axie } from 'src/recoil/scholars';
+import { parseAxieData } from 'src/services/utils/parseAxieData';
 
 const query = gql`
   query GetAxieDetail($axieId: ID!) {

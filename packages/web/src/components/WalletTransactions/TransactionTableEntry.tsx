@@ -24,9 +24,9 @@ import dynamic from 'next/dynamic';
 import dayjs from '../../services/dayjs';
 import abi from '../../constants/abi/SLP.json';
 import { scholarsMap } from '../../recoil/scholars';
-import { preferencesAtom } from '@src/recoil/preferences';
+import { preferencesAtom } from 'src/recoil/preferences';
 import { AxieTag } from './AxieTag';
-import { WalletTransaction } from '@src/services/hooks/useBatchWalletTransactions';
+import { WalletTransaction } from 'src/services/hooks/useBatchWalletTransactions';
 
 interface TransactionTableEntryProps {
   transaction: WalletTransaction;

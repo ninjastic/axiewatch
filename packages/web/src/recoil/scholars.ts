@@ -2,7 +2,7 @@ import { atom, atomFamily, selector, selectorFamily } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
 import dayjs from '../services/dayjs';
-import { AxieClass, ScholarHistoricalSlpData } from '@src/types/api';
+import { AxieClass, ScholarHistoricalSlpData } from 'src/types/api';
 import { getTraits } from '../services/utils/axieUtils';
 import { preferencesAtom } from './preferences';
 

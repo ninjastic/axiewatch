@@ -4,7 +4,7 @@ import Link from 'next/link';
 import * as Yup from 'yup';
 import { UserCredentials } from '@supabase/supabase-js';
 
-import { useAuth } from '@src/services/hooks/useAuth';
+import { useAuth } from 'src/services/hooks/useAuth';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required(),

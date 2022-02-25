@@ -25,7 +25,7 @@ import { DiscordIcon, AnalysisIcon, BagIcon, TrackerIcon } from './icons';
 import { NavbarContent } from './NavbarContent';
 import { ColorSwitchIcon } from './ColorSwitchIcon';
 import AlertsIcon from './icons/AlertsIcon';
-import { SignInButton } from '@src/components/SignInButton';
+import { SignInButton } from 'src/components/SignInButton';
 
 interface LinkItemProps {
   name: string;

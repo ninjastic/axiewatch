@@ -8,7 +8,7 @@ import dayjs from '../../services/dayjs';
 import { formatter } from '../../services/formatter';
 import { scholarsMap } from '../../recoil/scholars';
 import { usePrice } from '../../services/hooks/usePrice';
-import { useBatchScholar } from '@src/services/hooks/useBatchScholar';
+import { useBatchScholar } from 'src/services/hooks/useBatchScholar';
 import { Card } from '../Card';
 
 const CustomTooltip = ({ active, payload, label }: any): JSX.Element => {

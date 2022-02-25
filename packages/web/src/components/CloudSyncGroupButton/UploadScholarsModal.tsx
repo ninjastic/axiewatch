@@ -5,7 +5,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { serverApi } from '../../services/api';
 import { useAuth } from '../../services/hooks/useAuth';
 import { ScholarMap, scholarsMap } from '../../recoil/scholars';
-import { modalSelector } from '@src/recoil/modal';
+import { modalSelector } from 'src/recoil/modal';
 
 interface UploadScholarsModalProps {
   uploadedScholars: ScholarMap[];

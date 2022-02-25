@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { getScholarBattles } from '../services/getScholarBattles';
-import AppError from '@src/shared/errors/AppError';
+import AppError from 'src/shared/errors/AppError';
 
 export class MatchesController {
   async get(req: Request, res: Response): Promise<Response> {

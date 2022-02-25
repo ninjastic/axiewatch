@@ -19,10 +19,10 @@ import { BsInfoCircle } from 'react-icons/bs';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
 
-import { Pagination } from '@src/components/Pagination';
-import { Card } from '@src/components/Card';
-import { ScholarMap, scholarsMap } from '@src/recoil/scholars';
-import { modalSelector } from '@src/recoil/modal';
+import { Pagination } from 'src/components/Pagination';
+import { Card } from 'src/components/Card';
+import { ScholarMap, scholarsMap } from 'src/recoil/scholars';
+import { modalSelector } from 'src/recoil/modal';
 
 interface AxieManagementImportData {
   managerShare: number;

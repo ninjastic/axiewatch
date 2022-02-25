@@ -3,8 +3,8 @@ import pluralize from 'pluralize';
 import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 
-import { Card } from '@components/Card';
-import { ScholarState, scholarsMap } from '@src/recoil/scholars';
+import { Card } from 'components/Card';
+import { ScholarState, scholarsMap } from 'src/recoil/scholars';
 
 interface TotalScholarsCardProps {
   data: ScholarState[];

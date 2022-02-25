@@ -2,10 +2,10 @@ import { Stat, StatLabel, StatNumber, Tooltip, Stack, Box, Text, Skeleton, StatH
 import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 
-import { formatter } from '@src/services/formatter';
-import { usePrice } from '@src/services/hooks/usePrice';
-import { ScholarState, scholarsMap } from '@src/recoil/scholars';
-import { Card } from '@components/Card';
+import { formatter } from 'src/services/formatter';
+import { usePrice } from 'src/services/hooks/usePrice';
+import { ScholarState, scholarsMap } from 'src/recoil/scholars';
+import { Card } from 'components/Card';
 
 interface AccumulatedSlpCardProps {
   data: ScholarState[];
