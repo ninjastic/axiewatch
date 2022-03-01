@@ -33,14 +33,14 @@ export const getScholarPvp = async (address: string): Promise<ScholarPvpData> =>
   const apiParams = {
     clientID: address,
     offset: 0,
-    limit: 0,
+    limit: 1,
   };
 
   const apiBackupUrl = 'https://game-api.skymavis.com/game-api/leaderboard';
   const apiBackupParams = {
     client_id: address,
     offset: 0,
-    limit: 0,
+    limit: 1,
   };
 
   const cached = await cache.get(cacheKey);
