@@ -49,6 +49,7 @@ export const getScholarBattles = async (address: string): Promise<APIScholarResp
 
   const apiBaseParams = {
     player_id: address,
+    limit: 100,
   };
 
   const { data: pvp } = await proxiedApi
