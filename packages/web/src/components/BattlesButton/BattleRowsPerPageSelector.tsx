@@ -15,11 +15,11 @@ export const BattleRowsPerPageSelector = ({ value, onChange }: BattleRowsPerPage
 
       <MenuList>
         <MenuItem onClick={() => onChange(10)}>10</MenuItem>
-        <MenuItem onClick={() => onChange(10)}>20</MenuItem>
+        <MenuItem onClick={() => onChange(20)}>20</MenuItem>
         <MenuItem onClick={() => onChange(25)}>25</MenuItem>
-        <MenuItem onClick={() => onChange(25)}>40</MenuItem>
+        <MenuItem onClick={() => onChange(40)}>40</MenuItem>
         <MenuItem onClick={() => onChange(50)}>50</MenuItem>
-        <MenuItem onClick={() => onChange(50)}>60</MenuItem>
+        <MenuItem onClick={() => onChange(60)}>60</MenuItem>
       </MenuList>
     </Menu>
   );
