@@ -1,13 +1,13 @@
 import { Box, Stack, HStack, Text, Image, Flex, Tooltip, SimpleGrid, SkeletonText, Icon } from '@chakra-ui/react';
 import { useRecoilValue } from 'recoil';
 import { RiSwordLine } from 'react-icons/ri';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import dayjs from '../../../../services/dayjs';
 import { formatter } from '../../../../services/formatter';
 import { priceAtom } from '../../../../recoil/price';
 import { scholarSelector } from '../../../../recoil/scholars';
-import { preferencesAtom } from '../../../../recoil/preferences';
+import { averageRangeAtom, preferencesAtom } from '../../../../recoil/preferences';
 
 interface ScholarOverviewProps {
   address: string;
@@ -18,6 +18,7 @@ export const ScholarOverview = ({ address, isLoading }: ScholarOverviewProps): J
   const scholar = useRecoilValue(scholarSelector(address));
   const preferences = useRecoilValue(preferencesAtom);
   const price = useRecoilValue(priceAtom);
+  const averageRange = useRecoilValue(averageRangeAtom);
 
   const { name, slp, roninSlp, todaySlp, shares, slpDay, lastClaim, nextClaim } = scholar || {};
 
@@ -53,12 +54,13 @@ export const ScholarOverview = ({ address, isLoading }: ScholarOverviewProps): J
     [price.locale, price.values.slp, slpDay]
   );
 
-  const getSlpDayColor = useMemo(() => {
-    if (slpDay >= 120) return 'green.200';
-    if (slpDay >= 90 && slpDay < 120) return 'red.200';
-    if (slpDay < 90) return 'red.300';
+  const getSlpDayColor = useCallback(() => {
+    if (scholar.slpDay >= (averageRange?.top ?? 120)) return 'green.200';
+    if (scholar.slpDay >= (averageRange?.bottom ?? 120) && scholar.slpDay < (averageRange?.top ?? 120))
+      return 'red.200';
+    if (scholar.slpDay < (averageRange?.bottom ?? 120)) return 'red.300';
     return 'white';
-  }, [slpDay]);
+  }, [averageRange?.bottom, averageRange?.top, scholar.slpDay]);
 
   const lastClaimText = useMemo(() => (lastClaim === 0 ? 'never' : dayjs.unix(lastClaim).fromNow()), [lastClaim]);
 
