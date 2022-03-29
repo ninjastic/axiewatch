@@ -1,7 +1,8 @@
-import { Flex, chakra } from '@chakra-ui/react';
+import { Flex, chakra, Text, Link, Stack, Button } from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
+import { useRecoilValue } from 'recoil';
 
 import { useCreateModal } from '../../services/hooks/useCreateModal';
 import { useGameStatus } from 'src/services/hooks/useGameStatus';
@@ -10,6 +11,38 @@ import { ResetPasswordModal } from './ResetPasswordModal';
 import { Sidebar } from './Sidebar';
 import Header from './Navbar';
 import { MaintenanceScreen } from '../MaintenanceScreen';
+import { modalSelector } from 'src/recoil/modal';
+
+const ShuttingDownModal = (): JSX.Element => {
+  const { onClose } = useRecoilValue(modalSelector('shuttingDownModal'));
+
+  return (
+    <Stack spacing="5" py={3}>
+      <Text fontWeight="bold" fontSize="2xl">
+        Axie Watch will be shutting down on the 1st May.
+      </Text>
+
+      <Text>
+        It was a great experience to develop this tool that was used by so many people (300k+ unique scholars), but my
+        lack of interest on the Axie Infinity ecosystem leaves me with no time to keep working on the project which
+        bills were being paid out of my own pocket for the last few months.
+      </Text>
+
+      <Text>
+        The code is now open source for whoever wants to continue the work or get some inspiration for their own
+        tracker/project.
+      </Text>
+
+      <Link href="https://github.com/ninjastic/axiewatch" fontWeight="bold">
+        https://github.com/ninjastic/axiewatch
+      </Link>
+
+      <Text>Thanks everyone for the support so far.</Text>
+
+      <Button onClick={onClose}>Ok</Button>
+    </Stack>
+  );
+};
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -25,6 +58,13 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
     id: 'resetPasswordModal',
     title: 'Reset Password',
     content: <ResetPasswordModal />,
+  });
+
+  const shuttingDownModal = useCreateModal({
+    id: 'shuttingDownModal',
+    title: 'End of the journey...',
+    content: <ShuttingDownModal />,
+    size: '2xl',
   });
 
   useEffect(() => {
@@ -58,6 +98,11 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
       document.body.style.overflow = 'auto';
     }
   }, [isLoading]);
+
+  useEffect(() => {
+    shuttingDownModal.onOpen();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shuttingDownModal.onOpen]);
 
   const pageTitles = {
     scholars: 'Scholars',
