@@ -5,7 +5,7 @@ import { proxiedApi } from 'src/services/api';
 
 export class GraphQLController {
   async post(req: Request, res: Response): Promise<Response> {
-    const url = 'https://axieinfinity.com/graphql-server-v2/graphql';
+    const url = 'https://graphql-gateway.axieinfinity.com/graphql';
 
     return proxiedApi
       .post(url, req.body)
